@@ -1,0 +1,172 @@
+// HomePage.jsx
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Grid,
+  Card,
+  CardContent,
+  CardActions,
+  Container,
+} from "@mui/material";
+import { Star, ArrowForward } from "@mui/icons-material";
+import { motion } from "framer-motion";
+
+const Hero = () => (
+  <Box
+    sx={{
+      height: "60vh", // קצר יותר
+      background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+      color: "white",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      textAlign: "center",
+      px: 3,
+    }}
+  >
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.2 }}
+    >
+      <Typography variant="h2" fontWeight="bold" gutterBottom>
+        "דרך קצרה"
+      </Typography>
+      <Typography variant="h5" sx={{ maxWidth: 600, mb: 4 }}>
+        בית מדרש ללימודי דיינות
+      </Typography>
+      <Button
+        variant="contained"
+        size="large"
+        sx={{ borderRadius: "30px", px: 4 }}
+        endIcon={<ArrowForward />}
+      >
+        קניית ספרים
+      </Button>
+    </motion.div>
+  </Box>
+);
+
+const NavBar = () => (
+  <AppBar position="sticky" elevation={0} sx={{ background: "rgba(0,0,0,0.7)" }}>
+    <Toolbar>
+      <Typography variant="h6" sx={{ flexGrow: 1 }}>
+        דרך קצרה
+      </Typography>
+      <Button color="inherit">בית</Button>
+      <Button color="inherit">עלינו</Button>
+      <Button color="inherit">קנית ספרים</Button>
+      <Button color="inherit">הכשרה ומסלולים</Button>
+      <Button color="inherit">צור קשר</Button>
+    </Toolbar>
+  </AppBar>
+);
+
+const FeatureCard = ({ title, text }) => (
+  <Card
+    sx={{
+      background: "#fff",
+      borderRadius: 4,
+      p: 2,
+      minWidth: 250,
+      maxWidth: 250,
+      textAlign: "center",
+      boxShadow: 5,
+      transition: "transform 0.3s ease",
+      "&:hover": { transform: "scale(1.05)" },
+    }}
+  >
+    <CardContent>
+      <Typography variant="h6" fontWeight="bold" gutterBottom>
+        {title}
+      </Typography>
+      <Typography variant="body2">{text}</Typography>
+    </CardContent>
+    <CardActions sx={{ justifyContent: "center" }}>
+      <Button size="small" endIcon={<Star />}>
+        קרא עוד
+      </Button>
+    </CardActions>
+  </Card>
+);
+
+// const Features = () => (
+//   <Container sx={{ py: 8 }}>
+//     <Typography variant="h4" textAlign="center" fontWeight="bold" gutterBottom>
+//       הכשרה ומסלולים
+//     </Typography>
+//     <Box
+//       sx={{
+//         display: "flex",
+//         gap: 3,
+//         overflowX: "auto",
+//         py: 2,
+//         px: 1,
+//         "&::-webkit-scrollbar": { display: "none" },
+//       }}
+//     >
+//       <FeatureCard
+//         title="למידה מקוונת"
+//         text="לימוד מסרטונים, סיכומים, ותמיכה מלאה"
+//       />
+//       <FeatureCard title="אבן העזר" text="לימוד הלכתי מרוכז ומסודר" />
+//       <FeatureCard title="חושן א" text="לימוד נושאים בסיסיים בדיני ממונות" />
+//       <FeatureCard title="חושן ב" text="שלב ביניים עם ניתוח מקרים" />
+//       <FeatureCard title="חושן ג" text="יישום הלכתי ברמה מתקדמת" />
+//     </Box>
+//   </Container>
+// );
+const Features = () => (
+  <Container sx={{ py: 8 }}>
+    <Typography variant="h4" textAlign="center" fontWeight="bold" gutterBottom>
+      הכשרה ומסלולים
+    </Typography>
+
+    <Grid
+      container
+      spacing={3}
+      justifyContent="center"
+      alignItems="stretch"
+      sx={{ mt: 2 }}
+    >
+      <Grid item xs={12} sm={6} md={2.4}>
+        <FeatureCard title="למידה מקוונת" text="סרטונים, סיכומים והכוונה" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <FeatureCard title="אבן העזר" text="מבנה ברור ומסודר" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <FeatureCard title="חושן א" text="יסודות בדיני ממונות" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <FeatureCard title="חושן ב" text="שלב מתקדם יותר" />
+      </Grid>
+      <Grid item xs={12} sm={6} md={2.4}>
+        <FeatureCard title="חושן ג" text="יישום ומקרי בוחן" />
+      </Grid>
+    </Grid>
+  </Container>
+);
+
+const Footer = () => (
+  <Box sx={{ py: 4, backgroundColor: "#111", color: "#aaa", textAlign: "center" }}>
+    <Typography>© 2025 כל הזכויות שמורות - דרך קצרה</Typography>
+  </Box>
+);
+
+const HomePage = () => {
+  return (
+    <>
+      <NavBar />
+      <Hero />
+      <Features />
+      <Footer />
+    </>
+  );
+};
+
+export default HomePage;
