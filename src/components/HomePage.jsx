@@ -133,9 +133,9 @@ const Features = () => (
       alignItems="stretch"
       sx={{ mt: 2 }}
     >
-      <Grid item xs={12} sm={6} md={2.4}>
+      {/* <Grid item xs={12} sm={6} md={2.4}>
         <FeatureCard title="למידה מקוונת" text="סרטונים, סיכומים והכוונה" />
-      </Grid>
+      </Grid> */}
       <Grid item xs={12} sm={6} md={2.4}>
         <FeatureCard title="אבן העזר" text="מבנה ברור ומסודר" />
       </Grid>
