@@ -1,4 +1,3 @@
-// HomePage.jsx
 import {
   AppBar,
   Toolbar,
@@ -10,9 +9,11 @@ import {
   CardContent,
   CardActions,
   Container,
+  CircularProgress,
 } from "@mui/material";
 import { Star, ArrowForward } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import { useGetTopics } from "../hooks/useTopics";
 
 const Hero = () => (
   <Box
@@ -52,7 +53,11 @@ const Hero = () => (
 );
 
 const NavBar = () => (
-  <AppBar position="sticky" elevation={0} sx={{ background: "rgba(0,0,0,0.7)" }}>
+  <AppBar
+    position="sticky"
+    elevation={0}
+    sx={{ background: "rgba(0,0,0,0.7)" }}
+  >
     <Toolbar>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         דרך קצרה
@@ -94,66 +99,61 @@ const FeatureCard = ({ title, text }) => (
   </Card>
 );
 
-// const Features = () => (
-//   <Container sx={{ py: 8 }}>
-//     <Typography variant="h4" textAlign="center" fontWeight="bold" gutterBottom>
-//       הכשרה ומסלולים
-//     </Typography>
-//     <Box
-//       sx={{
-//         display: "flex",
-//         gap: 3,
-//         overflowX: "auto",
-//         py: 2,
-//         px: 1,
-//         "&::-webkit-scrollbar": { display: "none" },
-//       }}
-//     >
-//       <FeatureCard
-//         title="למידה מקוונת"
-//         text="לימוד מסרטונים, סיכומים, ותמיכה מלאה"
-//       />
-//       <FeatureCard title="אבן העזר" text="לימוד הלכתי מרוכז ומסודר" />
-//       <FeatureCard title="חושן א" text="לימוד נושאים בסיסיים בדיני ממונות" />
-//       <FeatureCard title="חושן ב" text="שלב ביניים עם ניתוח מקרים" />
-//       <FeatureCard title="חושן ג" text="יישום הלכתי ברמה מתקדמת" />
-//     </Box>
-//   </Container>
-// );
-const Features = () => (
-  <Container sx={{ py: 8 }}>
-    <Typography variant="h4" textAlign="center" fontWeight="bold" gutterBottom>
-      הכשרה ומסלולים
-    </Typography>
+const Features = () => {
+  const { data: topics, isLoading, isError } = useGetTopics();
 
-    <Grid
-      container
-      spacing={3}
-      justifyContent="center"
-      alignItems="stretch"
-      sx={{ mt: 2 }}
-    >
-      {/* <Grid item xs={12} sm={6} md={2.4}>
-        <FeatureCard title="למידה מקוונת" text="סרטונים, סיכומים והכוונה" />
-      </Grid> */}
-      <Grid item xs={12} sm={6} md={2.4}>
-        <FeatureCard title="אבן העזר" text="מבנה ברור ומסודר" />
-      </Grid>
-      <Grid item xs={12} sm={6} md={2.4}>
-        <FeatureCard title="חושן א" text="יסודות בדיני ממונות" />
-      </Grid>
-      <Grid item xs={12} sm={6} md={2.4}>
-        <FeatureCard title="חושן ב" text="שלב מתקדם יותר" />
-      </Grid>
-      <Grid item xs={12} sm={6} md={2.4}>
-        <FeatureCard title="חושן ג" text="יישום ומקרי בוחן" />
-      </Grid>
-    </Grid>
-  </Container>
-);
+  if (isLoading) {
+    return (
+      <Box sx={{ py: 8, display: "flex", justifyContent: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box sx={{ py: 8, textAlign: "center" }}>
+        <Typography color="error">שגיאה בשליפת הנושאים</Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Container sx={{ py: 8 }}>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        fontWeight="bold"
+        gutterBottom
+      >
+        הכשרה ומסלולים
+      </Typography>
+
+      {topics.length === 0 ? (
+        <Typography align="center">אין נושאים זמינים כרגע</Typography>
+      ) : (
+        <Grid
+          container
+          spacing={3}
+          justifyContent="center"
+          alignItems="stretch"
+          sx={{ mt: 2 }}
+        >
+          {topics.map((topic) => (
+            <Grid item key={topic._id} xs={12} sm={6} md={2.4}>
+              <FeatureCard title={topic.name} text={topic.notes} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Container>
+  );
+};
 
 const Footer = () => (
-  <Box sx={{ py: 4, backgroundColor: "#111", color: "#aaa", textAlign: "center" }}>
+  <Box
+    sx={{ py: 4, backgroundColor: "#111", color: "#aaa", textAlign: "center" }}
+  >
     <Typography>© 2025 כל הזכויות שמורות - דרך קצרה</Typography>
   </Box>
 );
