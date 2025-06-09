@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   Fade,
-  CardMedia,
 } from "@mui/material";
 
 const lessons = [

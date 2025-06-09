@@ -1,115 +1,122 @@
-import React from "react";
+import React, { useState } from 'react';
 import {
   Box,
-  Typography,
   TextField,
   Button,
-  Container,
-  Grid,
-  Paper,
-} from "@mui/material";
-import { motion } from "framer-motion";
+  Typography,
+  CircularProgress,
+  Alert,
+} from '@mui/material';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import { useSendContactForm } from '../hooks/useSendContactForm';
 
 const ContactPage = () => {
+  const {
+    mutate: sendContact,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+  } = useSendContactForm();
+
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    sendContact(formData);
+  };
+
   return (
     <Box
+      component="form"
+      onSubmit={handleSubmit}
       sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        direction: "rtl",
-        py: 8,
+        width: '80%',
+        maxWidth: 600,
+        minHeight: '71vh',
+        mx: 'auto',
+        mt: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        direction: 'rtl',
       }}
     >
-      <Container maxWidth="md"> {/* שינוי מ-sm ל-md לרוחב גדול יותר */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+      <Typography
+        variant="h5"
+        align="center"
+        fontWeight="bold"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        gap={1}
+      >
+        <MailOutlineIcon fontSize="large" />
+        צור קשר
+      </Typography>
+
+      <TextField
+        name="name"
+        label="שם"
+        value={formData.name}
+        onChange={handleChange}
+        fullWidth
+        required
+        inputProps={{ dir: 'rtl' }}
+      />
+
+      <TextField
+        name="email"
+        label="אימייל"
+        type="email"
+        value={formData.email}
+        onChange={handleChange}
+        fullWidth
+        required
+        inputProps={{ dir: 'rtl' }}
+      />
+
+      <TextField
+        name="message"
+        label="הודעה"
+        multiline
+        rows={4}
+        value={formData.message}
+        onChange={handleChange}
+        fullWidth
+        required
+        inputProps={{ dir: 'rtl' }}
+      />
+
+      <Box textAlign="center" sx={{ mb: 2 }}> {/* רווח בתחתית */}
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          disabled={isPending}
+          sx={{ minWidth: 120 }}
         >
-          <Paper
-            elevation={8}
-            sx={{
-              p: 6,
-              borderRadius: 4,
-              backgroundColor: "#ffffff",
-              textAlign: "right",
-            }}
-          >
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              gutterBottom
-              sx={{ color: "#203a43", textAlign: "center" }}
-            >
-              צור קשר
-            </Typography>
+          {isPending ? <CircularProgress size={24} color="inherit" /> : 'שלח'}
+        </Button>
+      </Box>
 
-            <Typography
-              variant="body1"
-              sx={{ mb: 4, textAlign: "center", color: "#555" }}
-            >
-              נשמח לשמוע ממך! מלא את פרטיך ונחזור אליך בהקדם.
-            </Typography>
-
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="שם מלא"
-                  fullWidth
-                  variant="outlined"
-                  dir="rtl"
-                //   InputLabelProps={{ style: { right: 0, left: "unset" } }}
-                />
-              </Grid>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  label="אימייל"
-                  type="email"
-                  fullWidth
-                  variant="outlined"
-                  dir="rtl"
-                //   InputLabelProps={{ style: { right: 0, left: "unset" } }}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="הודעה"
-                  multiline
-                  rows={5}
-                  fullWidth
-                  variant="outlined"
-                  dir="rtl"
-                //   InputLabelProps={{ style: { right: 0, left: "unset" } }}
-                />
-              </Grid>
-              <Grid item xs={12} textAlign="center">
-                <motion.div
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                      px: 6,
-                      py: 1.5,
-                      borderRadius: "30px",
-                      background: "linear-gradient(45deg, #203a43, #2c5364)",
-                      color: "#fff",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    שלח הודעה
-                  </Button>
-                </motion.div>
-              </Grid>
-            </Grid>
-          </Paper>
-        </motion.div>
-      </Container>
+      {isSuccess && (
+        <Alert severity="success">ההודעה נשלחה בהצלחה!</Alert>
+      )}
+      {isError && (
+        <Alert severity="error">
+          שגיאה בשליחה: {error?.response?.data?.message || 'נסה שוב מאוחר יותר'}
+        </Alert>
+      )}
     </Box>
   );
 };

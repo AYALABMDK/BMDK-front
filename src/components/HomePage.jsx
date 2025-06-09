@@ -52,24 +52,6 @@ const Hero = () => (
   </Box>
 );
 
-// const NavBar = () => (
-//   <AppBar
-//     position="sticky"
-//     elevation={0}
-//     sx={{ background: "rgba(0,0,0,0.7)" }}
-//   >
-//     <Toolbar>
-//       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-//         דרך קצרה
-//       </Typography>
-//       <Button color="inherit">בית</Button>
-//       <Button color="inherit">עלינו</Button>
-//       <Button color="inherit">קנית ספרים</Button>
-//       <Button color="inherit">הכשרה ומסלולים</Button>
-//       <Button color="inherit">צור קשר</Button>
-//     </Toolbar>
-//   </AppBar>
-// );
 
 const FeatureCard = ({ title, text }) => (
   <Card
