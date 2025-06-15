@@ -24,7 +24,7 @@ const videos = [
 
 const OnlineLearningPage = () => {
   return (
-    <div style={{ padding: "2rem", textAlign: "center" }}>
+    <div style={{ padding: "2rem", textAlign: "center", display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Typography variant="h4" gutterBottom>
         למידה מקוונת
       </Typography>

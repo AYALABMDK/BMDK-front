@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   return (
-    <Container sx={{ mt: 6, py: 6 }}>
+    <Container sx={{ mt: 6, py: 6, display: 'flex', flexDirection: 'column', minHeight: '90vh' }}>
       <Paper elevation={5} sx={{ p: 4, bgcolor: "#f9f9f9" }}>
         <Typography
           variant="h4"
