@@ -72,7 +72,7 @@ const Cart = () => {
                     "גודל",
                     "כמות",
                     "מחיר ליחידה",
-                    "סה\"כ",
+                    'סה"כ',
                     "",
                   ].map((header, idx) => (
                     <TableCell
@@ -123,10 +123,10 @@ const Cart = () => {
                       />
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.price} ₪
+                      {item.price != null ? `${item.price} ₪` : "0 ₪"}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.total} ₪
+                      {item.total != null ? `${item.total} ₪` : "0 ₪"}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
                       <Button
