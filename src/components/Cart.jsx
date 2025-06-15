@@ -9,16 +9,30 @@ import {
   TableHead,
   TableRow,
   Button,
+  TextField,
+  Select,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import { useCart } from "../components/CartContext";
 
 const Cart = () => {
-  const { cartItems, removeFromCart } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, updateSize } = useCart();
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + (item.total || 0),
     0
   );
+
+  const handleQuantityChange = (e, index) => {
+    const newQty = Math.max(1, parseInt(e.target.value) || 1);
+    updateQuantity(index, newQty);
+  };
+
+  const handleSizeChange = (e, index) => {
+    const newSize = e.target.value;
+    updateSize(index, newSize);
+  };
 
   return (
     <Container sx={{ mt: 6, direction: "rtl" }}>
@@ -58,7 +72,7 @@ const Cart = () => {
                     "גודל",
                     "כמות",
                     "מחיר ליחידה",
-                    'סה"כ',
+                    "סה\"כ",
                     "",
                   ].map((header, idx) => (
                     <TableCell
@@ -88,17 +102,28 @@ const Cart = () => {
                       {item.signs}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.size}
+                      <FormControl size="small" sx={{ minWidth: 100 }}>
+                        <Select
+                          value={item.size}
+                          onChange={(e) => handleSizeChange(e, index)}
+                        >
+                          <MenuItem value="קטן">קטן</MenuItem>
+                          <MenuItem value="גדול">גדול</MenuItem>
+                        </Select>
+                      </FormControl>
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.quantity}
+                      <TextField
+                        type="number"
+                        size="small"
+                        value={item.quantity}
+                        onChange={(e) => handleQuantityChange(e, index)}
+                        inputProps={{ min: 1 }}
+                        sx={{ width: 70 }}
+                      />
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.price ||
-                        (item.size === "גדול"
-                          ? item.bigBookPrice
-                          : item.smallBookPrice)}{" "}
-                      ₪
+                      {item.price} ₪
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
                       {item.total} ₪

@@ -35,6 +35,27 @@ export const CartProvider = ({ children }) => {
     setCartItems(updated);
     setIsDrawerOpen(true);
   };
+  const updateQuantity = (index, newQuantity) => {
+  setCartItems((prevItems) => {
+    const items = [...prevItems];
+    items[index].quantity = newQuantity;
+    items[index].total = newQuantity * (items[index].price || (items[index].size === "גדול" ? items[index].bigBookPrice : items[index].smallBookPrice));
+    return items;
+  });
+};
+const updateSize = (index, newSize) => {
+  setCartItems((prevItems) => {
+    const items = [...prevItems];
+    items[index].size = newSize;
+    const price =
+      newSize === "גדול" ? items[index].bigBookPrice : items[index].smallBookPrice;
+    items[index].price = price;
+    items[index].total = price * items[index].quantity;
+    return items;
+  });
+};
+
+
 
   const removeFromCart = (index) => {
     const updated = [...cartItems];
@@ -54,6 +75,8 @@ export const CartProvider = ({ children }) => {
         isDrawerOpen,
         openDrawer,
         closeDrawer,
+        updateQuantity,
+        updateSize
       }}
     >
       {children}

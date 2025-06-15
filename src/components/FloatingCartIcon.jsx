@@ -9,6 +9,8 @@ const FloatingCartIcon = () => {
     useCart();
   const navigate = useNavigate();
 
+  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   const handleRemove = (index) => {
     removeFromCart(index);
   };
@@ -36,7 +38,7 @@ const FloatingCartIcon = () => {
           boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
         }}
       >
-        <Badge badgeContent={cartItems.length} color="secondary">
+        <Badge badgeContent={totalQuantity} color="secondary">
           <ShoppingCartIcon sx={{ fontSize: 40 }} />
         </Badge>
       </IconButton>
