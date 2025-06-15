@@ -55,6 +55,9 @@ const Navbar = () => {
             <Button component={Link} to={`${BASE_PATH}/about`} sx={navButtonStyle}>
               אודות
             </Button>
+             <Button component={Link} to={`${BASE_PATH}/LessonExample`} sx={navButtonStyle}>
+              שיעורים לדוגמא
+            </Button>
             <Button onClick={() => setOpenContact(true)} sx={navButtonStyle}>
               יצירת קשר
             </Button>

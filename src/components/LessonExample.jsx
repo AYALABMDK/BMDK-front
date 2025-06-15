@@ -2,7 +2,7 @@ import { Box, Typography, Button, Container, Paper, useMediaQuery } from "@mui/m
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 
-const BookPreview = () => {
+const LessonExample = () => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -91,4 +91,4 @@ const BookPreview = () => {
   );
 };
 
-export default BookPreview;
+export default LessonExample;
