@@ -77,7 +77,16 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
               >
                 <ListItemText
                   primary={item.signsTopic}
-                  secondary={`סה"כ: ${item.total} ₪`}
+                  secondary={
+                    <>
+                      <Typography variant="body2">
+                        מחיר ליחידה: {item.price} ₪
+                      </Typography>
+                      <Typography variant="body2">
+                        סה"כ: {item.total} ₪
+                      </Typography>
+                    </>
+                  }
                   sx={{ width: "100%" }}
                 />
 
