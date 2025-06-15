@@ -21,6 +21,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_PATH } from "../config";
 import { HDate } from '@hebcal/core';
+import AboutPage from "./AboutPage";
+import LessonExample from "./LessonExample";
+import BooksPage from "./OrderBook";
+import ContactPage from "./ContactPage";
 
 
 const Hero = ({ onOrderBookClick }) => (
@@ -286,7 +290,10 @@ const HomePage = () => {
           {selectedTopic && <Lessons topic={selectedTopic} />}
         </DialogContent>
       </Dialog>
-
+      <AboutPage/>
+      <LessonExample/>
+      <BooksPage/>
+      <ContactPage/>
       <Footer />
     </>
   );
