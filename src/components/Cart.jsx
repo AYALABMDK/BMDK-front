@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   return (
-    <Container sx={{ mt: 6, direction: "rtl" }}>
+    <Container sx={{ mt: 6 }}>
       <Paper elevation={5} sx={{ p: 4, bgcolor: "#f9f9f9" }}>
         <Typography
           variant="h4"
