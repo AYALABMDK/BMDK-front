@@ -27,21 +27,11 @@ const Navbar = () => {
           color: "#333",
           boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
           px: 2,
-          direction: "rtl",
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          {/* צד ימין – לוגו וכותרת */}
-          <Box display="flex" alignItems="center">
-            <IconButton edge="start" sx={{ color: "#1976d2", ml: 1 }}>
-              <MenuBookIcon />
-            </IconButton>
-            <Typography variant="h6" fontWeight="bold">
-              דרך קצרה
-            </Typography>
-          </Box>
 
-          {/* צד שמאל – קישורים */}
+          {/* צד ימין – קישורים */}
           <Box display="flex" gap={1}>
             <Button component={Link} to={`${BASE_PATH}/`} sx={navButtonStyle}>
               דף הבית
@@ -55,11 +45,26 @@ const Navbar = () => {
             <Button component={Link} to={`${BASE_PATH}/about`} sx={navButtonStyle}>
               אודות
             </Button>
-             <Button component={Link} to={`${BASE_PATH}/LessonExample`} sx={navButtonStyle}>
+            <Button component={Link} to={`${BASE_PATH}/LessonExample`} sx={navButtonStyle}>
               שיעורים לדוגמא
             </Button>
             <Button onClick={() => setOpenContact(true)} sx={navButtonStyle}>
               יצירת קשר
+            </Button>
+          </Box>
+
+          {/* צד שמאל – לוגו וכותרת */}
+          <Box display="flex" alignItems="center">
+            <Button
+              component={Link}
+              to={`${BASE_PATH}/`}
+              sx={{
+                ...navButtonStyle,
+                fontWeight: "bold",
+                fontSize: "1.25rem",
+                textTransform: "none",
+              }}>
+              דרך קצרה
             </Button>
           </Box>
         </Toolbar>
