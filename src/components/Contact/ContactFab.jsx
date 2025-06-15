@@ -17,7 +17,7 @@ const ContactFab = () => {
           sx={{
             position: "fixed",
             bottom: 140,
-            left: 20,
+            right: 20,
             width: 80,
             height: 80,
             zIndex: 1200,

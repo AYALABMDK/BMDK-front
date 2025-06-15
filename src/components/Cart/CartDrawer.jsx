@@ -17,15 +17,21 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "./CartContext";
+import EditIcon from "@mui/icons-material/Edit";
+import { useState } from "react";
 
 const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
   const { cartItems, updateQuantity, updateSize } = useCart();
+  const [editingIndex, setEditingIndex] = useState(null);
 
   const total = cartItems.reduce((sum, item) => sum + (item.total || 0), 0);
 
   const handleQuantityChange = (e, index) => {
     const newQty = Math.max(1, parseInt(e.target.value) || 1);
     updateQuantity(index, newQty);
+  };
+  const handleEdit = (index) => {
+    setEditingIndex(index);
   };
 
   const handleSizeChange = (e, index) => {
@@ -34,7 +40,16 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
   };
 
   return (
-    <Drawer anchor="left" open={open} onClose={onClose}>
+    <Drawer
+      anchor="right"
+      open={open}
+      onClose={onClose}
+      PaperProps={{
+        sx: {
+          zIndex: 1401,
+        },
+      }}
+    >
       <Box sx={{ width: 320, p: 2, direction: "rtl" }}>
         <Box
           sx={{
@@ -44,7 +59,12 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
             mb: 1,
           }}
         >
-          <Typography variant="h6" fontWeight="bold">
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign="center"
+            sx={{ width: "100%", mb: 1 }}
+          >
             סל קניות
           </Typography>
           <IconButton onClick={onClose}>
@@ -63,56 +83,65 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
             cartItems.map((item, index) => (
               <ListItem
                 key={index}
-                sx={{
-                  alignItems: "flex-start",
-                  flexDirection: "column",
-                  gap: 1,
-                  mb: 2,
-                }}
-                secondaryAction={
-                  <IconButton edge="end" onClick={() => handleRemove(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                }
+                sx={{ flexDirection: "column", gap: 1, mb: 2 }}
               >
                 <ListItemText
                   primary={item.signsTopic}
                   secondary={
-                    <>
-                      <Typography variant="body2">
-                        מחיר ליחידה: {item.price} ₪
-                      </Typography>
-                      <Typography variant="body2">
-                        סה"כ: {item.total} ₪
-                      </Typography>
-                    </>
+                    editingIndex === index ? (
+                      <>
+                        <TextField
+                          label="כמות"
+                          type="number"
+                          size="small"
+                          value={item.quantity}
+                          onChange={(e) => handleQuantityChange(e, index)}
+                          inputProps={{ min: 1 }}
+                          sx={{ width: 80, mb: 1 }}
+                        />
+                        <FormControl size="small" sx={{ minWidth: 90 }}>
+                          <InputLabel id={`size-label-${index}`}>
+                            גודל
+                          </InputLabel>
+                          <Select
+                            labelId={`size-label-${index}`}
+                            value={item.size}
+                            label="גודל"
+                            onChange={(e) => handleSizeChange(e, index)}
+                          >
+                            <MenuItem value="קטן">קטן</MenuItem>
+                            <MenuItem value="גדול">גדול</MenuItem>
+                          </Select>
+                        </FormControl>
+                        <Box sx={{ mt: 1 }}>
+                          <Button onClick={() => setEditingIndex(null)}>
+                            סיום עריכה
+                          </Button>
+                        </Box>
+                      </>
+                    ) : (
+                      <>
+                        <Typography variant="body2">
+                          {item.price} ₪ × {item.quantity} יחידות
+                        </Typography>
+                        <Typography variant="body2">
+                          סה"כ: {item.price * item.quantity} ₪
+                        </Typography>
+                        <Typography variant="body2">
+                          גודל: {item.size}
+                        </Typography>
+                      </>
+                    )
                   }
                   sx={{ width: "100%" }}
                 />
-
-                <Box sx={{ display: "flex", gap: 2, width: "100%" }}>
-                  <FormControl size="small" sx={{ minWidth: 90 }}>
-                    <InputLabel id={`size-label-${index}`}>גודל</InputLabel>
-                    <Select
-                      labelId={`size-label-${index}`}
-                      value={item.size}
-                      label="גודל"
-                      onChange={(e) => handleSizeChange(e, index)}
-                    >
-                      <MenuItem value="קטן">קטן</MenuItem>
-                      <MenuItem value="גדול">גדול</MenuItem>
-                    </Select>
-                  </FormControl>
-
-                  <TextField
-                    label="כמות"
-                    type="number"
-                    size="small"
-                    value={item.quantity}
-                    onChange={(e) => handleQuantityChange(e, index)}
-                    inputProps={{ min: 1 }}
-                    sx={{ width: 80 }}
-                  />
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <IconButton edge="end" onClick={() => handleEdit(index)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton edge="end" onClick={() => handleRemove(index)}>
+                    <DeleteIcon />
+                  </IconButton>
                 </Box>
               </ListItem>
             ))

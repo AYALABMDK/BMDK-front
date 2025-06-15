@@ -25,26 +25,27 @@ const FloatingCartIcon = () => {
 
   return (
     <>
-      <IconButton
-        color="primary"
-        onClick={openDrawer}
-        sx={{
-          position: "fixed",
-          left: 20,
-          bottom: 40,
-          zIndex: 1300,
-          width: 80,
-          height: 80,
-          borderRadius: "50%",
-          bgcolor: "white",
-          border: "1px solid #ccc",
-          boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
-        }}
-      >
-        <Badge badgeContent={totalQuantity} color="secondary">
-          <ShoppingCartIcon sx={{ fontSize: 40 }} />
-        </Badge>
-      </IconButton>
+      {!isDrawerOpen && (
+        <IconButton
+          color="primary"
+          onClick={openDrawer}
+          sx={{
+            position: "fixed",
+            right: 20,
+            bottom: 40,
+            width: 80,
+            height: 80,
+            borderRadius: "50%",
+            bgcolor: "white",
+            border: "1px solid #ccc",
+            boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+          }}
+        >
+          <Badge badgeContent={totalQuantity} color="secondary">
+            <ShoppingCartIcon sx={{ fontSize: 40 }} />
+          </Badge>
+        </IconButton>
+      )}
 
       <CartDrawer
         open={isDrawerOpen}
