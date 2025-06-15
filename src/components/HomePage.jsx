@@ -240,13 +240,7 @@ const formatDate = (dateString) => {
   // return new Intl.DateTimeFormat("he-IL").format(new Date(dateString));
 };
 
-const Footer = () => (
-  <Box
-    sx={{ py: 4, backgroundColor: "#111", color: "#aaa", textAlign: "center" }}
-  >
-    <Typography>© 2025 כל הזכויות שמורות - דרך קצרה</Typography>
-  </Box>
-);
+
 
 const HomePage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -294,7 +288,6 @@ const HomePage = () => {
       <LessonExample/>
       <BooksPage/>
       <ContactPage/>
-      <Footer />
     </>
   );
 };

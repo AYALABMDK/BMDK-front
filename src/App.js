@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Routing from "./components/Routing"
 import ContactFab from "./components/ContactFab"; 
 import FloatingCartIcon from "./components/FloatingCartIcon";
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routing />
       <FloatingCartIcon/>
       <ContactFab />
+      <Footer />
     </Router>
     </div>
   );
