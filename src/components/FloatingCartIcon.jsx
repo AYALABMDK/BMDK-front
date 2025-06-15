@@ -1,8 +1,8 @@
 import { Badge, IconButton } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import CartDrawer from "./CartDrawer";
+import CartDrawer from "./Cart/CartDrawer";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "../components/CartContext";
+import { useCart } from "./Cart/CartContext";
 
 const FloatingCartIcon = () => {
   const { cartItems, removeFromCart, isDrawerOpen, closeDrawer, openDrawer } =

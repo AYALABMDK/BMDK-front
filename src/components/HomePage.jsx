@@ -15,17 +15,16 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Star, ArrowBack } from "@mui/icons-material";
 import { motion } from "framer-motion";
-import { useGetTopics } from "../hooks/useTopics"
+import { useGetTopics } from "../hooks/useTopics";
 import { useGetLessonsByTopicCode } from "../hooks/useLessons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_PATH } from "../config";
-import { HDate } from '@hebcal/core';
+import { HDate } from "@hebcal/core";
 import AboutPage from "./AboutPage";
 import LessonExample from "./LessonExample";
 import BooksPage from "./OrderBook";
-import ContactPage from "./ContactPage";
-
+import ContactPage from "./Contact/ContactPage";
 
 const Hero = ({ onOrderBookClick }) => (
   <Box
@@ -86,7 +85,11 @@ const FeatureCard = ({ title, text, id, onReadMore }) => (
       <Typography variant="body2">{text}</Typography>
     </CardContent>
     <CardActions sx={{ justifyContent: "center" }}>
-      <Button size="small" endIcon={<Star />} onClick={() => onReadMore({ id, title, text })}>
+      <Button
+        size="small"
+        endIcon={<Star />}
+        onClick={() => onReadMore({ id, title, text })}
+      >
         קרא עוד
       </Button>
     </CardActions>
@@ -135,7 +138,12 @@ const Features = ({ onReadMoreClick }) => {
         >
           {topics.map((topic) => (
             <Grid item key={topic._id} xs={12} sm={6} md={2.4}>
-              <FeatureCard title={topic.name} text={topic.notes} id={topic.id} onReadMore={onReadMoreClick} />
+              <FeatureCard
+                title={topic.name}
+                text={topic.notes}
+                id={topic.id}
+                onReadMore={onReadMoreClick}
+              />
             </Grid>
           ))}
         </Grid>
@@ -145,8 +153,11 @@ const Features = ({ onReadMoreClick }) => {
 };
 
 const Lessons = ({ topic }) => {
-
-  const { data: lessons, isLoading, isError } = useGetLessonsByTopicCode(topic.id);
+  const {
+    data: lessons,
+    isLoading,
+    isError,
+  } = useGetLessonsByTopicCode(topic.id);
 
   if (isLoading) {
     return (
@@ -166,7 +177,12 @@ const Lessons = ({ topic }) => {
 
   return (
     <Container sx={{ py: 6 }}>
-      <Typography variant="h4" textAlign="center" gutterBottom style={{ fontWeight: 'bold' }}>
+      <Typography
+        variant="h4"
+        textAlign="center"
+        gutterBottom
+        style={{ fontWeight: "bold" }}
+      >
         {topic.title}
       </Typography>
 
@@ -178,7 +194,11 @@ const Lessons = ({ topic }) => {
             <Grid item key={lesson._id} xs={12} sm={10} md={8}>
               <Card
                 elevation={3}
-                sx={{ borderRadius: 3, position: "relative", overflow: "hidden", }}
+                sx={{
+                  borderRadius: 3,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
               >
                 {/* Only if status is inactive */}
                 {lesson.status === "לא פעיל" && (
@@ -209,12 +229,16 @@ const Lessons = ({ topic }) => {
                 <CardContent sx={{ zIndex: 1 }}>
                   <Typography variant="h5">{lesson.city}</Typography>
                   <Typography variant="h6">{lesson.description}</Typography>
-                  <Typography>יום: {lesson.day} | שעה: {lesson.hour}</Typography>
                   <Typography>
-                    תאריך התחלה: {formatDate(lesson.startDate)} | תאריך סיום: {formatDate(lesson.endDate)} | סטטוס: {lesson.status}
+                    יום: {lesson.day} | שעה: {lesson.hour}
                   </Typography>
                   <Typography>
-                    מספר תלמידים: {lesson.studentsCount} | סוג תלמידים: {lesson.studentsType}
+                    תאריך התחלה: {formatDate(lesson.startDate)} | תאריך סיום:{" "}
+                    {formatDate(lesson.endDate)} | סטטוס: {lesson.status}
+                  </Typography>
+                  <Typography>
+                    מספר תלמידים: {lesson.studentsCount} | סוג תלמידים:{" "}
+                    {lesson.studentsType}
                   </Typography>
                   <Typography>מחיר: {lesson.price}₪</Typography>
                   <Typography>הערות: {lesson.notes}</Typography>
@@ -234,13 +258,11 @@ const formatDate = (dateString) => {
   const hdate = new HDate(date);
   const hebrewWithNikud = hdate.renderGematriya();
   // Remove all nikud (Hebrew diacritics)
-  const hebrewWithoutNikud = hebrewWithNikud.replace(/[\u0591-\u05C7]/g, '');
+  const hebrewWithoutNikud = hebrewWithNikud.replace(/[\u0591-\u05C7]/g, "");
   return hebrewWithoutNikud;
   // If we want regular date
   // return new Intl.DateTimeFormat("he-IL").format(new Date(dateString));
 };
-
-
 
 const HomePage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
@@ -284,10 +306,10 @@ const HomePage = () => {
           {selectedTopic && <Lessons topic={selectedTopic} />}
         </DialogContent>
       </Dialog>
-      <AboutPage/>
-      <LessonExample/>
-      <BooksPage/>
-      <ContactPage/>
+      <AboutPage />
+      <LessonExample />
+      <BooksPage />
+      <ContactPage />
     </>
   );
 };

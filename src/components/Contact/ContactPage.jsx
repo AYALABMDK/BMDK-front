@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   TextField,
@@ -6,9 +6,9 @@ import {
   Typography,
   CircularProgress,
   Alert,
-} from '@mui/material';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import { useSendContactForm } from '../hooks/useSendContactForm';
+} from "@mui/material";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { useSendContactForm } from "../../hooks/useSendContactForm";
 
 const ContactPage = () => {
   const {
@@ -20,9 +20,9 @@ const ContactPage = () => {
   } = useSendContactForm();
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
 
   const handleChange = (e) => {
@@ -40,15 +40,15 @@ const ContactPage = () => {
       component="form"
       onSubmit={handleSubmit}
       sx={{
-        width: '80%',
+        width: "80%",
         maxWidth: 600,
-        minHeight: '71vh',
-        mx: 'auto',
+        minHeight: "71vh",
+        mx: "auto",
         mt: 8,
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
         gap: 2,
-        direction: 'rtl',
+        direction: "rtl",
       }}
     >
       <Typography
@@ -71,7 +71,7 @@ const ContactPage = () => {
         onChange={handleChange}
         fullWidth
         required
-        inputProps={{ dir: 'rtl' }}
+        inputProps={{ dir: "rtl" }}
       />
 
       <TextField
@@ -82,7 +82,7 @@ const ContactPage = () => {
         onChange={handleChange}
         fullWidth
         required
-        inputProps={{ dir: 'rtl' }}
+        inputProps={{ dir: "rtl" }}
       />
 
       <TextField
@@ -94,10 +94,12 @@ const ContactPage = () => {
         onChange={handleChange}
         fullWidth
         required
-        inputProps={{ dir: 'rtl' }}
+        inputProps={{ dir: "rtl" }}
       />
 
-      <Box textAlign="center" sx={{ mb: 2 }}> {/* רווח בתחתית */}
+      <Box textAlign="center" sx={{ mb: 2 }}>
+        {" "}
+        {/* רווח בתחתית */}
         <Button
           type="submit"
           variant="contained"
@@ -105,16 +107,14 @@ const ContactPage = () => {
           disabled={isPending}
           sx={{ minWidth: 120 }}
         >
-          {isPending ? <CircularProgress size={24} color="inherit" /> : 'שלח'}
+          {isPending ? <CircularProgress size={24} color="inherit" /> : "שלח"}
         </Button>
       </Box>
 
-      {isSuccess && (
-        <Alert severity="success">ההודעה נשלחה בהצלחה!</Alert>
-      )}
+      {isSuccess && <Alert severity="success">ההודעה נשלחה בהצלחה!</Alert>}
       {isError && (
         <Alert severity="error">
-          שגיאה בשליחה: {error?.response?.data?.message || 'נסה שוב מאוחר יותר'}
+          שגיאה בשליחה: {error?.response?.data?.message || "נסה שוב מאוחר יותר"}
         </Alert>
       )}
     </Box>

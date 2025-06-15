@@ -13,7 +13,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CloseIcon from "@mui/icons-material/Close";
 import { BASE_PATH } from "../config";
 import { Link } from "react-router-dom";
-import ContactPage from "./ContactPage";
+import ContactPage from "./Contact/ContactPage";
 
 const Navbar = () => {
   const [openContact, setOpenContact] = useState(false);
@@ -30,22 +30,37 @@ const Navbar = () => {
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-
           {/* צד ימין – קישורים */}
           <Box display="flex" gap={1}>
             <Button component={Link} to={`${BASE_PATH}/`} sx={navButtonStyle}>
               דף הבית
             </Button>
-            <Button component={Link} to={`${BASE_PATH}/OrderBook`} sx={navButtonStyle}>
+            <Button
+              component={Link}
+              to={`${BASE_PATH}/OrderBook`}
+              sx={navButtonStyle}
+            >
               קניית ספרים
             </Button>
-            <Button component={Link} to={`${BASE_PATH}/Cart`} sx={navButtonStyle}>
+            <Button
+              component={Link}
+              to={`${BASE_PATH}/Cart`}
+              sx={navButtonStyle}
+            >
               הסל שלי
             </Button>
-            <Button component={Link} to={`${BASE_PATH}/about`} sx={navButtonStyle}>
+            <Button
+              component={Link}
+              to={`${BASE_PATH}/about`}
+              sx={navButtonStyle}
+            >
               אודות
             </Button>
-            <Button component={Link} to={`${BASE_PATH}/LessonExample`} sx={navButtonStyle}>
+            <Button
+              component={Link}
+              to={`${BASE_PATH}/LessonExample`}
+              sx={navButtonStyle}
+            >
               שיעורים לדוגמא
             </Button>
             <Button onClick={() => setOpenContact(true)} sx={navButtonStyle}>
@@ -63,7 +78,8 @@ const Navbar = () => {
                 fontWeight: "bold",
                 fontSize: "1.25rem",
                 textTransform: "none",
-              }}>
+              }}
+            >
               דרך קצרה
             </Button>
           </Box>
@@ -71,7 +87,12 @@ const Navbar = () => {
       </AppBar>
 
       {/* דיאלוג יצירת קשר */}
-      <Dialog open={openContact} onClose={() => setOpenContact(false)} maxWidth="md" fullWidth>
+      <Dialog
+        open={openContact}
+        onClose={() => setOpenContact(false)}
+        maxWidth="md"
+        fullWidth
+      >
         <Box sx={{ position: "relative", p: 2 }}>
           <MuiIconButton
             onClick={() => setOpenContact(false)}

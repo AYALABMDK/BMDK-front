@@ -14,7 +14,7 @@ import {
   MenuItem,
   FormControl,
 } from "@mui/material";
-import { useCart } from "../components/CartContext";
+import { useCart } from "./CartContext";
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, updateSize } = useCart();
@@ -35,7 +35,7 @@ const Cart = () => {
   };
 
   return (
-    <Container sx={{ mt: 6, py: 6}}>
+    <Container sx={{ mt: 6, py: 6 }}>
       <Paper elevation={5} sx={{ p: 4, bgcolor: "#f9f9f9" }}>
         <Typography
           variant="h4"

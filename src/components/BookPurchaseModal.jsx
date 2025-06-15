@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useCart } from "../components/CartContext";
+import { useCart } from "./Cart/CartContext";
 
 const BookPurchaseModal = ({ open, onClose, book }) => {
   const { addToCart } = useCart();
