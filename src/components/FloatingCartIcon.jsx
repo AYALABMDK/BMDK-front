@@ -9,7 +9,10 @@ const FloatingCartIcon = () => {
     useCart();
   const navigate = useNavigate();
 
-  const totalQuantity = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const totalQuantity = cartItems.reduce(
+    (sum, item) => sum + Number(item.quantity || 0),
+    0
+  );
 
   const handleRemove = (index) => {
     removeFromCart(index);

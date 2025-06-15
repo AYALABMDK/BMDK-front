@@ -31,6 +31,8 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, isInitialized]);
 
   const addToCart = (newItem) => {
+    const quantity = Number(newItem.quantity) || 1;
+
     setCartItems((prevItems) => {
       const existingIndex = prevItems.findIndex(
         (item) =>
@@ -38,28 +40,22 @@ export const CartProvider = ({ children }) => {
           item.size === newItem.size
       );
 
+      const price =
+        newItem.size === "גדול"
+          ? newItem.bigBookPrice
+          : newItem.smallBookPrice;
+
       if (existingIndex !== -1) {
         const updatedItems = [...prevItems];
         const existingItem = { ...updatedItems[existingIndex] };
-        existingItem.quantity += newItem.quantity;
-
-        const price =
-          newItem.size === "גדול"
-            ? newItem.bigBookPrice
-            : newItem.smallBookPrice;
-
+        existingItem.quantity += quantity;
         existingItem.price = price;
         existingItem.total = existingItem.quantity * price;
         updatedItems[existingIndex] = existingItem;
         return updatedItems;
       } else {
-        const price =
-          newItem.size === "גדול"
-            ? newItem.bigBookPrice
-            : newItem.smallBookPrice;
-        const total = newItem.quantity * price;
-
-        return [...prevItems, { ...newItem, price, total }];
+        const total = quantity * price;
+        return [...prevItems, { ...newItem, quantity, price, total }];
       }
     });
 
@@ -67,11 +63,13 @@ export const CartProvider = ({ children }) => {
   };
 
   const updateQuantity = (index, newQuantity) => {
+    const qty = Number(newQuantity) || 1;
+
     setCartItems((prevItems) => {
       const items = [...prevItems];
-      items[index].quantity = newQuantity;
+      items[index].quantity = qty;
       items[index].total =
-        newQuantity *
+        qty *
         (items[index].price ||
           (items[index].size === "גדול"
             ? items[index].bigBookPrice
