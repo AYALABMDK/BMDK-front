@@ -16,14 +16,14 @@ const ContactFab = () => {
           onClick={() => setOpen(true)}
           sx={{
             position: "fixed",
-            bottom: 40,
-            right: 40,
+            bottom: 140,
+            left: 20,
             width: 80,
             height: 80,
-            zIndex: 1000,
+            zIndex: 1200,
           }}
         >
-          <EmailIcon sx={{ fontSize: 40 }} />{" "}
+          <EmailIcon sx={{ fontSize: 40 }} />
         </Fab>
       </Tooltip>
 

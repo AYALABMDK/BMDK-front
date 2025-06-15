@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Routing from "./components/Routing"
 import ContactFab from "./components/ContactFab"; 
+import FloatingCartIcon from "./components/FloatingCartIcon";
 
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
  <Router>
       <Navbar />
       <Routing />
+      <FloatingCartIcon/>
       <ContactFab />
     </Router>
     </div>

@@ -10,24 +10,11 @@ import {
   TableRow,
   Button,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useCart } from "../components/CartContext";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, removeFromCart } = useCart();
 
-  useEffect(() => {
-    const stored = localStorage.getItem("cart");
-    if (stored) setCartItems(JSON.parse(stored));
-  }, []);
-
-  const handleRemove = (index) => {
-    const updated = [...cartItems];
-    updated.splice(index, 1);
-    setCartItems(updated);
-    localStorage.setItem("cart", JSON.stringify(updated));
-  };
-
-  // אם אין price, נחזיר 0 כדי למנוע שגיאות
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + (item.total || 0),
     0
@@ -35,15 +22,7 @@ const Cart = () => {
 
   return (
     <Container sx={{ mt: 6, direction: "rtl" }}>
-      <Paper
-        elevation={5}
-        sx={{
-          p: 4,
-          bgcolor: "#f9f9f9",
-          // borderRadius: 3,
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-        }}
-      >
+      <Paper elevation={5} sx={{ p: 4, bgcolor: "#f9f9f9" }}>
         <Typography
           variant="h4"
           gutterBottom
@@ -82,32 +61,23 @@ const Cart = () => {
                     'סה"כ',
                     "",
                   ].map((header, idx) => (
-<TableCell
-  key={idx}
-  sx={{
-    bgcolor: "#e3f2fd", // רקע תכלת בהיר ונעים
-    color: "#0d47a1",   // טקסט כחול כהה - אלגנטי
-    fontWeight: 700,
-    fontSize: "1.05rem",
-    borderBottom: "2px solid #90caf9", // קו תחתון תכלת-עדין
-    textAlign: "center",
-    py: 2,
-    letterSpacing: "0.8px",
-    boxShadow: "inset 0 -1px 0 rgba(0,0,0,0.05)", // אפקט עומק עדין
-    transition: "background-color 0.3s",
-    "&:hover": {
-      bgcolor: "#bbdefb", // הבהרה בהובר
-    },
-  }}
->
-  {header}
-</TableCell>
-
-
+                    <TableCell
+                      key={idx}
+                      sx={{
+                        bgcolor: "#e3f2fd",
+                        color: "#0d47a1",
+                        fontWeight: 700,
+                        fontSize: "1.05rem",
+                        borderBottom: "2px solid #90caf9",
+                        textAlign: "center",
+                        py: 2,
+                      }}
+                    >
+                      {header}
+                    </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
-
               <TableBody>
                 {cartItems.map((item, index) => (
                   <TableRow key={index}>
@@ -134,7 +104,10 @@ const Cart = () => {
                       {item.total} ₪
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      <Button color="error" onClick={() => handleRemove(index)}>
+                      <Button
+                        color="error"
+                        onClick={() => removeFromCart(index)}
+                      >
                         הסר
                       </Button>
                     </TableCell>
