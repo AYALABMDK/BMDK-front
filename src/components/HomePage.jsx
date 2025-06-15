@@ -1,6 +1,4 @@
 import {
-  AppBar,
-  Toolbar,
   Typography,
   Button,
   Box,
@@ -10,14 +8,22 @@ import {
   CardActions,
   Container,
   CircularProgress,
+  Dialog,
+  DialogContent,
+  IconButton,
 } from "@mui/material";
-import { Star, ArrowForward } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Star, ArrowBack } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useGetTopics } from "../hooks/useTopics"
-import { useGetLessons, useGetLessonsByTopicCode } from "../hooks/useLessons";
+import { useGetLessonsByTopicCode } from "../hooks/useLessons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { BASE_PATH } from "../config";
+import { HDate } from '@hebcal/core';
 
-const Hero = () => (
+
+const Hero = ({ onOrderBookClick }) => (
   <Box
     sx={{
       height: "60vh", // קצר יותר
@@ -46,14 +52,14 @@ const Hero = () => (
         variant="contained"
         size="large"
         sx={{ borderRadius: "30px", px: 4 }}
-        endIcon={<ArrowForward />}
+        endIcon={<ArrowBack />}
+        onClick={onOrderBookClick}
       >
         קניית ספרים
       </Button>
     </motion.div>
   </Box>
 );
-
 
 const FeatureCard = ({ title, text, id, onReadMore }) => (
   <Card
@@ -156,7 +162,7 @@ const Lessons = ({ topic }) => {
 
   return (
     <Container sx={{ py: 6 }}>
-      <Typography variant="h4" textAlign="center" gutterBottom>
+      <Typography variant="h4" textAlign="center" gutterBottom style={{ fontWeight: 'bold' }}>
         {topic.title}
       </Typography>
 
@@ -168,7 +174,7 @@ const Lessons = ({ topic }) => {
             <Grid item key={lesson._id} xs={12} sm={10} md={8}>
               <Card
                 elevation={3}
-                sx={{ borderRadius: 3,position: "relative",overflow: "hidden", }}
+                sx={{ borderRadius: 3, position: "relative", overflow: "hidden", }}
               >
                 {/* Only if status is inactive */}
                 {lesson.status === "לא פעיל" && (
@@ -196,9 +202,9 @@ const Lessons = ({ topic }) => {
                 )}
 
                 {/* Card Content */}
-                <CardContent sx={{ direction: "rtl", textAlign: "right", zIndex: 1 }}>
+                <CardContent sx={{ zIndex: 1 }}>
+                  <Typography variant="h5">{lesson.city}</Typography>
                   <Typography variant="h6">{lesson.description}</Typography>
-                  <Typography>מיקום : {lesson.city}</Typography>
                   <Typography>יום: {lesson.day} | שעה: {lesson.hour}</Typography>
                   <Typography>
                     תאריך התחלה: {formatDate(lesson.startDate)} | תאריך סיום: {formatDate(lesson.endDate)} | סטטוס: {lesson.status}
@@ -219,7 +225,15 @@ const Lessons = ({ topic }) => {
 };
 
 const formatDate = (dateString) => {
-  return new Intl.DateTimeFormat("he-IL").format(new Date(dateString));
+  // Hebrew diacritics
+  const date = new Date(dateString);
+  const hdate = new HDate(date);
+  const hebrewWithNikud = hdate.renderGematriya();
+  // Remove all nikud (Hebrew diacritics)
+  const hebrewWithoutNikud = hebrewWithNikud.replace(/[\u0591-\u05C7]/g, '');
+  return hebrewWithoutNikud;
+  // If we want regular date
+  // return new Intl.DateTimeFormat("he-IL").format(new Date(dateString));
 };
 
 const Footer = () => (
@@ -232,18 +246,47 @@ const Footer = () => (
 
 const HomePage = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleReadMore = (topic) => {
     setSelectedTopic(topic);
-    debugger;
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`${BASE_PATH}/OrderBook`);
   };
 
   return (
     <>
       {/* <NavBar /> */}
-      <Hero />
+      <Hero onOrderBookClick={handleClick} />
       <Features onReadMoreClick={handleReadMore} />
-      {selectedTopic && <Lessons topic={selectedTopic} />}
+
+      <Dialog
+        open={dialogOpen}
+        onClose={handleCloseDialog}
+        onExited={() => setSelectedTopic(null)} // cleanup after animation
+        fullWidth
+        maxWidth="md"
+      >
+        <Box display="flex" justifyContent="flex-end" p={1}>
+          <IconButton onClick={handleCloseDialog}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <DialogContent>
+          {selectedTopic && <Lessons topic={selectedTopic} />}
+        </DialogContent>
+      </Dialog>
+
       <Footer />
     </>
   );
