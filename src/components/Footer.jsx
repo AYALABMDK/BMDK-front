@@ -13,13 +13,14 @@ const Footer = () => {
                 <Grid item xs={12} sm={6} md={2}>
                     <Typography fontWeight="bold" sx={{ color: "#fff", mb: 1 }}>ראשי</Typography>
                     <Link href="/" underline="none" color="inherit" display="block">דרך קצרה</Link>
+                    <Link href="OnlineLearning" underline="none" color="inherit" display="block">למידה מקוונת</Link>
                 </Grid>
 
                 {/* Column 2 */}
                 <Grid item xs={12} sm={6} md={2}>
                     <Typography fontWeight="bold" sx={{ color: "#fff", mb: 1 }}>מכירות</Typography>
-                    <Link href="OrderBook" underline="none" color="inherit" display="block">מכירת ספרים</Link>
-                    <Link href="#" underline="none" color="inherit" display="block">מכירת סרטונים</Link>
+                    <Link href="OrderBook" underline="none" color="inherit" display="block">קניית ספרים</Link>
+                    <Link href="OnlineLearning" underline="none" color="inherit" display="block">קניית סרטונים</Link>
                 </Grid>
 
                 {/* Column 3 */}
