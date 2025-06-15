@@ -50,7 +50,16 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
         },
       }}
     >
-      <Box sx={{ width: 320, p: 2, direction: "rtl" }}>
+      <Box
+        sx={{
+          width: 320,
+          height: "100%",
+          p: 2,
+          direction: "rtl",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -74,79 +83,81 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
 
         <Divider />
 
-        <List>
-          {cartItems.length === 0 ? (
-            <Typography align="center" sx={{ mt: 2 }}>
-              הסל ריק.
-            </Typography>
-          ) : (
-            cartItems.map((item, index) => (
-              <ListItem
-                key={index}
-                sx={{ flexDirection: "column", gap: 1, mb: 2 }}
-              >
-                <ListItemText
-                  primary={item.signsTopic}
-                  secondary={
-                    editingIndex === index ? (
-                      <>
-                        <TextField
-                          label="כמות"
-                          type="number"
-                          size="small"
-                          value={item.quantity}
-                          onChange={(e) => handleQuantityChange(e, index)}
-                          inputProps={{ min: 1 }}
-                          sx={{ width: 80, mb: 1 }}
-                        />
-                        <FormControl size="small" sx={{ minWidth: 90 }}>
-                          <InputLabel id={`size-label-${index}`}>
-                            גודל
-                          </InputLabel>
-                          <Select
-                            labelId={`size-label-${index}`}
-                            value={item.size}
-                            label="גודל"
-                            onChange={(e) => handleSizeChange(e, index)}
-                          >
-                            <MenuItem value="קטן">קטן</MenuItem>
-                            <MenuItem value="גדול">גדול</MenuItem>
-                          </Select>
-                        </FormControl>
-                        <Box sx={{ mt: 1 }}>
-                          <Button onClick={() => setEditingIndex(null)}>
-                            סיום עריכה
-                          </Button>
-                        </Box>
-                      </>
-                    ) : (
-                      <>
-                        <Typography variant="body2">
-                          {item.price} ₪ × {item.quantity} יחידות
-                        </Typography>
-                        <Typography variant="body2">
-                          סה"כ: {item.price * item.quantity} ₪
-                        </Typography>
-                        <Typography variant="body2">
-                          גודל: {item.size}
-                        </Typography>
-                      </>
-                    )
-                  }
-                  sx={{ width: "100%" }}
-                />
-                <Box sx={{ display: "flex", gap: 1 }}>
-                  <IconButton edge="end" onClick={() => handleEdit(index)}>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton edge="end" onClick={() => handleRemove(index)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </Box>
-              </ListItem>
-            ))
-          )}
-        </List>
+        <Box sx={{ flexGrow: 1, overflowY: "auto", mt: 1 }}>
+          <List>
+            {cartItems.length === 0 ? (
+              <Typography align="center" sx={{ mt: 2 }}>
+                הסל ריק.
+              </Typography>
+            ) : (
+              cartItems.map((item, index) => (
+                <ListItem
+                  key={index}
+                  sx={{ flexDirection: "column", gap: 1, mb: 2 }}
+                >
+                  <ListItemText
+                    primary={item.signsTopic}
+                    secondary={
+                      editingIndex === index ? (
+                        <>
+                          <TextField
+                            label="כמות"
+                            type="number"
+                            size="small"
+                            value={item.quantity}
+                            onChange={(e) => handleQuantityChange(e, index)}
+                            inputProps={{ min: 1 }}
+                            sx={{ width: 80, mb: 1 }}
+                          />
+                          <FormControl size="small" sx={{ minWidth: 90 }}>
+                            <InputLabel id={`size-label-${index}`}>
+                              גודל
+                            </InputLabel>
+                            <Select
+                              labelId={`size-label-${index}`}
+                              value={item.size}
+                              label="גודל"
+                              onChange={(e) => handleSizeChange(e, index)}
+                            >
+                              <MenuItem value="קטן">קטן</MenuItem>
+                              <MenuItem value="גדול">גדול</MenuItem>
+                            </Select>
+                          </FormControl>
+                          <Box sx={{ mt: 1 }}>
+                            <Button onClick={() => setEditingIndex(null)}>
+                              סיום עריכה
+                            </Button>
+                          </Box>
+                        </>
+                      ) : (
+                        <>
+                          <Typography variant="body2">
+                            {item.price} ₪ × {item.quantity} יחידות
+                          </Typography>
+                          <Typography variant="body2">
+                            סה"כ: {item.price * item.quantity} ₪
+                          </Typography>
+                          <Typography variant="body2">
+                            גודל: {item.size}
+                          </Typography>
+                        </>
+                      )
+                    }
+                    sx={{ width: "100%" }}
+                  />
+                  <Box sx={{ display: "flex", gap: 1 }}>
+                    <IconButton edge="end" onClick={() => handleEdit(index)}>
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton edge="end" onClick={() => handleRemove(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Box>
+                </ListItem>
+              ))
+            )}
+          </List>
+        </Box>
 
         <Divider sx={{ my: 2 }} />
 
