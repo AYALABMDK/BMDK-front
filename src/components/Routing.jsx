@@ -8,6 +8,7 @@ import OrderBook from "./OrderBook";
 import Cart from "./Cart/Cart";
 import LessonExample from "./LessonExample";
 import OnlineLearningPage from "./VideoPage";
+import Checkout from "./Cart/Checkout";
 
 export default function AppRoutes() {
   return (
@@ -20,6 +21,8 @@ export default function AppRoutes() {
       <Route path={`${BASE_PATH}/contactPage`} element={<ContactPage />} />
       <Route path={`${BASE_PATH}/LessonExample`} element={<LessonExample />} />
       <Route path={`${BASE_PATH}/OnlineLearning`} element={<OnlineLearningPage />} />
+      <Route path={`${BASE_PATH}/checkout`} element={<Checkout />} />
+
 
       <Route path="*" element={<h1>404 - הדף לא נמצא</h1>} />
     </Routes>

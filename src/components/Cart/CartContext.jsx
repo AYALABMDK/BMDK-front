@@ -36,14 +36,11 @@ export const CartProvider = ({ children }) => {
     setCartItems((prevItems) => {
       const existingIndex = prevItems.findIndex(
         (item) =>
-          item.signsTopic === newItem.signsTopic &&
-          item.size === newItem.size
+          item.signsTopic === newItem.signsTopic && item.size === newItem.size
       );
 
       const price =
-        newItem.size === "גדול"
-          ? newItem.bigBookPrice
-          : newItem.smallBookPrice;
+        newItem.size === "גדול" ? newItem.bigBookPrice : newItem.smallBookPrice;
 
       if (existingIndex !== -1) {
         const updatedItems = [...prevItems];
@@ -60,6 +57,10 @@ export const CartProvider = ({ children }) => {
     });
 
     setIsDrawerOpen(true);
+  };
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cart");
   };
 
   const updateQuantity = (index, newQuantity) => {
@@ -112,6 +113,7 @@ export const CartProvider = ({ children }) => {
         closeDrawer,
         updateQuantity,
         updateSize,
+        clearCart,
       }}
     >
       {children}

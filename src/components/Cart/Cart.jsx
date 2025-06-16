@@ -15,6 +15,7 @@ import {
   FormControl,
 } from "@mui/material";
 import { useCart } from "./CartContext";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, updateSize } = useCart();
@@ -33,9 +34,18 @@ const Cart = () => {
     const newSize = e.target.value;
     updateSize(index, newSize);
   };
+  const navigate = useNavigate();
 
   return (
-    <Container sx={{ mt: 6, py: 6, display: 'flex', flexDirection: 'column', minHeight: '90vh' }}>
+    <Container
+      sx={{
+        mt: 6,
+        py: 6,
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "90vh",
+      }}
+    >
       <Paper elevation={5} sx={{ p: 4, bgcolor: "#f9f9f9" }}>
         <Typography
           variant="h4"
@@ -149,6 +159,7 @@ const Cart = () => {
                 variant="contained"
                 color="primary"
                 sx={{ mt: 2, px: 5, py: 1.5, fontSize: "1rem" }}
+                onClick={() => navigate("/checkout")}
               >
                 לתשלום
               </Button>

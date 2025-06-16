@@ -19,6 +19,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useCart } from "./CartContext";
 import EditIcon from "@mui/icons-material/Edit";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
   const { cartItems, updateQuantity, updateSize } = useCart();
@@ -38,6 +39,7 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
     const newSize = e.target.value;
     updateSize(index, newSize);
   };
+  const navigate = useNavigate();
 
   return (
     <Drawer
@@ -166,7 +168,14 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
         </Typography>
 
         <Box sx={{ mt: 2, display: "flex", flexDirection: "column", gap: 1 }}>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              onClose(); // ← סוגר את החלונית
+              navigate("/checkout"); // ← עובר לדף תשלום
+            }}
+          >
             לתשלום
           </Button>
           <Button variant="outlined" onClick={goToCart}>
