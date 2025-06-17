@@ -25,6 +25,7 @@ import AboutPage from "./AboutPage";
 import LessonExample from "./LessonExample";
 import BooksPage from "./OrderBook";
 import ContactPage from "./Contact/ContactPage";
+import OnlineLearningPage from "./VideoPage";
 
 const Hero = ({ onOrderBookClick }) => (
   <Box
@@ -309,6 +310,7 @@ const HomePage = () => {
       <AboutPage />
       <LessonExample />
       <BooksPage />
+      <OnlineLearningPage/>
       <ContactPage />
     </>
   );

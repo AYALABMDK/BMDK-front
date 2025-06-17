@@ -103,6 +103,7 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
                       primary={
                         <>
                           <Typography variant="subtitle1" fontWeight="bold">
+                            {isBook ? " ספר " : " סרטון "}
                             {isBook ? item.signsTopic : item.title}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
