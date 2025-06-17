@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
-  IconButton,
   Dialog,
   IconButton as MuiIconButton,
 } from "@mui/material";
-import MenuBookIcon from "@mui/icons-material/MenuBook";
 import CloseIcon from "@mui/icons-material/Close";
 import { BASE_PATH } from "../config";
 import { Link } from "react-router-dom";

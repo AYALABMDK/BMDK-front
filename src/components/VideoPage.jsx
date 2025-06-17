@@ -8,12 +8,12 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useGetVideos } from "../hooks/useVideo";
-import { useGetTopics1 } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
+import { useGetTopics } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
 import { useCart } from "./Cart/CartContext";
 
 const OnlineLearningPage = () => {
   const { data: videos = [], isLoading, isError } = useGetVideos();
-    const { data: topics = [] } = useGetTopics1();
+    const { data: topics = [] } = useGetTopics();
 
   const { addToCart, openDrawer } = useCart();
 

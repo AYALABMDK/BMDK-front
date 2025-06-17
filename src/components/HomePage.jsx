@@ -15,7 +15,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import { Star, ArrowBack } from "@mui/icons-material";
 import { motion } from "framer-motion";
-import { useGetTopics3 } from "../hooks/useTopics";
+import { useGetTopics } from "../hooks/useTopics";
 import { useGetLessonsByTopicCode } from "../hooks/useLessons";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -99,7 +99,7 @@ const FeatureCard = ({ title, text, id, onReadMore }) => (
 );
 
 const Features = ({ onReadMoreClick }) => {
-  const { data: topics, isLoading, isError } = useGetTopics3();
+  const { data: topics, isLoading, isError } = useGetTopics();
 
   if (isLoading) {
     return (

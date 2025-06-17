@@ -1,4 +1,4 @@
-import { Box, Typography, Button, Container, Paper, useMediaQuery } from "@mui/material";
+import { Box, Typography, Container, Paper, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import { useTheme } from "@mui/material/styles";
 

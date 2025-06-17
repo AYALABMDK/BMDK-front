@@ -4,7 +4,7 @@ import {
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { useGetBooks, useGetBooksByTopicCode } from "../hooks/useBooks";
-import { useGetTopics2 } from "../hooks/useTopics";
+import { useGetTopics } from "../hooks/useTopics";
 import BookPurchaseModal from "../components/BookPurchaseModal";
 
 // כרטיס ספר יחיד
@@ -45,7 +45,7 @@ const BooksPage = () => {
     setModalOpen(true);
   };
 
-  const { data: topics = [] } = useGetTopics2();
+  const { data: topics = [] } = useGetTopics();
 
 
   const selectedTopic = topics.find(t => t.name === selectedCategory);
