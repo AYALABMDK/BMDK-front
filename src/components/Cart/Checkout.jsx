@@ -326,18 +326,29 @@ const Checkout = () => {
     if (!validateInputs()) return;
 
     const orderData = {
+      fullName,
       email,
       phone,
       orderCode: Date.now(),
-      studentCode: 1,
+      // studentCode: 0,
       status: "התקבלה",
       address: { city: address.city, street: address.street },
-      products: cartItems.map((item) => ({
-        bookCode: item.code,
-        size: item.size,
-        quantity: item.quantity,
-        price: item.total,
-      })),
+      products: cartItems.map((item) => {
+        if (item.size !== undefined && item.size !== null) {
+          return {
+            bookCode: item.code,
+            size: item.size,
+            quantity: item.quantity,
+            price: item.total,
+          };
+        } else {
+          return {
+            videoCode: item.code,
+            quantity: item.quantity,
+            price: item.total,
+          };
+        }
+      }),
     };
 
     addOrder(orderData, {
