@@ -17,8 +17,11 @@ import {
 import { useCart } from "./CartContext";
 import { useNavigate } from "react-router-dom";
 
+const isBook = (item) => item.size !== undefined;
+
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity, updateSize } = useCart();
+  const navigate = useNavigate();
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + (item.total || 0),
@@ -34,7 +37,6 @@ const Cart = () => {
     const newSize = e.target.value;
     updateSize(index, newSize);
   };
-  const navigate = useNavigate();
 
   return (
     <Container
@@ -77,8 +79,8 @@ const Cart = () => {
               <TableHead>
                 <TableRow>
                   {[
-                    "ספר",
-                    "סימנים",
+                    "סוג מוצר",
+                    "תיאור",
                     "גודל",
                     "כמות",
                     "מחיר ליחידה",
@@ -106,21 +108,39 @@ const Cart = () => {
                 {cartItems.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.signsTopic}
+                      {isBook(item) ? "ספר" : "סרטון"}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      {item.signs}
+                      {isBook(item) ? (
+                        <>
+                          <Typography>{item.signsTopic}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.signs}
+                          </Typography>
+                        </>
+                      ) : (
+                        <>
+                          <Typography>{item.title}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {item.signsTopic}
+                          </Typography>
+                        </>
+                      )}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
-                      <FormControl size="small" sx={{ minWidth: 100 }}>
-                        <Select
-                          value={item.size}
-                          onChange={(e) => handleSizeChange(e, index)}
-                        >
-                          <MenuItem value="קטן">קטן</MenuItem>
-                          <MenuItem value="גדול">גדול</MenuItem>
-                        </Select>
-                      </FormControl>
+                      {isBook(item) ? (
+                        <FormControl size="small" sx={{ minWidth: 100 }}>
+                          <Select
+                            value={item.size}
+                            onChange={(e) => handleSizeChange(e, index)}
+                          >
+                            <MenuItem value="קטן">קטן</MenuItem>
+                            <MenuItem value="גדול">גדול</MenuItem>
+                          </Select>
+                        </FormControl>
+                      ) : (
+                        "-"
+                      )}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center" }}>
                       <TextField
@@ -151,19 +171,21 @@ const Cart = () => {
               </TableBody>
             </Table>
 
-            <Box textAlign="center" mt={4}>
-              <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                סה"כ לתשלום: {totalPrice} ₪
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ mt: 2, px: 5, py: 1.5, fontSize: "1rem" }}
-                onClick={() => navigate("/checkout")}
-              >
-                לתשלום
-              </Button>
-            </Box>
+            {cartItems.length > 0 && (
+              <Box textAlign="center" mt={4}>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  סה"כ לתשלום: {totalPrice} ₪
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2, px: 5, py: 1.5, fontSize: "1rem" }}
+                  onClick={() => navigate("/checkout")}
+                >
+                  לתשלום
+                </Button>
+              </Box>
+            )}
           </>
         )}
       </Paper>

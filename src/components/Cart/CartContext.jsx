@@ -31,6 +31,7 @@ export const CartProvider = ({ children }) => {
   }, [cartItems, isInitialized]);
 
   const addToCart = (newItem) => {
+    debugger
     const quantity = Number(newItem.quantity) || 1;
 
     setCartItems((prevItems) => {
@@ -38,9 +39,15 @@ export const CartProvider = ({ children }) => {
         (item) =>
           item.signsTopic === newItem.signsTopic && item.size === newItem.size
       );
-
-      const price =
-        newItem.size === "גדול" ? newItem.bigBookPrice : newItem.smallBookPrice;
+      let price;
+      if (newItem.size) {
+        price =
+          newItem.size === "גדול"
+            ? newItem.bigBookPrice
+            : newItem.smallBookPrice;
+    } else {
+      price = newItem.price || 0;
+    }
 
       if (existingIndex !== -1) {
         const updatedItems = [...prevItems];
