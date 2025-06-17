@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Grid,
@@ -9,13 +8,14 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useGetVideos } from "../hooks/useVideo";
-import { useGetTopics } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
+import { useGetTopics1 } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
 import { useCart } from "./Cart/CartContext";
 
 const OnlineLearningPage = () => {
   const { data: videos = [], isLoading, isError } = useGetVideos();
-  const { data: topics = [] } = useGetTopics();
-const { addToCart, openDrawer } = useCart();
+    const { data: topics = [] } = useGetTopics1();
+
+  const { addToCart, openDrawer } = useCart();
 
   // פונקציה שמחזירה את שם הנושא לפי קוד
   const getTopicName = (code) => {
@@ -24,7 +24,15 @@ const { addToCart, openDrawer } = useCart();
   };
 
   return (
-    <div style={{ padding: "2rem", textAlign: "center", display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div
+      style={{
+        padding: "2rem",
+        textAlign: "center",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
       <Typography variant="h4" gutterBottom>
         למידה מקוונת
       </Typography>
@@ -94,22 +102,22 @@ const { addToCart, openDrawer } = useCart();
                   </Typography>
                 </CardContent>
 
-               <Button
-  variant="contained"
-  color="primary"
-  sx={{ mt: 2 }}
-  onClick={() => {
-    const cartItem = {
-      ...video,
-      quantity: 1,
-      total: video.price,
-    };
-    addToCart(cartItem);
-    openDrawer(); // פותח את סל הקניות מיד
-  }}
->
-  לרכישה
-</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  sx={{ mt: 2 }}
+                  onClick={() => {
+                    const cartItem = {
+                      ...video,
+                      quantity: 1,
+                      total: video.price,
+                    };
+                    addToCart(cartItem);
+                    openDrawer(); // פותח את סל הקניות מיד
+                  }}
+                >
+                  לרכישה
+                </Button>
               </Card>
             </Grid>
           ))}

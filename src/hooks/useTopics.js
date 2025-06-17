@@ -7,8 +7,32 @@ const getTopics = async () => {
   return response.data;
 };
 
-// הוק לשימוש בקומפוננטות
-export const useGetTopics = () => {
+
+// וידאו
+export const useGetTopics1 = () => {
+  debugger
+  const queryFn = getTopics;
+  const queryKey = ["topics"];
+  const onError = (err) => {
+    console.error("error in useQuery:", err);
+  };
+
+  return useQuery({ queryKey, queryFn, onError });
+};
+//ספרים
+export const useGetTopics2 = () => {
+  debugger
+  const queryFn = getTopics;
+  const queryKey = ["topics"];
+  const onError = (err) => {
+    console.error("error in useQuery:", err);
+  };
+
+  return useQuery({ queryKey, queryFn, onError });
+};
+//בית
+export const useGetTopics3 = () => {
+  debugger
   const queryFn = getTopics;
   const queryKey = ["topics"];
   const onError = (err) => {

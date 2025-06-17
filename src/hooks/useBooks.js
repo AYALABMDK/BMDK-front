@@ -22,9 +22,9 @@ export const useGetBooks = () => {
 
 export const useGetBooksByTopicCode = (topicCode) => {
   return useQuery({
+    enabled: !!topicCode,
     queryKey: ['booksByTopic', topicCode],
     queryFn: () => fetchBooksByTopicCode(topicCode),
-    enabled: !!topicCode,
     onError: (err) => {
       console.error('שגיאה בשליפת ספרים לפי topicCode:', err);
     },

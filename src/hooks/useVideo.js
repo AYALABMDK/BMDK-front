@@ -14,7 +14,7 @@ const getVideoByTopicCode = async (topicCode) => {
 
 export const useGetVideos = () => {
   return useQuery({
-    queryKey: ['books'],
+    queryKey: ['videos'],
     queryFn: getVideos,
     onError: (err) => {
       console.error('שגיאה בשליפת סרטונים:', err);
