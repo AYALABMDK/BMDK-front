@@ -12,10 +12,9 @@ import { useGetTopics } from "../hooks/useTopics"; // ודא שזה הנתיב �
 import { useCart } from "./Cart/CartContext";
 import ProductCard from "../components/ProductCard";
 
-
 const OnlineLearningPage = () => {
   const { data: videos = [], isLoading, isError } = useGetVideos();
-    const { data: topics = [] } = useGetTopics();
+  const { data: topics = [] } = useGetTopics();
 
   const { addToCart, openDrawer } = useCart();
 
@@ -30,7 +29,7 @@ const OnlineLearningPage = () => {
       style={{
         padding: "2rem",
         textAlign: "center",
-        display: "flex",
+        // display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
       }}
@@ -49,29 +48,37 @@ const OnlineLearningPage = () => {
           שגיאה בטעינת השיעורים. נסה שוב מאוחר יותר.
         </Typography>
       ) : (
-        
-      <Grid container spacing={4} justifyContent="center" alignItems="stretch" sx={{ marginTop: 4 }}>
-  {videos.map((video, index) => (
-    <Grid item xs={12} md={4} key={video._id || index}>
-      <ProductCard
-        title={video.title}
-        author={getTopicName(video.topicCode)}
-        description={`מחיר: ₪${video.price}`}
-        type="video"
-        onPurchaseClick={() => {
-          const cartItem = {
-            ...video,
-            quantity: 1,
-            total: video.price,
-          };
-          addToCart(cartItem);
-          openDrawer(); 
-        }}
-      />
-    </Grid>
-  ))}
-</Grid>
-
+        <Grid
+          container
+          spacing={4}
+          justifyContent="center"
+          alignItems="stretch"
+          sx={{
+            marginTop: 4,
+            maxWidth: 1200, 
+            marginX: "auto", // מרכז את הגריד
+          }}
+        >
+          {videos.map((video, index) => (
+            <Grid item xs={12} sm={6} md={3} key={video._id || index}>
+              <ProductCard
+                title={video.title}
+                author={getTopicName(video.topicCode)}
+                description={`מחיר: ₪${video.price}`}
+                type="video"
+                onPurchaseClick={() => {
+                  const cartItem = {
+                    ...video,
+                    quantity: 1,
+                    total: video.price,
+                  };
+                  addToCart(cartItem);
+                  openDrawer();
+                }}
+              />
+            </Grid>
+          ))}
+        </Grid>
       )}
     </div>
   );

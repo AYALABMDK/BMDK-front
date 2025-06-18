@@ -71,7 +71,7 @@ const BooksPage = () => {
           <Grid container spacing={3} justifyContent="center">
             {booksToDisplay && booksToDisplay.length ? (
               booksToDisplay.map((book) => (
-                <Grid item key={book._id}>
+                <Grid item xs={12}  sm={6} md={3}key={book._id}>
                   <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
                     <ProductCard
                       title={book.signsTopic || book.title || "כותרת לא זמינה"}

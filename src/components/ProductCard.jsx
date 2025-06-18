@@ -14,7 +14,7 @@ const ProductCard = ({ title, author, description, type, onPurchaseClick }) => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         border: "10px solid white",
-        display: "flex",
+        // display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
         
