@@ -31,8 +31,12 @@ const ContactPage = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    sendContact(formData);
+   e.preventDefault();
+  sendContact(formData, {
+    onSuccess: () => {
+      setFormData({ name: "", email: "", message: "" });
+    },
+  });
   };
 
   return (
