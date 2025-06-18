@@ -31,8 +31,8 @@ import OnlineLearningPage from "./VideoPage";
 const Hero = ({ onOrderBookClick }) => (
   <Box
     sx={{
-      height: "60vh", // קצר יותר
-      background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+      height: "80vh", // קצר יותר
+      background: "linear-gradient(135deg,#252e49, #558e9e, #558e9e)",
       color: "white",
       display: "flex",
       flexDirection: "column",
@@ -47,16 +47,20 @@ const Hero = ({ onOrderBookClick }) => (
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.2 }}
     >
-      <Typography variant="h2" fontWeight="bold" gutterBottom>
-        "דרך קצרה"
+      <Typography variant="h1" fontWeight="bold" gutterBottom>
+        דרך קצרה
       </Typography>
-      <Typography variant="h5" sx={{ maxWidth: 600, mb: 4 }}>
+      <Typography variant="h3" sx={{ maxWidth: 600, mb: 4 }}>
         בית מדרש ללימודי דיינות
       </Typography>
       <Button
         variant="contained"
         size="large"
-        sx={{ borderRadius: "30px", px: 4 }}
+        sx={{ borderRadius: "10px", px: 10 , backgroundColor: "#252e49", color: "white",
+           fontSize: "1.2rem",       // מגדיל את גודל הפונט
+    padding: "12px 24px",     // מגדיל גובה ורוחב
+    minWidth: "200px",        // רוחב מינימלי
+         }}
         endIcon={<ArrowBack />}
         onClick={onOrderBookClick}
       >

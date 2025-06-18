@@ -1,4 +1,5 @@
 import { Card, CardContent, Typography, Button, Box } from "@mui/material";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 const ProductCard = ({ title, author, description, type, onPurchaseClick }) => {
   return (
@@ -17,10 +18,25 @@ const ProductCard = ({ title, author, description, type, onPurchaseClick }) => {
         // display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        
+        position: "relative",
         p: 2,
       }}
     >
+        {/* אייקון של וידאו */}
+  {type === "video" && (
+    <Box
+      sx={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        opacity: 0.4,
+        zIndex: 1,
+      }}
+    >
+      <PlayArrowIcon sx={{ fontSize: 80, color: "white" }} />
+    </Box>
+  )}
       {/* תוכן גמיש */}
       <CardContent sx={{ flexGrow: 1, p: 0 }}>
         {/* פס לבן עליון */}

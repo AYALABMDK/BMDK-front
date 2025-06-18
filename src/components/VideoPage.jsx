@@ -64,7 +64,7 @@ const OnlineLearningPage = () => {
               <ProductCard
                 title={video.title}
                 author={getTopicName(video.topicCode)}
-                description={`מחיר: ₪${video.price}`}
+                description={`מחיר: ${video.price} ₪`}
                 type="video"
                 onPurchaseClick={() => {
                   const cartItem = {
