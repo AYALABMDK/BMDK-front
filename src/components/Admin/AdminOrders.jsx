@@ -17,7 +17,7 @@ import {
   Chip,
   Typography,
   Button,
-    Dialog,
+  Dialog,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -50,16 +50,16 @@ const AdminOrders = () => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
   };
   const confirmDelete = (orderCode) => {
-  setSelectedOrderToDelete(orderCode);
-  setDeleteDialogOpen(true);
-};
-const handleConfirmedDelete = () => {
-  if (selectedOrderToDelete) {
-    deleteMutation.mutate(selectedOrderToDelete);
-    setDeleteDialogOpen(false);
-    setSelectedOrderToDelete(null);
-  }
-};
+    setSelectedOrderToDelete(orderCode);
+    setDeleteDialogOpen(true);
+  };
+  const handleConfirmedDelete = () => {
+    if (selectedOrderToDelete) {
+      deleteMutation.mutate(selectedOrderToDelete);
+      setDeleteDialogOpen(false);
+      setSelectedOrderToDelete(null);
+    }
+  };
 
   const toggleEdit = (orderCode) => {
     const currentOrder = orders.find((o) => o.orderCode === orderCode);
@@ -101,7 +101,11 @@ const handleConfirmedDelete = () => {
           <Chip
             label="התקבלה"
             size="small"
-            sx={{ backgroundColor: "rgba(255, 0, 0, 0.1)", color: "darkred" }}
+            sx={{
+              backgroundColor: "rgba(255, 0, 0, 0.1)",
+              color: "darkred",
+              pointerEvents: "none",
+            }}
           />
         );
       case "מוכנה למשלוח":
@@ -112,6 +116,7 @@ const handleConfirmedDelete = () => {
             sx={{
               backgroundColor: "rgba(255, 165, 0, 0.15)",
               color: "darkorange",
+              pointerEvents: "none",
             }}
           />
         );
@@ -120,7 +125,11 @@ const handleConfirmedDelete = () => {
           <Chip
             label="נשלחה"
             size="small"
-            sx={{ backgroundColor: "rgba(255, 255, 0, 0.2)", color: "#8a6d00" }}
+            sx={{
+              backgroundColor: "rgba(255, 255, 0, 0.2)",
+              color: "#8a6d00",
+              pointerEvents: "none",
+            }}
           />
         );
       case "הסתיימה":
@@ -131,6 +140,7 @@ const handleConfirmedDelete = () => {
             sx={{
               backgroundColor: "rgba(0, 128, 0, 0.15)",
               color: "darkgreen",
+              pointerEvents: "none",
             }}
           />
         );
@@ -155,7 +165,6 @@ const handleConfirmedDelete = () => {
     updateMutation.mutate({ orderCode, updateData });
     setIsEditing((prev) => ({ ...prev, [orderCode]: false }));
   };
-
 
   const filteredOrders = orders.filter((order) => {
     const valuesToSearch = [
@@ -468,24 +477,30 @@ const handleConfirmedDelete = () => {
         </TableContainer>
       )}
       <Dialog
-  open={deleteDialogOpen}
-  onClose={() => setDeleteDialogOpen(false)}
->
-  <Box sx={{ padding: 3, textAlign: "center" }}>
-    <Typography variant="h6" sx={{ mb: 2 }}>
-      האם את בטוחה שברצונך למחוק את ההזמנה?
-    </Typography>
-    <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
-      <Button variant="contained" color="error" onClick={handleConfirmedDelete}>
-        כן, מחק
-      </Button>
-      <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>
-        ביטול
-      </Button>
-    </Box>
-  </Box>
-</Dialog>
-
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+      >
+        <Box sx={{ padding: 3, textAlign: "center" }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            האם את בטוחה שברצונך למחוק את ההזמנה?
+          </Typography>
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleConfirmedDelete}
+            >
+              כן, מחק
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setDeleteDialogOpen(false)}
+            >
+              ביטול
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
     </div>
   );
 };
