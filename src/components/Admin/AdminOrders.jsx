@@ -33,6 +33,8 @@ import {
   useDeleteOrder,
   useUpdateOrder,
 } from "../../hooks/useOrders";
+import { useGetBooks } from "../../hooks/useBooks";
+import { useGetVideos } from "../../hooks/useVideo";
 
 const AdminOrders = () => {
   const { data: orders = [], isLoading } = useGetOrders();
@@ -45,6 +47,8 @@ const AdminOrders = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedOrderToDelete, setSelectedOrderToDelete] = useState(null);
+  const { data: books = [] } = useGetBooks();
+  const { data: videos = [] } = useGetVideos();
 
   const toggleExpand = (orderCode) => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
@@ -454,17 +458,80 @@ const AdminOrders = () => {
                       >
                         <Collapse in={isOpen} timeout="auto" unmountOnExit>
                           <Box margin={2}>
-                            <h4>מוצרים בהזמנה:</h4>
-                            {order.products.map((p, i) => (
-                              <Box
-                                key={i}
-                                style={{ fontSize: "0.9rem", marginBottom: 6 }}
-                              >
-                                {p.bookCode
-                                  ? `📘 ספר (קוד ${p.bookCode}) | גודל: ${p.size} | כמות: ${p.quantity} | מחיר: ${p.price} ₪`
-                                  : `🎬 סרטון (קוד ${p.videoCode}) | כמות: ${p.quantity} | מחיר: ${p.price} ₪`}
-                              </Box>
-                            ))}
+                            <Typography
+                              variant="h6"
+                              fontWeight="bold"
+                              gutterBottom
+                            >
+                              מוצרים בהזמנה:
+                            </Typography>
+
+                            <Table
+                              sx={{
+                                "& th, & td": {
+                                  border: "1px solid #ccc", // קווים ברורים
+                                  textAlign: "center",
+                                  padding: "8px",
+                                },
+                                "& thead th": {
+                                  backgroundColor: "#e3f2fd",
+                                  color: "#0d47a1",
+                                  fontWeight: 700,
+                                  fontSize: "1.05rem",
+                                },
+                              }}
+                            >
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell align="center">סוג</TableCell>
+                                  <TableCell align="center">נושא</TableCell>
+                                  <TableCell align="center">סימנים</TableCell>
+                                  <TableCell align="center">גודל</TableCell>
+                                  <TableCell align="center">כמות</TableCell>
+                                  <TableCell align="center">מחיר</TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {order.products.map((p, i) => {
+                                  const isBook = !!p.size;
+                                  const fullItem = isBook
+                                    ? books.find((b) => b.bookCode === p.code)
+                                    : videos.find(
+                                        (v) => v.videoCode === p.code
+                                      );
+
+                                  const topic = isBook
+                                    ? fullItem?.signsTopic
+                                    : fullItem?.title;
+                                  const signs = isBook
+                                    ? fullItem?.signs
+                                    : fullItem?.signsTopic;
+
+                                  return (
+                                    <TableRow key={i}>
+                                      <TableCell align="center">
+                                        {isBook ? " ספר" : "סרטון"}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {topic || "-"}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {signs || "-"}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {isBook ? p.size : "-"}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {p.quantity}
+                                      </TableCell>
+                                      <TableCell align="center">
+                                        {p.price} ₪
+                                      </TableCell>
+                                    </TableRow>
+                                  );
+                                })}
+                              </TableBody>
+                            </Table>
                           </Box>
                         </Collapse>
                       </TableCell>
