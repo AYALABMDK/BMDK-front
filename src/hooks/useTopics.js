@@ -7,8 +7,6 @@ const getTopics = async () => {
   return response.data;
 };
 
-
-// וידאו
 export const useGetTopics = () => {
   debugger
   const queryFn = getTopics;
@@ -19,4 +17,3 @@ export const useGetTopics = () => {
 
   return useQuery({ queryKey, queryFn, onError });
 };
-
