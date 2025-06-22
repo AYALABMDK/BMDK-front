@@ -16,6 +16,8 @@ import {
   Tooltip,
   Chip,
   Typography,
+  Button,
+    Dialog,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -41,10 +43,23 @@ const AdminOrders = () => {
   const [expandedRows, setExpandedRows] = useState({});
   const [isEditing, setIsEditing] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedOrderToDelete, setSelectedOrderToDelete] = useState(null);
 
   const toggleExpand = (orderCode) => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
   };
+  const confirmDelete = (orderCode) => {
+  setSelectedOrderToDelete(orderCode);
+  setDeleteDialogOpen(true);
+};
+const handleConfirmedDelete = () => {
+  if (selectedOrderToDelete) {
+    deleteMutation.mutate(selectedOrderToDelete);
+    setDeleteDialogOpen(false);
+    setSelectedOrderToDelete(null);
+  }
+};
 
   const toggleEdit = (orderCode) => {
     const currentOrder = orders.find((o) => o.orderCode === orderCode);
@@ -141,9 +156,6 @@ const AdminOrders = () => {
     setIsEditing((prev) => ({ ...prev, [orderCode]: false }));
   };
 
-  const handleDelete = (orderCode) => {
-    deleteMutation.mutate(orderCode);
-  };
 
   const filteredOrders = orders.filter((order) => {
     const valuesToSearch = [
@@ -225,14 +237,28 @@ const AdminOrders = () => {
                 }}
               >
                 <TableCell />
-                <TableCell align="center" style={{ width: '150px' }}>מס' הזמנה</TableCell>
-                <TableCell align="center" style={{ width: '140px' }}>תאריך</TableCell>
-                <TableCell align="center" style={{ width: '150px' }}>שם</TableCell>
-                <TableCell align="center" style={{ width: '150px' }}>אימייל</TableCell>
-                <TableCell align="center" style={{ width: '150px' }}>טלפון</TableCell>
-                <TableCell align="center" style={{ width: '150px' }}>כתובת</TableCell>
-                <TableCell align="center" style={{ width: '150px' }}>סטטוס</TableCell>
-                <TableCell align="center" >פעולות</TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  מס' הזמנה
+                </TableCell>
+                <TableCell align="center" style={{ width: "140px" }}>
+                  תאריך
+                </TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  שם
+                </TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  אימייל
+                </TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  טלפון
+                </TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  כתובת
+                </TableCell>
+                <TableCell align="center" style={{ width: "150px" }}>
+                  סטטוס
+                </TableCell>
+                <TableCell align="center">פעולות</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -379,7 +405,7 @@ const AdminOrders = () => {
                         )}
                       </TableCell>
                       <TableCell align="center">
-                         {isEdit && (
+                        {isEdit && (
                           <Tooltip title="שמור">
                             <IconButton
                               onClick={() => handleSave(order.orderCode)}
@@ -396,10 +422,10 @@ const AdminOrders = () => {
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                       
+
                         <Tooltip title="מחק">
                           <IconButton
-                            onClick={() => handleDelete(order.orderCode)}
+                            onClick={() => confirmDelete(order.orderCode)}
                             color="error"
                           >
                             <DeleteIcon />
@@ -441,6 +467,25 @@ const AdminOrders = () => {
           </Table>
         </TableContainer>
       )}
+      <Dialog
+  open={deleteDialogOpen}
+  onClose={() => setDeleteDialogOpen(false)}
+>
+  <Box sx={{ padding: 3, textAlign: "center" }}>
+    <Typography variant="h6" sx={{ mb: 2 }}>
+      האם את בטוחה שברצונך למחוק את ההזמנה?
+    </Typography>
+    <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+      <Button variant="contained" color="error" onClick={handleConfirmedDelete}>
+        כן, מחק
+      </Button>
+      <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>
+        ביטול
+      </Button>
+    </Box>
+  </Box>
+</Dialog>
+
     </div>
   );
 };
