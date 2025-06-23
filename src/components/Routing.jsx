@@ -19,6 +19,7 @@ import AdminOrders from "./Admin/AdminOrders";
 import AdminBooks from "./Admin/AdminBooks";
 import AdminVideos from "./Admin/AdminVideos";
 import AdminInventory from "./Admin/AdminInventory";
+import ConfirmReceivedPage from "./ConfirmReceivedPage";
 
 export default function AppRoutes() {
   return (
@@ -52,6 +53,8 @@ export default function AppRoutes() {
       <Route path={`${BASE_PATH}/LessonExample`} element={<LessonExample />} />
       <Route path={`${BASE_PATH}/OnlineLearning`} element={<OnlineLearningPage />} />
       <Route path={`${BASE_PATH}/checkout`} element={<Checkout />} />
+      <Route path={`${BASE_PATH}/confirm-page/:orderCode`} element={<ConfirmReceivedPage />} />
+
 
       {/* עמוד שגיאה */}
       <Route path="*" element={<h1>404 - הדף לא נמצא</h1>} />
