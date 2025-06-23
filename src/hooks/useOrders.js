@@ -113,3 +113,38 @@ export const useUpdateOrder = () => {
     },
   });
 };
+
+const sendStatusEmail = async ({ orderCode, status }) => {
+  const response = await api.put(`/orders/${orderCode}`, { status });
+  return response.data;
+};
+
+export const useSendStatusEmail = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: sendStatusEmail,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['orders']);
+    },
+    onError: (err) => {
+      console.error("שגיאה בשליחת מייל סטטוס:", err);
+    },
+  });
+};
+const sendCustomEmail = async ({ to, subject, message }) => {
+  const response = await api.post("/orders/send-custom-email", {
+    to,
+    subject,
+    message,
+  });
+  return response.data;
+};
+
+export const useSendCustomEmail = () => {
+  return useMutation({
+    mutationFn: sendCustomEmail,
+    onError: (err) => {
+      console.error("שגיאה בשליחת מייל מותאם:", err);
+    },
+  });
+};

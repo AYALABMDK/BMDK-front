@@ -27,6 +27,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SearchIcon from "@mui/icons-material/Search";
 import InputAdornment from "@mui/material/InputAdornment";
+import { Snackbar, Alert } from "@mui/material";
 
 import {
   useGetOrders,
@@ -35,6 +36,8 @@ import {
 } from "../../hooks/useOrders";
 import { useGetBooks } from "../../hooks/useBooks";
 import { useGetVideos } from "../../hooks/useVideo";
+import { useSendStatusEmail, useSendCustomEmail } from "../../hooks/useOrders";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const AdminOrders = () => {
   const { data: orders = [], isLoading } = useGetOrders();
@@ -49,6 +52,16 @@ const AdminOrders = () => {
   const [selectedOrderToDelete, setSelectedOrderToDelete] = useState(null);
   const { data: books = [] } = useGetBooks();
   const { data: videos = [] } = useGetVideos();
+  const [mailDialogOpen, setMailDialogOpen] = useState(false);
+  const [selectedOrderForMail, setSelectedOrderForMail] = useState(null);
+  const [selectedMailTopic, setSelectedMailTopic] = useState("הזמנה שנשלחה");
+  const [loading, setLoading] = useState(false);
+  const [customEmailOpen, setCustomEmailOpen] = useState(false);
+  const [emailForm, setEmailForm] = useState({
+    to: "",
+    subject: "",
+    message: "",
+  });
 
   const toggleExpand = (orderCode) => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
@@ -169,7 +182,75 @@ const AdminOrders = () => {
     updateMutation.mutate({ orderCode, updateData });
     setIsEditing((prev) => ({ ...prev, [orderCode]: false }));
   };
+  const openMailDialog = (order) => {
+    setSelectedOrderForMail(order);
+    setSelectedMailTopic("הזמנה שנשלחה");
+    setMailDialogOpen(true);
+  };
+  const sendStatusMutation = useSendStatusEmail();
 
+  const handleMailClick = (order) => {
+    setSelectedOrderForMail(order);
+    setMailDialogOpen(true);
+  };
+
+  const handleSendEmail = (status) => {
+    if (!selectedOrderForMail) return;
+    sendStatusMutation.mutate({
+      orderCode: selectedOrderForMail.orderCode,
+      status,
+    });
+    setMailDialogOpen(false);
+    setSelectedOrderForMail(null);
+  };
+  const sendCustomMutation = useSendCustomEmail();
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  //   const handleCustomEmailSend = async () => {
+  //     sendCustomMutation.mutate(emailForm, {
+  //       onSuccess: () => {
+  //         setSnackbar({
+  //           open: true,
+  //           message: "המייל נשלח בהצלחה",
+  //           severity: "success",
+  //         });
+  //         setCustomEmailOpen(false);
+  //       },
+  //       onError: () => {
+  //         setSnackbar({
+  //           open: true,
+  //           message: "שליחת המייל נכשלה",
+  //           severity: "error",
+  //         });
+  //       },
+  //     });
+  //   };
+  const handleCustomEmailSend = async () => {
+    setLoading(true);
+    sendCustomMutation.mutate(emailForm, {
+      onSuccess: () => {
+        setSnackbar({
+          open: true,
+          message: "המייל נשלח בהצלחה",
+          severity: "success",
+        });
+        setCustomEmailOpen(false);
+        setLoading(false);
+      },
+      onError: () => {
+        setSnackbar({
+          open: true,
+          message: "שליחת המייל נכשלה",
+          severity: "error",
+        });
+        setLoading(false);
+      },
+    });
+  };
   const filteredOrders = orders.filter((order) => {
     const valuesToSearch = [
       order.orderCode,
@@ -445,7 +526,7 @@ const AdminOrders = () => {
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="שלח מייל">
-                          <IconButton>
+                          <IconButton onClick={() => handleMailClick(order)}>
                             <EmailIcon />
                           </IconButton>
                         </Tooltip>
@@ -568,6 +649,129 @@ const AdminOrders = () => {
           </Box>
         </Box>
       </Dialog>
+      <Dialog open={mailDialogOpen} onClose={() => setMailDialogOpen(false)}>
+        <Box sx={{ p: 3, minWidth: 300, textAlign: "center" }}>
+          <Typography variant="h6" mb={2}>
+            שלח מייל עבור {selectedOrderForMail?.fullName}
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Button
+              variant="contained"
+              sx={{
+                color: "#8a6d00",
+                backgroundColor: "rgba(255, 255, 0, 0.2)",
+                "&:hover": { backgroundColor: "rgba(255, 255, 0, 0.2)" },
+              }}
+              onClick={() => handleSendEmail("נשלחה")}
+            >
+              הזמנה נשלחה
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                color: "darkgreen",
+                backgroundColor: "rgba(0, 128, 0, 0.15)",
+                "&:hover": { backgroundColor: "rgba(0, 128, 0, 0.15)" },
+              }}
+              onClick={() => handleSendEmail("הסתיימה")}
+            >
+              הזמנה הסתיימה
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "#9e9e9e",
+                color: "#000000",
+                "&:hover": {
+                  backgroundColor: "#7e7e7e",
+                },
+              }}
+              onClick={() => {
+                setEmailForm({
+                  to: selectedOrderForMail.email,
+                  subject: "",
+                  message: "",
+                });
+                setMailDialogOpen(false);
+                setCustomEmailOpen(true);
+              }}
+            >
+              אחר
+            </Button>
+
+            <Button variant="outlined" onClick={() => setMailDialogOpen(false)}>
+              ביטול
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
+      <Dialog
+        open={customEmailOpen}
+        onClose={() => setCustomEmailOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <Box sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}>
+          <Typography variant="h6">שליחת מייל מותאם אישית</Typography>
+          <TextField label="אל" value={emailForm.to} fullWidth disabled />
+          <TextField
+            label="נושא"
+            value={emailForm.subject}
+            onChange={(e) =>
+              setEmailForm({ ...emailForm, subject: e.target.value })
+            }
+            fullWidth
+          />
+          <TextField
+            label="הודעה"
+            value={emailForm.message}
+            onChange={(e) =>
+              setEmailForm({ ...emailForm, message: e.target.value })
+            }
+            fullWidth
+            multiline
+            minRows={6}
+          />
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={() => setCustomEmailOpen(false)}
+            >
+              ביטול
+            </Button>
+            <Button
+              variant="contained"
+              onClick={handleCustomEmailSend}
+              disabled={loading}
+              startIcon={
+                loading ? <CircularProgress size={20} color="inherit" /> : null
+              }
+            >
+              {loading ? "שולח..." : "שלח מייל"}
+            </Button>
+          </Box>
+        </Box>
+      </Dialog>
+
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={4000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          severity={snackbar.severity}
+          sx={{
+            width: "100%",
+            fontSize: "1.1rem",
+            justifyContent: "center",
+            textAlign: "center",
+          }}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
