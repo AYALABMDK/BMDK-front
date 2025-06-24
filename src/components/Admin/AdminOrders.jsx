@@ -56,8 +56,10 @@ const AdminOrders = () => {
   const [mailDialogOpen, setMailDialogOpen] = useState(false);
   const [selectedOrderForMail, setSelectedOrderForMail] = useState(null);
   const [selectedMailTopic, setSelectedMailTopic] = useState("הזמנה שנשלחה");
-  const [loading, setLoading] = useState(false);
   const [customEmailOpen, setCustomEmailOpen] = useState(false);
+  const [loadingSendCustom, setLoadingSendCustom] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState("");
+
   const [emailForm, setEmailForm] = useState({
     to: "",
     subject: "",
@@ -197,13 +199,43 @@ const AdminOrders = () => {
 
   const handleSendEmail = (status) => {
     if (!selectedOrderForMail) return;
-    sendStatusMutation.mutate({
-      orderCode: selectedOrderForMail.orderCode,
-      status,
-    });
-    setMailDialogOpen(false);
-    setSelectedOrderForMail(null);
+    if (selectedOrderForMail.status === status) {
+      setSnackbar({
+        open: true,
+        message: `ההזמנה כבר מסומנת כ"${status}". לא נשלח מייל.`,
+        severity: "warning",
+      });
+      return;
+    }
+    setLoadingStatus(status);
+    sendStatusMutation.mutate(
+      {
+        orderCode: selectedOrderForMail.orderCode,
+        status,
+      },
+      {
+        onSuccess: () => {
+          setSnackbar({
+            open: true,
+            message: "המייל נשלח בהצלחה",
+            severity: "success",
+          });
+          setMailDialogOpen(false);
+          setSelectedOrderForMail(null);
+          setLoadingStatus("");
+        },
+        onError: () => {
+          setSnackbar({
+            open: true,
+            message: "שליחת המייל נכשלה",
+            severity: "error",
+          });
+          setLoadingStatus("");
+        },
+      }
+    );
   };
+
   const sendCustomMutation = useSendCustomEmail();
   const [snackbar, setSnackbar] = useState({
     open: false,
@@ -224,7 +256,7 @@ const AdminOrders = () => {
     localStorage.setItem("checkedProducts", JSON.stringify(updated));
   };
   const handleCustomEmailSend = async () => {
-    setLoading(true);
+    setLoadingSendCustom(true);
     sendCustomMutation.mutate(emailForm, {
       onSuccess: () => {
         setSnackbar({
@@ -233,7 +265,7 @@ const AdminOrders = () => {
           severity: "success",
         });
         setCustomEmailOpen(false);
-        setLoading(false);
+        setLoadingSendCustom(false);
       },
       onError: () => {
         setSnackbar({
@@ -241,7 +273,7 @@ const AdminOrders = () => {
           message: "שליחת המייל נכשלה",
           severity: "error",
         });
-        setLoading(false);
+        setLoadingSendCustom(false);
       },
     });
   };
@@ -660,6 +692,7 @@ const AdminOrders = () => {
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
             <Button
+              disabled={loadingStatus !== ""}
               variant="contained"
               sx={{
                 color: "#8a6d00",
@@ -668,9 +701,10 @@ const AdminOrders = () => {
               }}
               onClick={() => handleSendEmail("נשלחה")}
             >
-              הזמנה נשלחה
+              {loadingStatus === "נשלחה" ? "שולח..." : "הזמנה נשלחה"}
             </Button>
             <Button
+              disabled={loadingStatus !== ""}
               variant="contained"
               sx={{
                 color: "darkgreen",
@@ -679,7 +713,7 @@ const AdminOrders = () => {
               }}
               onClick={() => handleSendEmail("הסתיימה")}
             >
-              הזמנה הסתיימה
+              {loadingStatus === "הסתיימה" ? "שולח..." : "הזמנה הסתיימה"}
             </Button>
             <Button
               variant="contained"
@@ -746,12 +780,14 @@ const AdminOrders = () => {
             <Button
               variant="contained"
               onClick={handleCustomEmailSend}
-              disabled={loading}
+              disabled={loadingSendCustom}
               startIcon={
-                loading ? <CircularProgress size={20} color="inherit" /> : null
+                loadingSendCustom ? (
+                  <CircularProgress size={20} color="inherit" />
+                ) : null
               }
             >
-              {loading ? "שולח..." : "שלח מייל"}
+              {loadingSendCustom ? "שולח..." : "שלח מייל"}
             </Button>
           </Box>
         </Box>
