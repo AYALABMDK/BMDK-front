@@ -73,3 +73,21 @@ export const useUpdateBook = () => {
     },
   });
 };
+
+// --- POST (Add) ---
+export const useCreateBook = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (newBook) => {
+      const response = await api.post('/books', newBook);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['books'] });
+    },
+    onError: (err) => {
+      console.error('שגיאה בהוספת הספר:', err);
+    },
+  });
+};
