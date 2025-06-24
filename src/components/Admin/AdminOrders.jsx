@@ -18,6 +18,7 @@ import {
   Typography,
   Button,
   Dialog,
+  Checkbox,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -209,26 +210,19 @@ const AdminOrders = () => {
     message: "",
     severity: "success",
   });
+  const [checkedItems, setCheckedItems] = useState(() => {
+    const saved = localStorage.getItem("checkedProducts");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  //   const handleCustomEmailSend = async () => {
-  //     sendCustomMutation.mutate(emailForm, {
-  //       onSuccess: () => {
-  //         setSnackbar({
-  //           open: true,
-  //           message: "המייל נשלח בהצלחה",
-  //           severity: "success",
-  //         });
-  //         setCustomEmailOpen(false);
-  //       },
-  //       onError: () => {
-  //         setSnackbar({
-  //           open: true,
-  //           message: "שליחת המייל נכשלה",
-  //           severity: "error",
-  //         });
-  //       },
-  //     });
-  //   };
+  const handleToggle = (key) => {
+    const updated = checkedItems.includes(key)
+      ? checkedItems.filter((k) => k !== key)
+      : [...checkedItems, key];
+
+    setCheckedItems(updated);
+    localStorage.setItem("checkedProducts", JSON.stringify(updated));
+  };
   const handleCustomEmailSend = async () => {
     setLoading(true);
     sendCustomMutation.mutate(emailForm, {
@@ -550,7 +544,7 @@ const AdminOrders = () => {
                             <Table
                               sx={{
                                 "& th, & td": {
-                                  border: "1px solid #ccc", // קווים ברורים
+                                  border: "1px solid #ccc",
                                   textAlign: "center",
                                   padding: "8px",
                                 },
@@ -564,6 +558,7 @@ const AdminOrders = () => {
                             >
                               <TableHead>
                                 <TableRow>
+                                  <TableCell />
                                   <TableCell align="center">סוג</TableCell>
                                   <TableCell align="center">נושא</TableCell>
                                   <TableCell align="center">סימנים</TableCell>
@@ -587,9 +582,18 @@ const AdminOrders = () => {
                                   const signs = isBook
                                     ? fullItem?.signs
                                     : fullItem?.signsTopic;
-
+                                  const code = isBook
+                                    ? p.bookCode
+                                    : p.videoCode;
+                                  const key = `${order.orderCode}-${code}`;
                                   return (
-                                    <TableRow key={i}>
+                                    <TableRow key={key}>
+                                      <TableCell align="center">
+                                        <Checkbox
+                                          checked={checkedItems.includes(key)}
+                                          onChange={() => handleToggle(key)}
+                                        />
+                                      </TableCell>
                                       <TableCell align="center">
                                         {isBook ? " ספר" : "סרטון"}
                                       </TableCell>

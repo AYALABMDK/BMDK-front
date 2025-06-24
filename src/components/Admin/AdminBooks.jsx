@@ -138,7 +138,16 @@ const AdminBooks = () => {
         <TableContainer component={Paper} style={{ maxHeight: 600, overflowY: "auto" }}>
           <Table stickyHeader>
             <TableHead>
-              <TableRow>
+              <TableRow
+              sx={{
+                  "& th": {
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    color: "#252e49",
+                    backgroundColor: "#cfcfcf",
+                  },
+                }}>
                 <TableCell align="center">קוד</TableCell>
                 <TableCell align="center">נושא</TableCell>
                 <TableCell align="center">סימנים</TableCell>
