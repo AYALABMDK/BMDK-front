@@ -242,8 +242,30 @@ const AdminVideos = () => {
                       )}
                     </TableCell>
                     <TableCell align="center">
-                      {getTopicName(video.topicCode)}
+                      {isEdit ? (
+                        <TextField
+                          select
+                          variant="standard"
+                          value={editable.topicCode || ""}
+                          onChange={(e) =>
+                            handleChange(
+                              video.code,
+                              "topicCode",
+                              e.target.value
+                            )
+                          }
+                        >
+                          {topics.map((topic) => (
+                            <MenuItem key={topic.id} value={topic.id}>
+                              {topic.name}
+                            </MenuItem>
+                          ))}
+                        </TextField>
+                      ) : (
+                        getTopicName(video.topicCode)
+                      )}
                     </TableCell>
+
                     <TableCell align="center">
                       {isEdit ? (
                         <TextField
