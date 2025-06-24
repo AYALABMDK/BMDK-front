@@ -17,6 +17,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -57,6 +58,17 @@ const AdminVideos = () => {
     videoExUrl: "",
     notes: "",
   });
+  const fieldLabels = {
+    code: "קוד",
+    title: "כותרת",
+    topicCode: "קוד נושא",
+    topicPart: "חלק נושא",
+    signsTopic: " סימנים",
+    price: "מחיר",
+    soldAmount: "כמות שנמכרו",
+    videoExUrl: "קישור לדוגמה",
+    notes: "הערות",
+  };
 
   const getTopicName = (topicCode) => {
     const topic = topics.find((t) => t.id === topicCode);
@@ -372,20 +384,46 @@ const AdminVideos = () => {
 
       <Dialog open={addDialogOpen} onClose={() => setAddDialogOpen(false)}>
         <DialogTitle>הוסף סרטון חדש</DialogTitle>
+
         <DialogContent>
-          {Object.keys(newVideo).map((field) => (
-            <TextField
-              key={field}
-              label={field}
-              value={newVideo[field]}
-              fullWidth
-              margin="dense"
-              onChange={(e) =>
-                setNewVideo({ ...newVideo, [field]: e.target.value })
-              }
-            />
-          ))}
+          {Object.keys(newVideo).map((field) => {
+            if (field === "topicCode") {
+              return (
+                <TextField
+                  key={field}
+                  select
+                  label="נושא"
+                  value={newVideo.topicCode}
+                  fullWidth
+                  margin="dense"
+                  onChange={(e) =>
+                    setNewVideo({ ...newVideo, topicCode: e.target.value })
+                  }
+                >
+                  {topics.map((topic) => (
+                    <MenuItem key={topic.id} value={topic.id}>
+                      {topic.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              );
+            }
+
+            return (
+              <TextField
+                key={field}
+                label={fieldLabels[field] || field}
+                value={newVideo[field]}
+                fullWidth
+                margin="dense"
+                onChange={(e) =>
+                  setNewVideo({ ...newVideo, [field]: e.target.value })
+                }
+              />
+            );
+          })}
         </DialogContent>
+
         <DialogActions>
           <Button onClick={() => setAddDialogOpen(false)}>ביטול</Button>
           <Button
