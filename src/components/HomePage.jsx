@@ -13,6 +13,7 @@ import BooksPage from "./OrderBook";
 import ContactPage from "./Contact/ContactPage";
 import OnlineLearningPage from "./VideoPage";
 import LessonsPage from "./LessonsPage";
+import GalleryPage from "./GalleryPage";
 
 
 const Hero = ({ onOrderBookClick }) => (
@@ -73,6 +74,7 @@ const HomePage = () => {
       <LessonExample />
       <OnlineLearningPage />
       <BooksPage />
+      <GalleryPage/>
       <ContactPage />
     </>
   );

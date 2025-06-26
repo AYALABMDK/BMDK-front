@@ -21,6 +21,7 @@ import AdminVideos from "./Admin/AdminVideos";
 import AdminInventory from "./Admin/AdminInventory";
 import ConfirmReceivedPage from "./ConfirmReceivedPage";
 import LessonsPage from "./LessonsPage";
+import GalleryPage from "./GalleryPage";
 
 export default function AppRoutes() {
   return (
@@ -56,6 +57,8 @@ export default function AppRoutes() {
       <Route path={`${BASE_PATH}/OnlineLearning`} element={<OnlineLearningPage />} />
       <Route path={`${BASE_PATH}/checkout`} element={<Checkout />} />
       <Route path={`${BASE_PATH}/confirm-page/:orderCode`} element={<ConfirmReceivedPage />} />
+      <Route path={`${BASE_PATH}/gallery`} element={<GalleryPage />} />
+
 
 
       {/* עמוד שגיאה */}

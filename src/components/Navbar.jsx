@@ -61,6 +61,7 @@ const Navbar = () => {
             <Button component={Link} to={`${BASE_PATH}/OnlineLearning`} sx={navButtonStyle}>למידה מקוונת</Button>
             <Button component={Link} to={`${BASE_PATH}/cart`} sx={navButtonStyle}>הסל שלי</Button>
             <Button component={Link} to={`${BASE_PATH}/about`} sx={navButtonStyle}>אודות</Button>
+             <Button component={Link} to={`${BASE_PATH}/gallery`} sx={navButtonStyle}>גלריה</Button>
             <Button component={Link} to={`${BASE_PATH}/LessonExample`} sx={navButtonStyle}>שיעורים לדוגמא</Button>
             <Button onClick={() => setOpenContact(true)} sx={navButtonStyle}>יצירת קשר</Button>
           </Box>
