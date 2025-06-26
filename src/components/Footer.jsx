@@ -13,6 +13,7 @@ const Footer = () => {
                 <Grid item xs={12} sm={6} md={2}>
                     <Typography fontWeight="bold" sx={{ color: "#fff", mb: 1 }}>ראשי</Typography>
                     <Link href="/" underline="none" color="inherit" display="block">דרך קצרה</Link>
+                    <Link href="lessons" underline="none" color="inherit" display="block">הכשרה ומסלולים</Link>
                     <Link href="OnlineLearning" underline="none" color="inherit" display="block">למידה מקוונת</Link>
                 </Grid>
 

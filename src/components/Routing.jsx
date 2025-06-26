@@ -20,6 +20,7 @@ import AdminBooks from "./Admin/AdminBooks";
 import AdminVideos from "./Admin/AdminVideos";
 import AdminInventory from "./Admin/AdminInventory";
 import ConfirmReceivedPage from "./ConfirmReceivedPage";
+import LessonsPage from "./LessonsPage";
 
 export default function AppRoutes() {
   return (
@@ -45,6 +46,7 @@ export default function AppRoutes() {
 
       {/* עמודים כלליים */}
       <Route path={`${BASE_PATH}/`} element={<HomePage />} />
+      <Route path={`${BASE_PATH}/lessons`} element={<LessonsPage />} />
       <Route path={`${BASE_PATH}/about`} element={<AboutPage />} />
       <Route path={`${BASE_PATH}/contact`} element={<ContactPage />} />
       <Route path={`${BASE_PATH}/OrderBook`} element={<OrderBook />} />

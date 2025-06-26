@@ -44,7 +44,7 @@ const BooksPage = () => {
   return (
     <Box sx={{ background: "linear-gradient(to bottom right, #f3f4f6, #e0e7ff)", minHeight: "100vh", py: 8 }}>
       <Container>
-        <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom sx={{ direction: "rtl" }}>
+        <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
           מכירת ספרים
         </Typography>
 

@@ -56,6 +56,7 @@ const Navbar = () => {
           {/* צד ימין – קישורים */}
           <Box display="flex" gap={1}>
             <Button component={Link} to={`${BASE_PATH}/`} sx={navButtonStyle}>דף הבית</Button>
+            <Button component={Link} to={`${BASE_PATH}/lessons`} sx={navButtonStyle}>הכשרה ומסלולים</Button>
             <Button component={Link} to={`${BASE_PATH}/OrderBook`} sx={navButtonStyle}>קניית ספרים</Button>
             <Button component={Link} to={`${BASE_PATH}/OnlineLearning`} sx={navButtonStyle}>למידה מקוונת</Button>
             <Button component={Link} to={`${BASE_PATH}/cart`} sx={navButtonStyle}>הסל שלי</Button>

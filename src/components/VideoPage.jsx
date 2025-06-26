@@ -1,10 +1,7 @@
 import React from "react";
 import {
   Grid,
-  Card,
-  CardContent,
   Typography,
-  Button,
   CircularProgress,
 } from "@mui/material";
 import { useGetVideos } from "../hooks/useVideo";
@@ -34,7 +31,7 @@ const OnlineLearningPage = () => {
         minHeight: "100vh",
       }}
     >
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
         למידה מקוונת
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
