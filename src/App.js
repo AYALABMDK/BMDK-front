@@ -8,10 +8,17 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App"
+    style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "141vh",
+      }}>
       <Router>
         <Navbar />
+         <div style={{ flex: 1 }}>
         <Routing />
+        </div>
         <FloatingCartIcon />
         <ContactFab />
         <Footer />

@@ -46,7 +46,7 @@ const ContactPage = () => {
       sx={{
         width: "80%",
         maxWidth: 600,
-        minHeight: "85vh",
+        minHeight: "60vh",
         mx: "auto",
         mt: 8,
         display: "flex",

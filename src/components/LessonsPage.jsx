@@ -71,7 +71,7 @@ const Features = ({ onReadMoreClick }) => {
     }
 
     return (
-        <Container sx={{ py: 6, minHeight: "95vh", }}>
+        <Container sx={{ py: 6}}>
             <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
                 הכשרה ומסלולים
             </Typography>
