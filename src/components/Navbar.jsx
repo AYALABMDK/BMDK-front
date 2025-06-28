@@ -126,6 +126,9 @@ const Navbar = () => {
   <MenuItem component={Link} to={`${BASE_PATH}/admin/videos`} onClick={handleMenuClose}>
     וידאו
   </MenuItem>
+   <MenuItem component={Link} to={`${BASE_PATH}/admin/lessons`} onClick={handleMenuClose}>
+    שיעורים
+  </MenuItem>
   <MenuItem component={Link} to={`${BASE_PATH}/admin/inventory`} onClick={handleMenuClose}>
     ניהול מלאי
   </MenuItem>

@@ -80,9 +80,7 @@ const AdminVideos = () => {
     id: topic.id,
   }));
 
-  const selectedTopic = filteredTopics.find(
-    (t) => t.id === newVideo.topicCode
-  );
+  const selectedTopic = filteredTopics.find((t) => t.id === newVideo.topicCode);
 
   const saveTopic = async (name) => {
     try {
@@ -194,42 +192,56 @@ const AdminVideos = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
-        <Typography variant="h4" fontWeight="bold" color="#252e49">
-          ניהול סרטונים
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => setAddDialogOpen(true)}
-        >
-          הוסף סרטון חדש
-        </Button>
-      </Box>
-
-      <Box sx={{ display: "flex", justifyContent: "center", mb: 3 }}>
-        <TextField
-          variant="outlined"
-          size="small"
-          placeholder="חפש סרטון לפי קוד, נושא, הערות וכו'"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{ width: "400px", backgroundColor: "#f7f7f7" }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="action" />
-              </InputAdornment>
-            ),
+      <Box sx={{ p: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 3,
           }}
-        />
+        >
+          <Box sx={{ width: 140 }} /> {/* רווח במקום אייקון אם תרצי בעתיד */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              variant="h4"
+              fontWeight="bold"
+              color="#252e49"
+              sx={{ mb: 2 }}
+            >
+              ניהול סרטונים
+            </Typography>
+            <TextField
+              variant="outlined"
+              size="small"
+              placeholder="חפש סרטון לפי קוד, נושא, הערות וכו'"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              sx={{ width: 400, backgroundColor: "#f7f7f7" }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            startIcon={<AddIcon />}
+            onClick={() => setAddDialogOpen(true)}
+          >
+            הוסף סרטון חדש
+          </Button>
+        </Box>
       </Box>
 
       {isLoading ? (
@@ -447,10 +459,7 @@ const AdminVideos = () => {
         </Box>
       </Dialog>
 
-      <Dialog
-        open={addDialogOpen}
-        onClose={resetAddDialog}
-      >
+      <Dialog open={addDialogOpen} onClose={resetAddDialog}>
         <DialogTitle>הוסף סרטון חדש</DialogTitle>
 
         <DialogContent>
@@ -480,7 +489,9 @@ const AdminVideos = () => {
                       const topicExists = filteredTopics.some(
                         (t) => t.label === newInputValue
                       );
-                      setShowAddButton(!topicExists && newInputValue.trim() !== "");
+                      setShowAddButton(
+                        !topicExists && newInputValue.trim() !== ""
+                      );
                     }}
                     renderInput={(params) => (
                       <TextField {...params} label="נושא" margin="dense" />
@@ -492,7 +503,10 @@ const AdminVideos = () => {
                       onMouseDown={async () => {
                         const topic = await saveTopic(inputValue);
                         if (topic) {
-                          setNewVideo((prev) => ({ ...prev, topicCode: topic.id }));
+                          setNewVideo((prev) => ({
+                            ...prev,
+                            topicCode: topic.id,
+                          }));
                           setShowAddButton(false);
                           setInputValue("");
                         }

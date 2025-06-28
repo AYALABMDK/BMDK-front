@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import {
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-  Paper, IconButton, TextField, Tooltip, Typography, Box, Button,
-  Dialog, MenuItem
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+  Box,
+  Button,
+  Dialog,
+  MenuItem,
 } from "@mui/material";
 import { Delete, Save, Edit, Search } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
   useGetBooks,
@@ -42,11 +55,10 @@ const AdminBooks = () => {
     bigBookPrice: 0,
     smallBookPrice: 0,
     notes: "",
-  }
-
+  };
 
   const handleChange = (code, field, value) => {
-    setEditableBooks(prev => ({
+    setEditableBooks((prev) => ({
       ...prev,
       [code]: { ...prev[code], [field]: value },
     }));
@@ -56,13 +68,13 @@ const AdminBooks = () => {
     const updateData = editableBooks[code];
     if (!updateData) return;
     updateMutation.mutate({ bookCode: code, updateData });
-    setIsEditing(prev => ({ ...prev, [code]: false }));
+    setIsEditing((prev) => ({ ...prev, [code]: false }));
   };
 
   const toggleEdit = (code) => {
-    const book = books.find(b => b.code === code);
-    setEditableBooks(prev => ({ ...prev, [code]: { ...book } }));
-    setIsEditing(prev => ({ ...prev, [code]: !prev[code] }));
+    const book = books.find((b) => b.code === code);
+    setEditableBooks((prev) => ({ ...prev, [code]: { ...book } }));
+    setIsEditing((prev) => ({ ...prev, [code]: !prev[code] }));
   };
 
   const confirmDelete = (code) => {
@@ -77,34 +89,59 @@ const AdminBooks = () => {
       setSelectedBookToDelete(null);
     }
   };
-  
+
   const handleSaveNewBook = () => {
     if (!newBook) return;
     createMutation.mutate(newBook, { onSuccess: () => setNewBook(null) });
   };
   const handleCancelNewBook = () => {
-    setNewBook(defaultBookData)
+    setNewBook(defaultBookData);
   };
 
+  const getTopicName = (code) => topics.find((t) => t.id === code)?.name || "—";
 
-  const getTopicName = (code) => topics.find(t => t.id === code)?.name || "—";
-
-  const filteredBooks = books.filter(book =>
-    [book.code, book.signs, book.signsTopic, book.notes,
-    book.bigBooksQuantity, book.smallBooksQuantity,
-    book.bigBooksSold, book.smallBooksSold,
-    book.bigBookPrice, book.smallBookPrice,
-    getTopicName(book.topicCode)]
-      .map(v => String(v ?? "").toLowerCase())
-      .some(v => v.includes(searchQuery.toLowerCase()))
+  const filteredBooks = books.filter((book) =>
+    [
+      book.code,
+      book.signs,
+      book.signsTopic,
+      book.notes,
+      book.bigBooksQuantity,
+      book.smallBooksQuantity,
+      book.bigBooksSold,
+      book.smallBooksSold,
+      book.bigBookPrice,
+      book.smallBookPrice,
+      getTopicName(book.topicCode),
+    ]
+      .map((v) => String(v ?? "").toLowerCase())
+      .some((v) => v.includes(searchQuery.toLowerCase()))
   );
 
   return (
     <Box sx={{ p: 4 }}>
-      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+        }}
+      >
         <Box sx={{ width: 140 }} />
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <Typography variant="h5" fontWeight="bold" color="#252e49" sx={{ mb: 1 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="#252e49"
+            sx={{ mb: 2 }}
+          >
             ניהול ספרים
           </Typography>
           <TextField
@@ -122,7 +159,12 @@ const AdminBooks = () => {
             }}
           />
         </Box>
-        <Button variant="contained" color="primary" onClick={() => setNewBook(defaultBookData)}>
+        <Button
+          startIcon={<AddIcon />}
+          variant="contained"
+          color="primary"
+          onClick={() => setNewBook(defaultBookData)}
+        >
           הוספת ספר חדש
         </Button>
       </Box>
@@ -133,14 +175,39 @@ const AdminBooks = () => {
         <TableContainer component={Paper} sx={{ maxHeight: 600 }}>
           <Table stickyHeader>
             <TableHead>
-              <TableRow>
-                {["קוד", "נושא", "סימנים", "נושא הסימנים", "גדולים במלאי", "קטנים במלאי", "נמכרו (גדול)", "נמכרו (קטן)", "מחיר גדול", "מחיר קטן", "הערות", "פעולות"].map((text, i) => (
-                  <TableCell align="center" key={i}>{text}</TableCell>
+              <TableRow
+                sx={{
+                  "& th": {
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    color: "#252e49",
+                    backgroundColor: "#cfcfcf",
+                  },
+                }}
+              >
+                {[
+                  "קוד",
+                  "נושא",
+                  "סימנים",
+                  "נושא הסימנים",
+                  "גדולים במלאי",
+                  "קטנים במלאי",
+                  "נמכרו (גדול)",
+                  "נמכרו (קטן)",
+                  "מחיר גדול",
+                  "מחיר קטן",
+                  "הערות",
+                  "פעולות",
+                ].map((text, i) => (
+                  <TableCell align="center" key={i}>
+                    {text}
+                  </TableCell>
                 ))}
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredBooks.map(book => {
+              {filteredBooks.map((book) => {
                 const isEdit = isEditing[book.code];
                 const editable = editableBooks[book.code] || {};
                 return (
@@ -152,37 +219,56 @@ const AdminBooks = () => {
                           select
                           variant="standard"
                           value={editable.topicCode}
-                          onChange={e => handleChange(book.code, "topicCode", +e.target.value)}
+                          onChange={(e) =>
+                            handleChange(
+                              book.code,
+                              "topicCode",
+                              +e.target.value
+                            )
+                          }
                         >
-                          {topics.map(topic => (
-                            <MenuItem key={topic.id} value={topic.id}>{topic.name}</MenuItem>
+                          {topics.map((topic) => (
+                            <MenuItem key={topic.id} value={topic.id}>
+                              {topic.name}
+                            </MenuItem>
                           ))}
                         </TextField>
                       ) : (
                         getTopicName(book.topicCode)
                       )}
                     </TableCell>
-                    {["signs", "signsTopic"].map(field => (
+                    {["signs", "signsTopic"].map((field) => (
                       <TableCell align="center" key={field}>
                         {isEdit ? (
                           <TextField
                             variant="standard"
                             value={editable[field] || ""}
-                            onChange={(e) => handleChange(book.code, field, e.target.value)}
+                            onChange={(e) =>
+                              handleChange(book.code, field, e.target.value)
+                            }
                           />
                         ) : (
                           book[field]
                         )}
                       </TableCell>
                     ))}
-                    {["bigBooksQuantity", "smallBooksQuantity", "bigBooksSold", "smallBooksSold", "bigBookPrice", "smallBookPrice"].map(field => (
+                    {[
+                      "bigBooksQuantity",
+                      "smallBooksQuantity",
+                      "bigBooksSold",
+                      "smallBooksSold",
+                      "bigBookPrice",
+                      "smallBookPrice",
+                    ].map((field) => (
                       <TableCell align="center" key={field}>
                         {isEdit ? (
                           <TextField
                             variant="standard"
                             type="number"
                             value={editable[field] ?? 0}
-                            onChange={(e) => handleChange(book.code, field, +e.target.value)}
+                            onChange={(e) =>
+                              handleChange(book.code, field, +e.target.value)
+                            }
                             inputProps={{ min: 0, step: 1 }}
                           />
                         ) : (
@@ -195,7 +281,9 @@ const AdminBooks = () => {
                         <TextField
                           variant="standard"
                           value={editable.notes || ""}
-                          onChange={(e) => handleChange(book.code, "notes", e.target.value)}
+                          onChange={(e) =>
+                            handleChange(book.code, "notes", e.target.value)
+                          }
                         />
                       ) : (
                         book.notes
@@ -204,7 +292,10 @@ const AdminBooks = () => {
                     <TableCell align="center">
                       {isEdit ? (
                         <Tooltip title="שמור">
-                          <IconButton onClick={() => handleSave(book.code)} color="primary">
+                          <IconButton
+                            onClick={() => handleSave(book.code)}
+                            color="primary"
+                          >
                             <Save />
                           </IconButton>
                         </Tooltip>
@@ -216,7 +307,10 @@ const AdminBooks = () => {
                         </Tooltip>
                       )}
                       <Tooltip title="מחק">
-                        <IconButton onClick={() => confirmDelete(book.code)} color="error">
+                        <IconButton
+                          onClick={() => confirmDelete(book.code)}
+                          color="error"
+                        >
                           <Delete />
                         </IconButton>
                       </Tooltip>
@@ -231,7 +325,10 @@ const AdminBooks = () => {
                       variant="standard"
                       value={newBook.code}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, code: parseInt(e.target.value) || "" })
+                        setNewBook({
+                          ...newBook,
+                          code: parseInt(e.target.value) || "",
+                        })
                       }
                     />
                   </TableCell>
@@ -241,7 +338,10 @@ const AdminBooks = () => {
                       variant="standard"
                       value={newBook.topicCode}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, topicCode: parseInt(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          topicCode: parseInt(e.target.value),
+                        })
                       }
                     >
                       {topics.map((topic) => (
@@ -255,7 +355,9 @@ const AdminBooks = () => {
                     <TextField
                       variant="standard"
                       value={newBook.signs}
-                      onChange={(e) => setNewBook({ ...newBook, signs: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, signs: e.target.value })
+                      }
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -273,7 +375,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.bigBooksQuantity}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, bigBooksQuantity: parseInt(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          bigBooksQuantity: parseInt(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -283,7 +388,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.smallBooksQuantity}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, smallBooksQuantity: parseInt(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          smallBooksQuantity: parseInt(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -293,7 +401,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.bigBooksSold}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, bigBooksSold: parseInt(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          bigBooksSold: parseInt(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -303,7 +414,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.smallBooksSold}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, smallBooksSold: parseInt(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          smallBooksSold: parseInt(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -313,7 +427,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.bigBookPrice}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, bigBookPrice: parseFloat(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          bigBookPrice: parseFloat(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -323,7 +440,10 @@ const AdminBooks = () => {
                       type="number"
                       value={newBook.smallBookPrice}
                       onChange={(e) =>
-                        setNewBook({ ...newBook, smallBookPrice: parseFloat(e.target.value) })
+                        setNewBook({
+                          ...newBook,
+                          smallBookPrice: parseFloat(e.target.value),
+                        })
                       }
                     />
                   </TableCell>
@@ -331,7 +451,9 @@ const AdminBooks = () => {
                     <TextField
                       variant="standard"
                       value={newBook.notes}
-                      onChange={(e) => setNewBook({ ...newBook, notes: e.target.value })}
+                      onChange={(e) =>
+                        setNewBook({ ...newBook, notes: e.target.value })
+                      }
                     />
                   </TableCell>
                   <TableCell align="center">
@@ -352,9 +474,16 @@ const AdminBooks = () => {
           </Table>
         </TableContainer>
       )}
-      <Dialog open={!!newBook} onClose={() => setNewBook(null)} maxWidth="md" fullWidth>
+      <Dialog
+        open={!!newBook}
+        onClose={() => setNewBook(null)}
+        maxWidth="md"
+        fullWidth
+      >
         <Box sx={{ padding: 3 }}>
-          <Typography variant="h6" sx={{ mb: 2 }}>הוספת ספר חדש</Typography>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            הוספת ספר חדש
+          </Typography>
           <Box
             sx={{
               display: "grid",
@@ -367,7 +496,9 @@ const AdminBooks = () => {
               label="נושא"
               select
               value={newBook?.topicCode || ""}
-              onChange={(e) => setNewBook({ ...newBook, topicCode: parseInt(e.target.value) })}
+              onChange={(e) =>
+                setNewBook({ ...newBook, topicCode: parseInt(e.target.value) })
+              }
               required
             >
               {topics.map((topic) => (
@@ -379,36 +510,60 @@ const AdminBooks = () => {
             <TextField
               label="סימנים"
               value={newBook?.signs || ""}
-              onChange={(e) => setNewBook({ ...newBook, signs: e.target.value })}
+              onChange={(e) =>
+                setNewBook({ ...newBook, signs: e.target.value })
+              }
             />
             <TextField
               label="נושא הסימנים"
               value={newBook?.signsTopic || ""}
-              onChange={(e) => setNewBook({ ...newBook, signsTopic: e.target.value })}
+              onChange={(e) =>
+                setNewBook({ ...newBook, signsTopic: e.target.value })
+              }
             />
             <TextField
               label="גדול במלאי"
               type="number"
               value={newBook?.bigBooksQuantity || 0}
-              onChange={(e) => setNewBook({ ...newBook, bigBooksQuantity: Number(e.target.value) || 0 })}
+              onChange={(e) =>
+                setNewBook({
+                  ...newBook,
+                  bigBooksQuantity: Number(e.target.value) || 0,
+                })
+              }
             />
             <TextField
               label="קטן במלאי"
               type="number"
               value={newBook?.smallBooksQuantity || 0}
-              onChange={(e) => setNewBook({ ...newBook, smallBooksQuantity: Number(e.target.value) || 0 })}
+              onChange={(e) =>
+                setNewBook({
+                  ...newBook,
+                  smallBooksQuantity: Number(e.target.value) || 0,
+                })
+              }
             />
             <TextField
               label="נמכרו (גדול)"
               type="number"
               value={newBook?.bigBooksSold || 0}
-              onChange={(e) => setNewBook({ ...newBook, bigBooksSold: Number(e.target.value) || 0 })}
+              onChange={(e) =>
+                setNewBook({
+                  ...newBook,
+                  bigBooksSold: Number(e.target.value) || 0,
+                })
+              }
             />
             <TextField
               label="נמכרו (קטן)"
               type="number"
               value={newBook?.smallBooksSold || 0}
-              onChange={(e) => setNewBook({ ...newBook, smallBooksSold: Number(e.target.value) || 0 })}
+              onChange={(e) =>
+                setNewBook({
+                  ...newBook,
+                  smallBooksSold: Number(e.target.value) || 0,
+                })
+              }
             />
             <TextField
               label="מחיר גדול"
@@ -426,13 +581,18 @@ const AdminBooks = () => {
               onChange={(e) => {
                 debugger;
                 const val = parseFloat(e.target.value);
-                setNewBook({ ...newBook, smallBookPrice: isNaN(val) ? 0 : val });
+                setNewBook({
+                  ...newBook,
+                  smallBookPrice: isNaN(val) ? 0 : val,
+                });
               }}
             />
             <TextField
               label="הערות"
               value={newBook?.notes || ""}
-              onChange={(e) => setNewBook({ ...newBook, notes: e.target.value })}
+              onChange={(e) =>
+                setNewBook({ ...newBook, notes: e.target.value })
+              }
             />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>

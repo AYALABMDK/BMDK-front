@@ -22,6 +22,7 @@ import AdminInventory from "./Admin/AdminInventory";
 import ConfirmReceivedPage from "./ConfirmReceivedPage";
 import LessonsPage from "./LessonsPage";
 import GalleryPage from "./GalleryPage";
+import AdminLessons from "./Admin/AdminLessons";
 
 export default function AppRoutes() {
   return (
@@ -43,6 +44,7 @@ export default function AppRoutes() {
         <Route path="books" element={<AdminBooks />} />
         <Route path="videos" element={<AdminVideos />} />
         <Route path="inventory" element={<AdminInventory />} />
+        <Route path="lessons" element={<AdminLessons />} />
       </Route>
 
       {/* עמודים כלליים */}
