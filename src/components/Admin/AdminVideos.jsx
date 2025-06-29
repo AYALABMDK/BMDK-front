@@ -62,6 +62,7 @@ const AdminVideos = () => {
     videoExUrl: "",
     notes: "",
   });
+
   const fieldLabels = {
     code: "קוד",
     title: "כותרת",
@@ -475,7 +476,6 @@ const AdminVideos = () => {
                     noOptionsText="לא נמצא נושא"
                     onChange={(event, newValue, reason) => {
                       if (reason === "clear") {
-                        // X button was clicked
                         setNewVideo({ ...newVideo, topicCode: "" });
                         setInputValue("");
                         setShowAddButton(false);
@@ -500,6 +500,13 @@ const AdminVideos = () => {
                   {showAddButton && (
                     <Button
                       variant="outlined"
+                      sx={{
+                        width: 60,
+                        height: 50,
+                        alignSelf: 'center',
+                        minWidth: 0,
+                        padding: 0,
+                      }}
                       onMouseDown={async () => {
                         const topic = await saveTopic(inputValue);
                         if (topic) {
@@ -512,7 +519,7 @@ const AdminVideos = () => {
                         }
                       }}
                     >
-                      הוסף נושא
+                      <AddIcon />
                     </Button>
                   )}
                 </Box>

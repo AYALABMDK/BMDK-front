@@ -20,8 +20,10 @@ import {
   MenuItem,
   InputAdornment,
   CircularProgress,
+  Autocomplete,
 } from "@mui/material";
 import { Delete, Save, Edit, Search } from "@mui/icons-material";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
   useGetLessons,
@@ -29,8 +31,7 @@ import {
   useUpdateLesson,
   useDeleteLesson,
 } from "../../hooks/useLessons";
-import { useGetTopics } from "../../hooks/useTopics";
-import AddIcon from "@mui/icons-material/Add";
+import { useGetTopics, useAddTopic } from "../../hooks/useTopics";
 
 const AdminLessons = () => {
   const { data: lessons = [], isLoading } = useGetLessons();
@@ -38,6 +39,8 @@ const AdminLessons = () => {
   const addLesson = useAddLesson();
   const updateLesson = useUpdateLesson();
   const deleteLesson = useDeleteLesson();
+  const { mutateAsync: addTopic } = useAddTopic();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [editMode, setEditMode] = useState({});
   const [editedLessons, setEditedLessons] = useState({});
@@ -47,6 +50,8 @@ const AdminLessons = () => {
   const [lessonBeingEdited, setLessonBeingEdited] = useState(null);
   const [selectedLessonToDelete, setSelectedLessonToDelete] = useState(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [showAddButton, setShowAddButton] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const defaultLesson = {
     topicCode: "",
@@ -76,6 +81,23 @@ const AdminLessons = () => {
     startDate: "מתאריך",
     endDate: "עד תאריך",
     notes: "הערות",
+  };
+
+  // Filter topics by input text
+  const filteredTopics = topics.map((topic) => ({
+    label: topic.name,
+    id: topic.id,
+  }));
+
+  const selectedTopic = filteredTopics.find((t) => t.id === newLesson?.topicCode);
+
+  const saveTopic = async (name) => {
+    try {
+      const newTopic = await addTopic({ name });
+      return newTopic;
+    } catch (error) {
+      return null;
+    }
   };
 
   const topicName = (code) => topics.find((t) => t.id === code)?.name || "—";
@@ -492,23 +514,62 @@ const AdminLessons = () => {
           {Object.keys(defaultLesson).map((field) => {
             if (field === "topicCode") {
               return (
-                <TextField
-                  key={field}
-                  select
-                  label={fieldLabels[field]}
-                  value={newLesson?.[field] || ""}
-                  fullWidth
-                  margin="dense"
-                  onChange={(e) =>
-                    setNewLesson({ ...newLesson, topicCode: +e.target.value })
-                  }
-                >
-                  {topics.map((topic) => (
-                    <MenuItem key={topic.id} value={topic.id}>
-                      {topic.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Autocomplete
+                    fullWidth
+                    options={filteredTopics}
+                    getOptionLabel={(option) => option.label}
+                    value={selectedTopic || null}
+                    noOptionsText="לא נמצא נושא"
+                    onChange={(event, newValue, reason) => {
+                      if (reason === "clear") {
+                        setNewLesson({ ...newLesson, topicCode: "" });
+                        setInputValue("");
+                        setShowAddButton(false);
+                      } else if (newValue) {
+                        setNewLesson({ ...newLesson, topicCode: newValue.id });
+                      }
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue(newInputValue);
+                      const topicExists = filteredTopics.some(
+                        (t) => t.label === newInputValue
+                      );
+                      setShowAddButton(
+                        !topicExists && newInputValue.trim() !== ""
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="נושא" margin="dense" />
+                    )}
+                  />
+                  {showAddButton && (
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        width: 60,
+                        height: 50,
+                        alignSelf: 'center',
+                        minWidth: 0,
+                        padding: 0,
+                      }}
+                      onMouseDown={async () => {
+                        const topic = await saveTopic(inputValue);
+                        if (topic) {
+                          setNewLesson((prev) => ({
+                            ...prev,
+                            topicCode: topic.id,
+                          }));
+                          setShowAddButton(false);
+                          setInputValue("");
+                        }
+                      }}
+                    >
+                      <AddIcon />
+                    </Button>
+                  )}
+                </Box>
               );
             }
 

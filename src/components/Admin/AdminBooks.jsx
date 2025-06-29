@@ -15,11 +15,10 @@ import {
   Button,
   Dialog,
   MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import { Delete, Save, Edit, Search } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
-import SaveIcon from "@mui/icons-material/Save";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 
 import {
@@ -28,7 +27,7 @@ import {
   useUpdateBook,
   useCreateBook,
 } from "../../hooks/useBooks";
-import { useGetTopics } from "../../hooks/useTopics";
+import { useGetTopics, useAddTopic } from "../../hooks/useTopics";
 
 const AdminBooks = () => {
   const { data: topics = [] } = useGetTopics();
@@ -36,6 +35,7 @@ const AdminBooks = () => {
   const deleteMutation = useDeleteBook();
   const updateMutation = useUpdateBook();
   const createMutation = useCreateBook();
+  const { mutateAsync: addTopic } = useAddTopic();
 
   const [editableBooks, setEditableBooks] = useState({});
   const [isEditing, setIsEditing] = useState({});
@@ -43,9 +43,11 @@ const AdminBooks = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedBookToDelete, setSelectedBookToDelete] = useState(null);
   const [newBook, setNewBook] = useState(null);
+  const [showAddButton, setShowAddButton] = useState(false);
+  const [inputValue, setInputValue] = useState("");
 
   const defaultBookData = {
-    topicCode: "",
+    topicCode: 0,
     signs: "",
     signsTopic: "",
     bigBooksQuantity: 0,
@@ -55,6 +57,23 @@ const AdminBooks = () => {
     bigBookPrice: 0,
     smallBookPrice: 0,
     notes: "",
+  };
+
+  // Filter topics by input text
+  const filteredTopics = topics.map((topic) => ({
+    label: topic.name,
+    id: topic.id,
+  }));
+
+  const selectedTopic = filteredTopics.find((t) => t.id === newBook?.topicCode);
+
+  const saveTopic = async (name) => {
+    try {
+      const newTopic = await addTopic({ name });
+      return newTopic;
+    } catch (error) {
+      return null;
+    }
   };
 
   const handleChange = (code, field, value) => {
@@ -93,9 +112,6 @@ const AdminBooks = () => {
   const handleSaveNewBook = () => {
     if (!newBook) return;
     createMutation.mutate(newBook, { onSuccess: () => setNewBook(null) });
-  };
-  const handleCancelNewBook = () => {
-    setNewBook(defaultBookData);
   };
 
   const getTopicName = (code) => topics.find((t) => t.id === code)?.name || "—";
@@ -318,158 +334,6 @@ const AdminBooks = () => {
                   </TableRow>
                 );
               })}
-              {newBook && (
-                <TableRow>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      value={newBook.code}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          code: parseInt(e.target.value) || "",
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      select
-                      variant="standard"
-                      value={newBook.topicCode}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          topicCode: parseInt(e.target.value),
-                        })
-                      }
-                    >
-                      {topics.map((topic) => (
-                        <MenuItem key={topic.id} value={topic.id}>
-                          {topic.name}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      value={newBook.signs}
-                      onChange={(e) =>
-                        setNewBook({ ...newBook, signs: e.target.value })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      value={newBook.signsTopic}
-                      onChange={(e) =>
-                        setNewBook({ ...newBook, signsTopic: e.target.value })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.bigBooksQuantity}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          bigBooksQuantity: parseInt(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.smallBooksQuantity}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          smallBooksQuantity: parseInt(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.bigBooksSold}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          bigBooksSold: parseInt(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.smallBooksSold}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          smallBooksSold: parseInt(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.bigBookPrice}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          bigBookPrice: parseFloat(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      type="number"
-                      value={newBook.smallBookPrice}
-                      onChange={(e) =>
-                        setNewBook({
-                          ...newBook,
-                          smallBookPrice: parseFloat(e.target.value),
-                        })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <TextField
-                      variant="standard"
-                      value={newBook.notes}
-                      onChange={(e) =>
-                        setNewBook({ ...newBook, notes: e.target.value })
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    <Tooltip title="שמור">
-                      <IconButton onClick={handleSaveNewBook} color="primary">
-                        <SaveIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="בטל">
-                      <IconButton onClick={handleCancelNewBook} color="error">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </TableCell>
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
@@ -492,21 +356,61 @@ const AdminBooks = () => {
               mb: 3,
             }}
           >
-            <TextField
-              label="נושא"
-              select
-              value={newBook?.topicCode || ""}
-              onChange={(e) =>
-                setNewBook({ ...newBook, topicCode: parseInt(e.target.value) })
-              }
-              required
-            >
-              {topics.map((topic) => (
-                <MenuItem key={topic.id} value={topic.id}>
-                  {topic.name}
-                </MenuItem>
-              ))}
-            </TextField>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
+              <Autocomplete
+                sx={{ flex: 1 }}
+                options={filteredTopics}
+                getOptionLabel={(option) => option.label}
+                value={selectedTopic || null}
+                noOptionsText="לא נמצא נושא"
+                onChange={(event, newValue, reason) => {
+                  if (reason === "clear") {
+                    setNewBook({ ...newBook, topicCode: "" });
+                    setInputValue("");
+                    setShowAddButton(false);
+                  } else if (newValue) {
+                    setNewBook({ ...newBook, topicCode: newValue.id });
+                  }
+                }}
+                inputValue={inputValue}
+                onInputChange={(event, newInputValue) => {
+                  setInputValue(newInputValue);
+                  const topicExists = filteredTopics.some(
+                    (t) => t.label === newInputValue
+                  );
+                  setShowAddButton(!topicExists && newInputValue.trim() !== "");
+                }}
+                renderInput={(params) => (
+                  <TextField {...params} label="נושא" fullWidth />
+                )}
+              />
+              {showAddButton && (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    width: 30,
+                    height: 30,
+                    alignSelf: 'center',
+                    minWidth: 0,
+                    padding: 0,
+                  }}
+                  onMouseDown={async () => {
+                    const topic = await saveTopic(inputValue);
+                    if (topic) {
+                      setNewBook((prev) => ({
+                        ...prev,
+                        topicCode: topic.id,
+                      }));
+                      setShowAddButton(false);
+                      setInputValue("");
+                    }
+                  }}
+                >
+                  <AddIcon fontSize="small" />
+                </Button>
+              )}
+            </Box>
+
             <TextField
               label="סימנים"
               value={newBook?.signs || ""}
@@ -593,6 +497,7 @@ const AdminBooks = () => {
               onChange={(e) =>
                 setNewBook({ ...newBook, notes: e.target.value })
               }
+              sx={{ minWidth: 0, gridColumn: "span 3" }}
             />
           </Box>
           <Box sx={{ display: "flex", justifyContent: "flex-end", gap: 2 }}>
