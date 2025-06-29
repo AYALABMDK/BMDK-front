@@ -207,8 +207,6 @@ const AdminBooks = () => {
                   "נושא",
                   "סימנים",
                   "נושא הסימנים",
-                  "גדולים במלאי",
-                  "קטנים במלאי",
                   "נמכרו (גדול)",
                   "נמכרו (קטן)",
                   "מחיר גדול",
@@ -269,8 +267,6 @@ const AdminBooks = () => {
                       </TableCell>
                     ))}
                     {[
-                      "bigBooksQuantity",
-                      "smallBooksQuantity",
                       "bigBooksSold",
                       "smallBooksSold",
                       "bigBookPrice",
