@@ -67,48 +67,7 @@ const Layout = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
-      {/* סיידבר מנהל */}
-      {isAdmin && (
-        <Box
-          sx={{
-            width: sidebarWidth,
-            bgcolor: "white",
-            borderRight: "1px solid #ddd",
-            transition: "width 0.3s",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <IconButton onClick={() => setCollapsed(!collapsed)} sx={{ mt: 1 }}>
-            {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-
-          <List sx={{ width: "100%" }}>
-            {adminMenuItems.map(({ text, icon, path }) => (
-              <Tooltip key={text} title={collapsed ? text : ""} placement="right">
-                <ListItemButton
-                  component={Link}
-                  to={path}
-                  sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: collapsed ? 0 : 1,
-                      justifyContent: "center",
-                    }}
-                  >
-                    {icon}
-                  </ListItemIcon>
-                  {!collapsed && <ListItemText primary={text} />}
-                </ListItemButton>
-              </Tooltip>
-            ))}
-          </List>
-        </Box>
-      )}
+    <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
 
       {/* תוכן ראשי */}
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
@@ -186,9 +145,56 @@ const Layout = () => {
         </AppBar>
 
         {/* כאן יופיע התוכן של כל דף בהתאם לראוטינג */}
-        <Box sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
+        {/* <Box sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
+          <Outlet />
+        </Box> */}
+      </Box>
+      <Box sx={{ display: "flex", flex: 1, flexDirection: "row-reverse", minHeight: 0 }}>
+          {/* תוכן העמוד */}
+          <Box sx={{ flexGrow: 1, minHeight: 'calc(100vh - 64px)', p: 2, overflow: "auto" }}>
           <Outlet />
         </Box>
+        
+        {/* סיידבר מנהל */}
+        {isAdmin && (
+          <Box
+            sx={{
+              width: collapsed ? 60 : 200,
+              bgcolor: "white",
+              borderLeft: "1px solid #ddd",
+              transition: "width 0.3s",
+            }}
+          >
+            <IconButton onClick={() => setCollapsed(!collapsed)} sx={{ mt: 1 }}>
+              {collapsed ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+
+            <List sx={{ width: "100%" }}>
+              {adminMenuItems.map(({ text, icon, path }) => (
+                <Tooltip key={text} title={collapsed ? text : ""} placement="right">
+                  <ListItemButton
+                    component={Link}
+                    to={path}
+                    sx={{ justifyContent: collapsed ? "center" : "flex-start" }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: collapsed ? 0 : 1,
+                        justifyContent: "center",
+                      }}
+                    >
+                      {icon}
+                    </ListItemIcon>
+                    {!collapsed && <ListItemText primary={text} />}
+                  </ListItemButton>
+                </Tooltip>
+              ))}
+            </List>
+          </Box>
+        )}
+
+      
       </Box>
 
       {/* דיאלוג יצירת קשר */}

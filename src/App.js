@@ -7,21 +7,15 @@ import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="App"
-    style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "141vh",
-      }}>
+    <div className="App" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <Router>
-         <div style={{ flex: 1 }}>
-        <Routing />
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <Routing />
         </div>
         <FloatingCartIcon />
         <ContactFab />
         <Footer />
       </Router>
-
     </div>
   );
 }
