@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Routing from "./components/Routing";
 import ContactFab from "./components/Contact/ContactFab";
 import FloatingCartIcon from "./components/Cart/FloatingCartIcon";
@@ -15,7 +14,6 @@ function App() {
         minHeight: "141vh",
       }}>
       <Router>
-        <Navbar />
          <div style={{ flex: 1 }}>
         <Routing />
         </div>
