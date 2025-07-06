@@ -30,3 +30,33 @@ export const useAddTopic = () => {
     },
   });
 };
+
+export const useUpdateTopic = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, name, notes }) =>
+      api.put(`/topics/${id}`, { name, notes }).then((res) => res.data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["topics"] });
+    },
+    onError: (error) => {
+      console.error("שגיאה בעדכון נושא:", error);
+    },
+  });
+};
+
+export const useDeleteTopic = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id) =>
+      api.delete(`/topics/${id}`).then((res) => res.data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["topics"] });
+    },
+    onError: (error) => {
+      console.error("שגיאה במחיקת נושא:", error);
+    },
+  });
+};

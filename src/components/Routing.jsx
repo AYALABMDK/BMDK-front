@@ -95,6 +95,7 @@ import AdminLessons from "./Admin/AdminLessons";
 import ProtectedAdminRoute from "./ProtectedAdminRoute";
 
 import Layout from "./Layout"; // ה-Layout הראשי שלך
+import AdminTopics from "./Admin/AdminTopics";
 
 export default function AppRoutes() {
   return (
@@ -117,6 +118,7 @@ export default function AppRoutes() {
         <Route path="videos" element={<AdminVideos />} />
         <Route path="inventory" element={<AdminInventory />} />
         <Route path="lessons" element={<AdminLessons />} />
+        <Route path="topics" element={<AdminTopics />} />
       </Route>
 
       {/* אזור אתר כללי עם Layout */}

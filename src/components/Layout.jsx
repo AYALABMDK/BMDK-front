@@ -55,6 +55,7 @@ const Layout = () => {
     { text: "וידאו", icon: <VideoLibraryIcon />, path: `${BASE_PATH}/admin/videos` },
     { text: "שיעורים", icon: <SchoolIcon />, path: `${BASE_PATH}/admin/lessons` },
     { text: "ניהול מלאי", icon: <InventoryIcon />, path: `${BASE_PATH}/admin/inventory` },
+    { text: "נושאים", icon: <InventoryIcon />, path: `${BASE_PATH}/admin/topics` },
   ];
 
   const navButtonStyle = {
