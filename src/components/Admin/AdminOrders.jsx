@@ -80,6 +80,51 @@ const AdminOrders = () => {
       setSelectedOrderToDelete(null);
     }
   };
+  const statusOrder = {
+  "התקבלה": 1,
+  "מוכנה למשלוח": 2,
+  "נשלחה": 3,
+  "הסתיימה": 4
+};
+
+const filteredOrders = orders.filter((order) => {
+  const valuesToSearch = [
+    order.orderCode,
+    order.fullName,
+    order.email,
+    order.phone,
+    order.status,
+    order.orderDate,
+    order.orderDate
+      ? new Date(order.orderDate).toLocaleDateString("he-IL", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        })
+      : "",
+    order.address?.street,
+    order.address?.city,
+    ...(order.products?.map((p) => p.bookCode || p.videoCode || "") || []),
+  ];
+  return valuesToSearch.some((value) =>
+    String(value).toLowerCase().includes(searchQuery.toLowerCase())
+  );
+});
+
+
+const sortedOrders = [...filteredOrders].sort((a, b) => {
+  const statusA = statusOrder[a.status] || 99;
+  const statusB = statusOrder[b.status] || 99;
+
+  if (statusA !== statusB) return statusA - statusB;
+
+
+  // אחר כך לפי סטטוס
+  const dateA = new Date(a.orderDate);
+  const dateB = new Date(b.orderDate);
+  return dateB - dateA;
+});
+
 
   const toggleEdit = (orderCode) => {
     const currentOrder = orders.find((o) => o.orderCode === orderCode);
@@ -277,29 +322,6 @@ const AdminOrders = () => {
       },
     });
   };
-  const filteredOrders = orders.filter((order) => {
-    const valuesToSearch = [
-      order.orderCode,
-      order.fullName,
-      order.email,
-      order.phone,
-      order.status,
-      order.orderDate,
-      order.orderDate
-        ? new Date(order.orderDate).toLocaleDateString("he-IL", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })
-        : "",
-      order.address?.street,
-      order.address?.city,
-      ...(order.products?.map((p) => p.bookCode || p.videoCode || "") || []),
-    ];
-    return valuesToSearch.some((value) =>
-      String(value).toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  });
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -382,7 +404,7 @@ const AdminOrders = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredOrders.map((order) => {
+              {sortedOrders.map((order) => {
                 const isOpen = expandedRows[order.orderCode];
                 const isEdit = isEditing[order.orderCode];
                 const address = order.address || {};

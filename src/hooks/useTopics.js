@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import api from "../services/api";
 
 // פונקציית שליפה מהשרת
@@ -8,7 +8,6 @@ const getTopics = async () => {
 };
 
 export const useGetTopics = () => {
-  debugger
   const queryFn = getTopics;
   const queryKey = ["topics"];
   const onError = (err) => {
@@ -16,4 +15,18 @@ export const useGetTopics = () => {
   };
 
   return useQuery({ queryKey, queryFn, onError });
+};
+
+export const useAddTopic = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (newTopic) =>
+      api.post("/topics", newTopic).then((res) => res.data),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["topics"] });
+    },
+    onError: (error) => {
+      console.error("שגיאה בהוספת נושא:", error);
+    },
+  });
 };

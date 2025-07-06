@@ -93,6 +93,8 @@ const Features = ({ onReadMoreClick }) => {
               />
             </Box>
             <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom  sx={{ mb: 8 }}>
+        {/* <Container sx={{ py: 6}}>
+            <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom> */}
                 הכשרה ומסלולים
             </Typography>
 
