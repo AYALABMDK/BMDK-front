@@ -41,9 +41,20 @@ const FloatingCartIcon = () => {
             boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
           }}
         >
-          <Badge badgeContent={totalQuantity} color="secondary">
+          {/* <Badge badgeContent={totalQuantity} color="secondary">
             <ShoppingCartIcon sx={{ fontSize: 40 }} />
-          </Badge>
+          </Badge> */}
+          <Badge
+  badgeContent={totalQuantity}
+  sx={{
+    "& .MuiBadge-badge": {
+      backgroundColor: "gray", // צבע רקע של המספר
+      color: "white", // צבע הטקסט של המספר
+    },
+  }}
+>
+  <ShoppingCartIcon sx={{ fontSize: 40 }} />
+</Badge>
         </IconButton>
       )}
 
