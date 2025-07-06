@@ -70,9 +70,9 @@ const HomePage = () => {
     <>
       <Hero onOrderBookClick={handleClick} />
       <LessonsPage />
-      <AboutPage />
+     
       <LessonExample />
-      <OnlineLearningPage />
+      <OnlineLearningPage /> <AboutPage />
       <BooksPage />
       <GalleryPage/>
       <ContactPage />

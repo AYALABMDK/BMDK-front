@@ -38,7 +38,7 @@ const AboutPage = () => {
     <Box
       sx={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+      background: "linear-gradient(135deg,#252e49, #558e9e, #558e9e)",
         py: 8,
         color: "white",
         direction: "rtl",

@@ -42,8 +42,20 @@ const BooksPage = () => {
   const categories = ["הכול", ...topics.map(t => t.name)];
 
   return (
-    <Box sx={{ background: "linear-gradient(to bottom right, #f3f4f6, #e0e7ff)", minHeight: "100vh", py: 8 }}>
+    <Box sx={{  minHeight: "100vh", py: 8 }}>
       <Container>
+        <Box sx={{ width: "100%", mb: 4 }}>
+  <img
+    src="/assets/b.png" // שנה לנתיב של התמונה שלך
+    alt="כותרת"
+    style={{
+      width: "100%",
+      maxHeight: "300px",
+      objectFit: "cover",
+      borderRadius: "12px",
+    }}
+  />
+</Box>
         <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
           מכירת ספרים
         </Typography>
@@ -55,8 +67,7 @@ const BooksPage = () => {
               key={cat}
               variant={cat === selectedCategory ? "contained" : "outlined"}
               onClick={() => setSelectedCategory(cat)}
-              sx={{ borderRadius: 3, px: 3 }}
-            >
+              sx={{borderRadius: 3,px: 3,}}>
               {cat}
             </Button>
           ))}

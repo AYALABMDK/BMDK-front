@@ -67,6 +67,7 @@ const CartDrawer = ({ open, onClose, handleRemove, goToCart }) => {
             justifyContent: "space-between",
             alignItems: "center",
             mb: 1,
+          
           }}
         >
           <Typography

@@ -94,9 +94,11 @@ const Cart = () => {
                         color: "#0d47a1",
                         fontWeight: 700,
                         fontSize: "1.05rem",
-                        borderBottom: "2px solid #90caf9",
+                        // borderBottom: "2px solid #90caf9",
                         textAlign: "center",
                         py: 2,
+                        backgroundColor: '#efefef',
+                        color: '#558e9e'
                       }}
                     >
                       {header}

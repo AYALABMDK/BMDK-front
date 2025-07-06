@@ -3,6 +3,8 @@ import {
   Grid,
   Typography,
   CircularProgress,
+  Box,
+  Container,
 } from "@mui/material";
 import { useGetVideos } from "../hooks/useVideo";
 import { useGetTopics } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
@@ -22,6 +24,7 @@ const OnlineLearningPage = () => {
   };
 
   return (
+            <Container sx={{ py: 6, minHeight: "95vh",mb: 10 }}>
     <div
       style={{
         padding: "2rem",
@@ -30,7 +33,18 @@ const OnlineLearningPage = () => {
         flexDirection: "column",
         minHeight: "100vh",
       }}
-    >
+    ><Box sx={{ width: "100%", mb: 4 }}>
+  <img
+    src="/assets/c.png" // שנה לנתיב של התמונה שלך
+    alt="כותרת"
+    style={{
+      width: "100%",
+      maxHeight: "300px",
+      objectFit: "cover",
+      borderRadius: "12px",
+    }}
+  />
+</Box>
       <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
         למידה מקוונת
       </Typography>
@@ -78,6 +92,8 @@ const OnlineLearningPage = () => {
         </Grid>
       )}
     </div>
+    </Container>
+
   );
 };
 

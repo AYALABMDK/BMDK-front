@@ -145,11 +145,13 @@ const Checkout = () => {
                 <TableCell
                   key={idx}
                   sx={{
-                    bgcolor: "#e3f2fd",
-                    color: "#0d47a1",
+                    // bgcolor: "#e3f2fd",
+                    // color: "#0d47a1",
                     fontWeight: 700,
                     fontSize: "1.05rem",
                     textAlign: "center",
+                           backgroundColor: '#efefef',
+                        color: '#558e9e'
                   }}
                 >
                   {header}

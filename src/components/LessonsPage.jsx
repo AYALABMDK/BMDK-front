@@ -37,16 +37,24 @@ const FeatureCard = ({ title, text, id, onReadMore }) => (
             <Typography variant="h6" fontWeight="bold" gutterBottom>
                 {title}
             </Typography>
-            <Typography variant="body2">{text}</Typography>
+            {/* <Typography variant="body2">{text}</Typography> */}
         </CardContent>
-        <CardActions sx={{ justifyContent: "center" }}>
-            <Button
+        <CardActions sx={{ justifyContent: "center"}}>
+            {/* <Button
                 size="small"
                 endIcon={<Star />}
                 onClick={() => onReadMore({ id, title, text })}
+                // color='#252e49' 
             >
-                קרא עוד
-            </Button>
+שיעורים בנושא            </Button> */}
+ <Button
+          size="small"
+          startIcon={<Star />}
+
+                onClick={() => onReadMore({ id, title, text })}
+        >
+          שיעורים הנלמדים בנושא
+        </Button>
         </CardActions>
     </Card>
 );
@@ -71,8 +79,20 @@ const Features = ({ onReadMoreClick }) => {
     }
 
     return (
-        <Container sx={{ py: 6, minHeight: "95vh", }}>
-            <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
+        <Container sx={{ py: 6, minHeight: "95vh",mb: 10 }}>
+            <Box sx={{ width: "100%", mb: 4 }}>
+              <img
+                src="/assets/a.png" // שנה לנתיב של התמונה שלך
+                alt="כותרת"
+                style={{
+                  width: "100%",
+                  maxHeight: "300px",
+                  objectFit: "cover",
+                  borderRadius: "12px",
+                }}
+              />
+            </Box>
+            <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom  sx={{ mb: 8 }}>
                 הכשרה ומסלולים
             </Typography>
 
