@@ -1,8 +1,23 @@
 import React, { useState } from "react";
 import {
-    Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
-    Paper, IconButton, TextField, Tooltip, Typography, Box,
-    Button, Dialog, DialogTitle, DialogContent, DialogActions
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    IconButton,
+    TextField,
+    Tooltip,
+    Typography,
+    Box,
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    InputAdornment,
 } from "@mui/material";
 import { Delete, Save, Edit, Search } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
@@ -71,24 +86,60 @@ const AdminTopics = () => {
     return (
         <Box sx={{ p: 4 }}>
             {/* Header and Search */}
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-                <Typography variant="h4" fontWeight="bold">ניהול נושאים</Typography>
-                <TextField
-                    size="small"
-                    placeholder="חפש נושא"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    InputProps={{
-                        startAdornment: <Search color="action" />,
+            <Box sx={{ p: 4 }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        mb: 3,
                     }}
-                />
-                <Button
-                    startIcon={<AddIcon />}
-                    variant="contained"
-                    onClick={() => setDialogOpen(true)}
                 >
-                    הוספת נושא חדש
-                </Button>
+                    {/* רווח בצד ימין לשמירה על יישור (כמו בדוגמה שלך עם ספרים) */}
+                    <Box sx={{ width: 140 }} />
+
+                    {/* כותרת וחיפוש במרכז */}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Typography
+                            variant="h4"
+                            fontWeight="bold"
+                            color="#252e49"
+                            sx={{ mb: 2 }}
+                        >
+                            ניהול  נושאים
+                        </Typography>
+                        <TextField
+                            size="small"
+                            placeholder="חפש נושא'"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            sx={{ width: 300, backgroundColor: "#f7f7f7" }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search color="action" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Box>
+
+                    {/* כפתור הוספת נושא חדש בצד שמאל */}
+                    <Button
+                        startIcon={<AddIcon />}
+                        variant="contained"
+                        color="primary"
+                        onClick={() => setDialogOpen(true)}
+                    >
+                        הוספת נושא חדש
+                    </Button>
+                </Box>
             </Box>
 
             {/* Table */}
