@@ -1,19 +1,6 @@
-// import { createTheme } from '@mui/material/styles';
-
-// const theme = createTheme({
-//   direction: 'rtl',
-//   typography: {
-//     fontFamily: 'Arial, sans-serif',
-//   },
-// });
-
-// export default theme;
-
-
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
-  // 
   direction: 'rtl',
   typography: {
     fontFamily: 'Assistant, sans-serif',
@@ -22,18 +9,24 @@ const theme = createTheme({
     h3: { fontFamily: 'Heebo, sans-serif' },
     button: { fontFamily: 'Assistant, sans-serif' },
   },
-   palette: {
+  palette: {
     text: {
-      primary: '#252e49',   // צבע טקסט עיקרי (כחול כהה לדוגמה)
-      //  secondary: '#5c6bc0', // צבע טקסט משני
+      primary: '#252e49',
     },
-  },
-   palette: {
     primary: {
-      main: '#558e9e', // הצבע שלך במקום כחול
+      main: '#558e9e',
     },
   },
-  
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        '::selection': {
+          backgroundColor: '#558e9e', // צבע ההדגשה שלך 
+          color: 'white',           // צבע הטקסט בזמן ההדגשה
+        },
+      },
+    },
+  },
 });
 
 export default theme;
