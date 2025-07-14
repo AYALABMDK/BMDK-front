@@ -55,7 +55,6 @@ const AdminOrders = () => {
   const { data: videos = [] } = useGetVideos();
   const [mailDialogOpen, setMailDialogOpen] = useState(false);
   const [selectedOrderForMail, setSelectedOrderForMail] = useState(null);
-  const [selectedMailTopic, setSelectedMailTopic] = useState("הזמנה שנשלחה");
   const [customEmailOpen, setCustomEmailOpen] = useState(false);
   const [loadingSendCustom, setLoadingSendCustom] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
@@ -229,11 +228,6 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
     if (!updateData) return;
     updateMutation.mutate({ orderCode, updateData });
     setIsEditing((prev) => ({ ...prev, [orderCode]: false }));
-  };
-  const openMailDialog = (order) => {
-    setSelectedOrderForMail(order);
-    setSelectedMailTopic("הזמנה שנשלחה");
-    setMailDialogOpen(true);
   };
   const sendStatusMutation = useSendStatusEmail();
 

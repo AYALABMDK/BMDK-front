@@ -124,11 +124,7 @@ const AdminLessons = () => {
     setEditMode((prev) => ({ ...prev, [code]: false }));
   };
 
-  const handleDelete = (code) => {
-    if (window.confirm("האם למחוק את השיעור?")) {
-      deleteLesson.mutate(code);
-    }
-  };
+
 
   const handleSaveNew = () => {
     addLesson.mutate(newLesson, {

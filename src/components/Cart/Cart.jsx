@@ -91,7 +91,6 @@ const Cart = () => {
                       key={idx}
                       sx={{
                         bgcolor: "#e3f2fd",
-                        color: "#0d47a1",
                         fontWeight: 700,
                         fontSize: "1.05rem",
                         // borderBottom: "2px solid #90caf9",
