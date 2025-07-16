@@ -2,9 +2,6 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 
 const images = [
-  { id: 1, url: "/assets/gallery/gallery1.jpg", alt: "תמונה 1" },
-  { id: 2, url: "/assets/gallery/gallery2.jpg", alt: "תמונה 2" },
-  { id: 3, url: "/assets/gallery/gallery3.jpg", alt: "תמונה 3" },
   { id: 4, url: "/assets/gallery/gallery4.jpg", alt: "תמונה 4" },
   { id: 5, url: "/assets/gallery/gallery5.jpg", alt: "תמונה 5" },
   { id: 6, url: "/assets/gallery/gallery6.jpg", alt: "תמונה 6" },
