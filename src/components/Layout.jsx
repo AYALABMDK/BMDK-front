@@ -115,7 +115,7 @@ const Layout = () => {
       <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>
         {/* הניווט העליון */}
         <AppBar
-          position="static"
+          position="fixed"
           sx={{
             bgcolor: "#ffffff",
             color: "#333",
@@ -232,8 +232,10 @@ const Layout = () => {
             flexGrow: 1,
             p: 2,
             overflow: "auto",
+             marginTop: "50px", // חשוב!
           }}
         >
+          
           <Outlet />
         </Box>
 
