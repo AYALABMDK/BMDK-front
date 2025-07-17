@@ -51,27 +51,26 @@ const LessonExample = () => {
           {/* סרטון למעלה */}
           <Paper
             elevation={6}
-  
             sx={{
-    position: "relative",
-    paddingTop: isSmall ? "56.25%" : "50%", // יחס של 16:9 או מותאם
-    width: "100%",
-  }}
+              position: "relative",
+              paddingTop: isSmall ? "56.25%" : "50%", // יחס של 16:9 או מותאם
+              width: "100%",
+            }}
           >
             <iframe
-    title="video-preview"
-    src="https://drive.google.com/file/d/1kjzmEUn5B3morF7-GDghXYtKID-sDROL/preview"
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      border: "none",
-    }}
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-  ></iframe>
+              title="video-preview"
+              src="https://drive.google.com/file/d/1kjzmEUn5B3morF7-GDghXYtKID-sDROL/preview"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </Paper>
 
           {/* כפתור להורדה בלבד */}
@@ -81,7 +80,7 @@ const LessonExample = () => {
               color="primary"
               size="large"
               startIcon={<CloudDownloadIcon />}
-              href="/a.pdf"
+              href="/bookExample.pdf"
               target="_blank"
               sx={{
                 borderRadius: "50px",
