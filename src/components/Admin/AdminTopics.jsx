@@ -42,6 +42,12 @@ const AdminTopics = () => {
         t.name?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    // const filteredTopics = topics.filter((t) =>
+    //     t.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //     t.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //     t.notes?.toLowerCase().includes(searchQuery.toLowerCase())
+    // );
+
     const handleChange = (id, field, value) => {
         setEditedTopics((prev) => ({
             ...prev,
@@ -116,7 +122,7 @@ const AdminTopics = () => {
                         </Typography>
                         <TextField
                             size="small"
-                            placeholder="חפש נושא'"
+                            placeholder="חפש נושא" // Change it when changing the searchQuery
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             sx={{ width: 300, backgroundColor: "#f7f7f7" }}
@@ -137,7 +143,7 @@ const AdminTopics = () => {
                         color="primary"
                         onClick={() => setDialogOpen(true)}
                     >
-                        הוספת שיעור חדש
+                        הוספת נושא חדש
                     </Button>
                 </Box>
             </Box>
