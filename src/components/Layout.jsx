@@ -227,30 +227,35 @@ const Layout = () => {
         }}
       >
         {/* תוכן העמוד */}
-        <Box
-          sx={{
-            flexGrow: 1,
-            p: 2,
-            overflow: "auto",
-             marginTop: "50px", // חשוב!
-          }}
-        >
-          
-          <Outlet />
+        <Box sx={{ flexGrow: 1, overflow: "auto" }}>
+          <Toolbar /> {/* Automatically matches AppBar height */}
+          <Box sx={{ p: 2 }}>
+            <Outlet />
+          </Box>
         </Box>
+
 
         {/* סיידבר מנהל */}
         {isAdmin && (
           <Box
             sx={{
               width: collapsed ? 60 : 200,
+              flexShrink: 0,            // ❗️Prevents it from shrinking
+              flexGrow: 0,              // ❗️Prevents it from growing
+              flexBasis: collapsed ? 60 : 200, // Optional backup
               bgcolor: "white",
               borderLeft: "1px solid #ddd",
-              transition: "width 0.3s",
-              height: "auto", // חשוב! רק עד גובה התוכן
-              alignSelf: "flex-start", // שהסיידבר לא יתפרס לגובה מלא
+              height: "auto",
+              alignSelf: "flex-start",
             }}
           >
+            <Toolbar
+              sx={(theme) => ({
+                minHeight: 64,
+                [theme.breakpoints.down(1178)]: {
+                  minHeight: 96,
+                },
+              })} /> {/* Keeps spacing under the AppBar */}
             <IconButton
               onClick={() => setCollapsed(!collapsed)}
               sx={{
@@ -260,11 +265,7 @@ const Layout = () => {
                 alignSelf: "center",
               }}
             >
-              {collapsed ? (
-                <MenuOpenSharpIcon sx={{ fontSize: "1.7rem" }} />
-              ) : (
-                <MenuOpenSharpIcon sx={{ fontSize: "1.7rem" }} />
-              )}
+              <MenuOpenSharpIcon sx={{ fontSize: "1.7rem" }} />
             </IconButton>
 
             <List sx={{ width: "100%" }}>

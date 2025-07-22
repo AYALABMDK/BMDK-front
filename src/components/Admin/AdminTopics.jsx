@@ -39,14 +39,10 @@ const AdminTopics = () => {
     const [selectedToDelete, setSelectedToDelete] = useState(null);
 
     const filteredTopics = topics.filter((t) =>
-        t.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        t.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.id?.toString().includes(searchQuery.toLowerCase()) ||
+        t.notes?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
-    // const filteredTopics = topics.filter((t) =>
-    //     t.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //     t.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    //     t.notes?.toLowerCase().includes(searchQuery.toLowerCase())
-    // );
 
     const handleChange = (id, field, value) => {
         setEditedTopics((prev) => ({
