@@ -13,6 +13,7 @@ import {
   ListItemText,
   Dialog,
 } from "@mui/material";
+import PhotoLibraryIcon from "@mui/icons-material/PhotoLibrary"; // הוסיפי למעלה
 import CloseIcon from "@mui/icons-material/Close";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -98,6 +99,13 @@ const Layout = () => {
       path: `${BASE_PATH}/admin/topics`,
       hoverColor: "#d7ccc8",
     },
+    {
+  text: "עריכת גלריה",
+  shortText: "גלריה",
+  icon: <PhotoLibraryIcon />,
+  path: `${BASE_PATH}/admin/gallery-editor`,
+  hoverColor: "#ffe0b2",
+},
   ];
 
   const navButtonStyle = {
