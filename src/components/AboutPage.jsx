@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Typography,
@@ -8,37 +8,51 @@ import {
   Avatar,
 } from "@mui/material";
 import { motion } from "framer-motion";
-
-const teamMembers = [
-  {
-    name: " הרב אייל גיאת ",
-    role: "ראש בית מדרש ללימודי דיינות",
-    avatar: "https://i.pravatar.cc/150?img=1",
-    description:
-      "אילה מובילה את הצוות עם תשוקה להוראה ולחדשנות בחינוך.",
-  },
-//   {
-//     name: "יוסי לוי",
-//     role: "מנהל טכנולוגי",
-//     avatar: "https://i.pravatar.cc/150?img=2",
-//     description:
-//       "מומחה טכנולוגיות עם ניסיון עשיר בפיתוח מערכות מתקדמות.",
-//   },
-//   {
-//     name: "רותם ישראלי",
-//     role: "מומחית תוכן",
-//     avatar: "https://i.pravatar.cc/150?img=3",
-//     description:
-//       "כותבת ומפתחת תוכן איכותי ומעמיק ללמידה יעילה.",
-//   },
-];
+import { useGetPageByKey, useUpdatePage } from "../hooks/usePages";
+import EditableField from "../components/EditableField";
 
 const AboutPage = () => {
+  const { data, isLoading } = useGetPageByKey("about");
+  const updatePageMutation = useUpdatePage();
+  const [pageData, setPageData] = useState(null);
+
+  useEffect(() => {
+    if (data) setPageData(data);
+  }, [data]);
+
+  const handleFieldSave = (fieldName, newValue) => {
+    setPageData((prev) => ({
+      ...prev,
+      [fieldName]: newValue,
+    }));
+    updatePageMutation.mutate({
+      key: "about",
+      updateData: { [fieldName]: newValue },
+    });
+  };
+
+  if (isLoading || !pageData) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h6" color="white">
+          טוען...
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
         minHeight: "100vh",
-      background: "linear-gradient(135deg,#252e49, #558e9e, #558e9e)",
+        background: "linear-gradient(135deg,#252e49, #558e9e, #558e9e)",
         py: 8,
         color: "white",
         direction: "rtl",
@@ -50,22 +64,20 @@ const AboutPage = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <Typography
+          <EditableField
             variant="h3"
-            fontWeight="bold"
-            gutterBottom
-            sx={{ textAlign: "center", mb: 3 }}
-          >
-            עלינו
-          </Typography>
-  <Typography
+            value={pageData.title}
+            onSave={(val) => handleFieldSave("title", val)}
+            sx={{ textAlign: "center", mb: 3, fontWeight: "bold" }}
+          />
+
+          <EditableField
             variant="h6"
-            fontWeight="bold"
-            gutterBottom
-            sx={{ textAlign: "center", mb: 3 }}
-          >
-            שיטת לימוד "דרך קצרה"
-          </Typography>
+            value={pageData.subtitle}
+            onSave={(val) => handleFieldSave("subtitle", val)}
+            sx={{ textAlign: "center", mb: 3, fontWeight: "bold" }}
+          />
+          
 
           <Paper
             elevation={8}
@@ -79,21 +91,24 @@ const AboutPage = () => {
               lineHeight: 1.6,
             }}
           >
-            אנו ב"דרך קצרה" מאמינים בלמידה איכותית, חדשנית ונגישה לכל אדם.
-            המטרה שלנו היא להעניק חווית למידה מעמיקה, מותאמת אישית, ועם דגש על תוכן עשיר וממוקד.
+            <EditableField
+              value={pageData.description}
+              onSave={(val) => handleFieldSave("description", val)}
+              multiline
+              variant="body1"
+            />
           </Paper>
 
-          <Typography
+          <EditableField
             variant="h4"
-            fontWeight="bold"
-            gutterBottom
-            sx={{ mb: 4, textAlign: "center" }}
-          >
-מוסר השיעור          </Typography>
+            value={pageData.teacherTitle}
+            onSave={(val) => handleFieldSave("teacherTitle", val)}
+            sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}
+          />
 
           <Grid container spacing={4} justifyContent="center">
-            {teamMembers.map(({ name, role, avatar, description }) => (
-              <Grid item xs={12} sm={6} md={4} key={name}>
+            {pageData.teamMembers?.map((member, index) => (
+              <Grid item xs={12} sm={6} md={4} key={member.name + index}>
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
@@ -113,20 +128,49 @@ const AboutPage = () => {
                     }}
                   >
                     <Avatar
-                      src={avatar}
-                      alt={name}
-                      sx={{ width: 100, height: 100, mb: 2, border: "2px solid white" }}
+                      src={member.avatar}
+                      alt={member.name}
+                      sx={{
+                        width: 100,
+                        height: 100,
+                        mb: 2,
+                        border: "2px solid white",
+                      }}
                     />
-                    <Typography variant="h6" fontWeight="bold" gutterBottom>
-                      {name}
-                    </Typography>
-                    <Typography
+                    <EditableField
+                      variant="h6"
+                      value={member.name}
+                      onSave={(val) => {
+                        const updatedMembers = [...pageData.teamMembers];
+                        updatedMembers[index].name = val;
+                        handleFieldSave("teamMembers", updatedMembers);
+                      }}
+                      sx={{ fontWeight: "bold" }}
+                    />
+                    <EditableField
                       variant="subtitle2"
-                      sx={{ mb: 2, fontStyle: "italic", opacity: 0.8 }}
-                    >
-                      {role}
-                    </Typography>
-                    <Typography variant="body2">{description}</Typography>
+                      value={member.role}
+                      onSave={(val) => {
+                        const updatedMembers = [...pageData.teamMembers];
+                        updatedMembers[index].role = val;
+                        handleFieldSave("teamMembers", updatedMembers);
+                      }}
+                      sx={{
+                        mb: 2,
+                        fontStyle: "italic",
+                        opacity: 0.8,
+                      }}
+                    />
+                    <EditableField
+                      variant="body2"
+                      value={member.description}
+                      onSave={(val) => {
+                        const updatedMembers = [...pageData.teamMembers];
+                        updatedMembers[index].description = val;
+                        handleFieldSave("teamMembers", updatedMembers);
+                      }}
+                      multiline
+                    />
                   </Paper>
                 </motion.div>
               </Grid>
@@ -139,4 +183,3 @@ const AboutPage = () => {
 };
 
 export default AboutPage;
-//               
