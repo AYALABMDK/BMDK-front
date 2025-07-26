@@ -96,6 +96,8 @@ const AboutPage = () => {
               onSave={(val) => handleFieldSave("description", val)}
               multiline
               variant="body1"
+              sx={{ whiteSpace: "pre-line", direction: "rtl", textAlign: "center" }}
+              
             />
           </Paper>
 
@@ -163,6 +165,7 @@ const AboutPage = () => {
                     />
                     <EditableField
                       variant="body2"
+                        sx={{ whiteSpace: "pre-line", direction: "rtl", textAlign: "center" }}
                       value={member.description}
                       onSave={(val) => {
                         const updatedMembers = [...pageData.teamMembers];

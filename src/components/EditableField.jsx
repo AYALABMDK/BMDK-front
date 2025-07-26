@@ -49,11 +49,9 @@ const EditableField = ({
       variant={variant}
       sx={{ ...sx, cursor: "pointer" }}
       onDoubleClick={() => setEditing(true)}
+       dir="rtl"
     >
       {value}
-      {/* <IconButton size="small" sx={{ ml: 1 }} onClick={() => setEditing(true)}>
-        <Edit fontSize="small" />
-      </IconButton> */}
     </Typography>
   );
 };
