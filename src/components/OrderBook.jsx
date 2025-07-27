@@ -44,7 +44,7 @@ const BooksPage = () => {
   return (
     <Box sx={{ minHeight: "100vh", py: 8 }}>
       <Container>
-<PageHeaderImage src="/assets/b.png" alt="מכירת ספרים" />
+<PageHeaderImage src="/assets/bb.png" alt="מכירת ספרים" />
 
         <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
           מכירת ספרים
