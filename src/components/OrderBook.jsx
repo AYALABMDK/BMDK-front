@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import {
-  Box, Button, Typography, Grid, Container,
-} from "@mui/material";
+import { Box, Button, Typography, Grid, Container } from "@mui/material";
 import { motion } from "framer-motion";
 import { useGetBooks, useGetBooksByTopicCode } from "../hooks/useBooks";
 import { useGetTopics } from "../hooks/useTopics";
 import BookPurchaseModal from "../components/BookPurchaseModal";
-import ProductCard from "../components/ProductCard"; 
+import ProductCard from "../components/ProductCard";
 
 const BooksPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -20,7 +18,7 @@ const BooksPage = () => {
 
   const { data: topics = [] } = useGetTopics();
 
-  const selectedTopic = topics.find(t => t.name === selectedCategory);
+  const selectedTopic = topics.find((t) => t.name === selectedCategory);
   const topicCode = selectedTopic ? selectedTopic.id : null;
 
   const {
@@ -36,38 +34,72 @@ const BooksPage = () => {
   } = useGetBooks();
 
   const booksToDisplay = selectedCategory === "הכול" ? allBooks : booksByTopic;
-  const isLoading = selectedCategory === "הכול" ? isLoadingAll : isLoadingByTopic;
+  const isLoading =
+    selectedCategory === "הכול" ? isLoadingAll : isLoadingByTopic;
   const isError = selectedCategory === "הכול" ? isErrorAll : isErrorByTopic;
 
-  const categories = ["הכול", ...topics.map(t => t.name)];
+  const categories = ["הכול", ...topics.map((t) => t.name)];
 
   return (
-    <Box sx={{  minHeight: "100vh", py: 8 }}>
+    <Box sx={{ minHeight: "100vh", py: 8 }}>
       <Container>
         <Box sx={{ width: "100%", mb: 4 }}>
-  <img
-    src="/assets/b.png" // שנה לנתיב של התמונה שלך
-    alt="כותרת"
-    style={{
-      width: "100%",
-      maxHeight: "300px",
-      objectFit: "cover",
-      borderRadius: "12px",
-    }}
-  />
-</Box>
-        <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
+          <img
+            src="/assets/b.png" // שנה לנתיב של התמונה שלך
+            alt="כותרת"
+            style={{
+              width: "100%",
+              maxHeight: "300px",
+              objectFit: "cover",
+              borderRadius: "12px",
+            }}
+          />
+        </Box>
+        <Typography
+          variant="h3"
+          fontWeight="bold"
+          textAlign="center"
+          gutterBottom
+        >
           מכירת ספרים
         </Typography>
+        <Box textAlign="center" mt={2} mb={4}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            // startIcon={<CloudDownloadIcon />}
+            href="/bookExample.pdf"
+            target="_blank"
+            sx={{
+              borderRadius: "12px",
+              px: 5,
+              py: 1.5,
+              fontWeight: "bold",
+              fontSize: "1rem",
+            }}
+          >
+            לצפייה בסיכום לדוגמא לחצו כאן{" "}
+          </Button>
+        </Box>
 
         {/* קטגוריות */}
-        <Box sx={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 1.5, my: 4 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: 1.5,
+            my: 4,
+          }}
+        >
           {categories.map((cat) => (
             <Button
               key={cat}
               variant={cat === selectedCategory ? "contained" : "outlined"}
               onClick={() => setSelectedCategory(cat)}
-              sx={{borderRadius: 3,px: 3,}}>
+              sx={{ borderRadius: 3, px: 3 }}
+            >
               {cat}
             </Button>
           ))}
@@ -77,13 +109,18 @@ const BooksPage = () => {
         {isLoading ? (
           <Typography textAlign="center">טוען ספרים...</Typography>
         ) : isError ? (
-          <Typography color="error" textAlign="center">אירעה שגיאה בטעינת הספרים.</Typography>
+          <Typography color="error" textAlign="center">
+            אירעה שגיאה בטעינת הספרים.
+          </Typography>
         ) : (
           <Grid container spacing={3} justifyContent="center">
             {booksToDisplay && booksToDisplay.length ? (
               booksToDisplay.map((book) => (
-                <Grid item xs={12}  sm={6} md={3}key={book._id}>
-                  <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
+                <Grid item xs={12} sm={6} md={3} key={book._id}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.3 }}
+                  >
                     <ProductCard
                       title={book.signsTopic || book.title || "כותרת לא זמינה"}
                       author={book.signs || book.author || "מחבר לא זמין"}
@@ -107,7 +144,7 @@ const BooksPage = () => {
           open={modalOpen}
           onClose={() => setModalOpen(false)}
           book={selectedBook}
-          onAddToCart={(item) => console.log('הוסף לסל:', item)}
+          onAddToCart={(item) => console.log("הוסף לסל:", item)}
         />
       </Container>
     </Box>
