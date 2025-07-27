@@ -4,6 +4,7 @@ import Routing from "./components/Routing";
 import ContactFab from "./components/Contact/ContactFab";
 import FloatingCartIcon from "./components/Cart/FloatingCartIcon";
 import Footer from "./components/Footer";
+import UnderConstructionNotice from "./components/UnderConstructionNotice";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
           <Routing />
         </div>
+        <UnderConstructionNotice />
         <FloatingCartIcon />
         <ContactFab />
         <Footer />
