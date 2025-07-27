@@ -142,7 +142,7 @@ const Layout = () => {
                 to={`${BASE_PATH}/lessons`}
                 sx={navButtonStyle}
               >
-                הכשרה ומסלולים
+מסלולי הכשרה
               </Button>
               <Button
                 component={Link}

@@ -17,7 +17,7 @@ const Footer = () => {
               ראשי
             </Typography>
             <Link href="/" underline="none" color="inherit" display="block" sx={{ fontSize: "1.1rem" }}>דרך קצרה</Link>
-            <Link href="lessons" underline="none" color="inherit" display="block" sx={{ fontSize: "1.1rem" }}>הכשרה ומסלולים</Link>
+            <Link href="lessons" underline="none" color="inherit" display="block" sx={{ fontSize: "1.1rem" }}>מסלולי הכשרה</Link>
             <Link href="OnlineLearning" underline="none" color="inherit" display="block" sx={{ fontSize: "1.1rem" }}>למידה מקוונת</Link>
           </Grid>
 

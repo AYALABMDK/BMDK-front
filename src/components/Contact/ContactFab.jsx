@@ -26,22 +26,16 @@ const ContactFab = () => {
           <EmailIcon sx={{ fontSize: 40 }} />
         </Fab>
       </Tooltip>
-
-      <Dialog
+       <Dialog
         open={open}
         onClose={() => setOpen(false)}
         maxWidth="md"
         fullWidth
       >
-        <Box sx={{ position: "relative" }}>
+        <Box sx={{ position: "relative", p: 2 }}>
           <IconButton
             onClick={() => setOpen(false)}
-            sx={{
-              position: "absolute",
-              top: 8,
-              right: 8,
-              zIndex: 1,
-            }}
+            sx={{ position: "absolute", top: 8, right: 8, zIndex: 1 }}
           >
             <CloseIcon />
           </IconButton>

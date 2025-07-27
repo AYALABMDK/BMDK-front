@@ -7,9 +7,10 @@ import {
   Container,
 } from "@mui/material";
 import { useGetVideos } from "../hooks/useVideo";
-import { useGetTopics } from "../hooks/useTopics"; // ודא שזה הנתיב הנכון
+import { useGetTopics } from "../hooks/useTopics";
 import { useCart } from "./Cart/CartContext";
 import ProductCard from "../components/ProductCard";
+import PageHeaderImage from "./PageHeaderImage";
 
 const OnlineLearningPage = () => {
   const { data: videos = [], isLoading, isError } = useGetVideos();
@@ -24,27 +25,18 @@ const OnlineLearningPage = () => {
   };
 
   return (
-            <Container sx={{ py: 6, minHeight: "95vh",mb: 10 }}>
+        <Box sx={{  minHeight: "100vh", py: 8 }}>
+            <Container>
     <div
       style={{
-        padding: "2rem",
         textAlign: "center",
         // display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
       }}
-    ><Box sx={{ width: "100%", mb: 4 }}>
-  <img
-    src="/assets/c.png" // שנה לנתיב של התמונה שלך
-    alt="כותרת"
-    style={{
-      width: "100%",
-      maxHeight: "300px",
-      objectFit: "cover",
-      borderRadius: "12px",
-    }}
-  />
-</Box>
+    >
+<PageHeaderImage src="/assets/ccc.png" alt="למידה מקוונת" />
+
       <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom>
         למידה מקוונת
       </Typography>
@@ -93,7 +85,7 @@ const OnlineLearningPage = () => {
       )}
     </div>
     </Container>
-
+</Box>
   );
 };
 

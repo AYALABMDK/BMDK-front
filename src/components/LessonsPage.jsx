@@ -18,6 +18,7 @@ import { useGetTopics } from "../hooks/useTopics";
 import { useGetLessonsByTopicCode } from "../hooks/useLessons";
 import { useState } from "react";
 import { HDate } from "@hebcal/core";
+import PageHeaderImage from "./PageHeaderImage";
 
 const FeatureCard = ({ title, text, id, onReadMore }) => (
     <Card
@@ -79,23 +80,13 @@ const Features = ({ onReadMoreClick }) => {
     }
 
     return (
-        <Container sx={{ py: 6, minHeight: "95vh",mb: 10 }}>
-            <Box sx={{ width: "100%", mb: 4 }}>
-              <img
-                src="/assets/a.png" // שנה לנתיב של התמונה שלך
-                alt="כותרת"
-                style={{
-                  width: "100%",
-                  maxHeight: "300px",
-                  objectFit: "cover",
-                  borderRadius: "12px",
-                }}
-              />
-            </Box>
+        <Box sx={{  minHeight: "100vh", py: 8 }}>
+        <Container>
+           
+            <PageHeaderImage src="/assets/a.png" alt="מסלולי הכשרה" />
+
             <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom  sx={{ mb: 8 }}>
-        {/* <Container sx={{ py: 6}}>
-            <Typography variant="h3" fontWeight="bold" textAlign="center" gutterBottom> */}
-                הכשרה ומסלולים
+                מסלולי הכשרה
             </Typography>
 
             {topics.length === 0 ? (
@@ -121,6 +112,7 @@ const Features = ({ onReadMoreClick }) => {
                 </Grid>
             )}
         </Container>
+         </Box>
         );
 };
 
