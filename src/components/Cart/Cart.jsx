@@ -64,113 +64,114 @@ const Cart = () => {
           </Typography>
         ) : (
           <>
-            <Table
-              sx={{
-                borderCollapse: "separate",
-                borderSpacing: "0 10px",
-                "& td": {
-                  bgcolor: "white",
-                  fontSize: "0.95rem",
-                  borderRadius: 1,
-                  paddingY: 1,
-                },
-              }}
-            >
-              <TableHead>
-                <TableRow>
-                  {[
-                    "סוג מוצר",
-                    "תיאור",
-                    "גודל",
-                    "כמות",
-                    "מחיר ליחידה",
-                    'סה"כ',
-                    "",
-                  ].map((header, idx) => (
-                    <TableCell
-                      key={idx}
-                      sx={{
-                        bgcolor: "#e3f2fd",
-                        fontWeight: 700,
-                        fontSize: "1.05rem",
-                        // borderBottom: "2px solid #90caf9",
-                        textAlign: "center",
-                        py: 2,
-                        backgroundColor: '#efefef',
-                        color: '#558e9e'
-                      }}
-                    >
-                      {header}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {cartItems.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      {isBook(item) ? "ספר" : "סרטון"}
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      {isBook(item) ? (
-                        <>
-                          <Typography>{item.signsTopic}</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {item.signs}
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <Typography>{item.title}</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {item.signsTopic}
-                          </Typography>
-                        </>
-                      )}
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      {isBook(item) ? (
-                        <FormControl size="small" sx={{ minWidth: 100 }}>
-                          <Select
-                            value={item.size}
-                            onChange={(e) => handleSizeChange(e, index)}
-                          >
-                            <MenuItem value="קטן">קטן</MenuItem>
-                            <MenuItem value="גדול">גדול</MenuItem>
-                          </Select>
-                        </FormControl>
-                      ) : (
-                        "-"
-                      )}
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      <TextField
-                        type="number"
-                        size="small"
-                        value={item.quantity}
-                        onChange={(e) => handleQuantityChange(e, index)}
-                        inputProps={{ min: 1 }}
-                        sx={{ width: 70 }}
-                      />
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      {item.price != null ? `${item.price} ₪` : "0 ₪"}
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      {item.total != null ? `${item.total} ₪` : "0 ₪"}
-                    </TableCell>
-                    <TableCell sx={{ textAlign: "center" }}>
-                      <Button
-                        color="error"
-                        onClick={() => removeFromCart(index)}
+            <Box sx={{ overflowX: "auto" }}>
+              <Table
+                sx={{
+                  borderCollapse: "separate",
+                  borderSpacing: "0 10px",
+                  "& td": {
+                    bgcolor: "white",
+                    fontSize: "0.95rem",
+                    borderRadius: 1,
+                    paddingY: 1,
+                  },
+                }}
+              >
+                <TableHead>
+                  <TableRow>
+                    {[
+                      "סוג מוצר",
+                      "תיאור",
+                      "גודל",
+                      "כמות",
+                      "מחיר ליחידה",
+                      'סה"כ',
+                      "",
+                    ].map((header, idx) => (
+                      <TableCell
+                        key={idx}
+                        sx={{
+                          bgcolor: "#e3f2fd",
+                          fontWeight: 700,
+                          fontSize: "1.05rem",
+                          textAlign: "center",
+                          py: 2,
+                          backgroundColor: "#efefef",
+                          color: "#558e9e",
+                        }}
                       >
-                        הסר
-                      </Button>
-                    </TableCell>
+                        {header}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {cartItems.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        {isBook(item) ? "ספר" : "סרטון"}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        {isBook(item) ? (
+                          <>
+                            <Typography>{item.signsTopic}</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {item.signs}
+                            </Typography>
+                          </>
+                        ) : (
+                          <>
+                            <Typography>{item.title}</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {item.signsTopic}
+                            </Typography>
+                          </>
+                        )}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        {isBook(item) ? (
+                          <FormControl size="small" sx={{ minWidth: 100 }}>
+                            <Select
+                              value={item.size}
+                              onChange={(e) => handleSizeChange(e, index)}
+                            >
+                              <MenuItem value="קטן">קטן</MenuItem>
+                              <MenuItem value="גדול">גדול</MenuItem>
+                            </Select>
+                          </FormControl>
+                        ) : (
+                          "-"
+                        )}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        <TextField
+                          type="number"
+                          size="small"
+                          value={item.quantity}
+                          onChange={(e) => handleQuantityChange(e, index)}
+                          inputProps={{ min: 1 }}
+                          sx={{ width: 70 }}
+                        />
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        {item.price != null ? `${item.price} ₪` : "0 ₪"}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        {item.total != null ? `${item.total} ₪` : "0 ₪"}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: "center" }}>
+                        <Button
+                          color="error"
+                          onClick={() => removeFromCart(index)}
+                        >
+                          הסר
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
 
             {cartItems.length > 0 && (
               <Box textAlign="center" mt={4}>
