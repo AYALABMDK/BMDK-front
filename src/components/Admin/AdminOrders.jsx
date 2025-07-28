@@ -82,8 +82,9 @@ const AdminOrders = () => {
   const statusOrder = {
   "התקבלה": 1,
   "מוכנה למשלוח": 2,
-  "נשלחה": 3,
-  "הסתיימה": 4
+  "ממתינה לאישור":3,
+  "נשלחה": 4,
+  "הסתיימה": 5
 };
 
 const filteredOrders = orders.filter((order) => {
@@ -180,6 +181,18 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
             sx={{
               backgroundColor: "rgba(255, 165, 0, 0.15)",
               color: "darkorange",
+              pointerEvents: "none",
+            }}
+          />
+        );
+        case "ממתינה לאישור":
+        return (
+          <Chip
+            label="ממתינה לאישור"
+            size="small"
+            sx={{
+              backgroundColor: "rgba(255, 0, 225, 0.37)",
+              color: "darkred",
               pointerEvents: "none",
             }}
           />
@@ -533,6 +546,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                             <MenuItem value="מוכנה למשלוח">
                               מוכנה למשלוח
                             </MenuItem>
+                             <MenuItem value="ממתינה לאישור">ממתינה לאישור</MenuItem>
                             <MenuItem value="נשלחה">נשלחה</MenuItem>
                             <MenuItem value="הסתיימה">הסתיימה</MenuItem>
                           </Select>
