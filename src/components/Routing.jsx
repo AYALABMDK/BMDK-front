@@ -26,6 +26,7 @@ import ProtectedAdminRoute from "./ProtectedAdminRoute";
 import Layout from "./Layout"; // ה-Layout הראשי שלך
 import AdminTopics from "./Admin/AdminTopics";
 import GalleryEditor from "./Admin/GalleryEditor";
+import ConfirmTransferPage from "./ConfirmTransferPage";
 
 export default function AppRoutes() {
   return (
@@ -64,6 +65,7 @@ export default function AppRoutes() {
         <Route path="OnlineLearning" element={<OnlineLearningPage />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="confirm-page/:orderCode" element={<ConfirmReceivedPage />} />
+        <Route path="/confirm-transfer/:orderCode" element={<ConfirmTransferPage />} />
         <Route path="gallery" element={<GalleryPage />} />
 
         {/* עמוד שגיאה */}
