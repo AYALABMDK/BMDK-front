@@ -106,7 +106,15 @@ const BookInventory = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, mb: 3 }}>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 2,
+          mb: 3,
+        }}
+      >
         <Typography variant="h4" fontWeight="bold" color="#252e49">
           מלאי ספרים
         </Typography>
@@ -134,14 +142,14 @@ const BookInventory = () => {
           <Table stickyHeader>
             <TableHead>
               <TableRow sx={{
-                  "& th": {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    color: "#252e49",
-                    backgroundColor: "#cfcfcf",
-                  },
-                }}>
+                "& th": {
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  color: "#252e49",
+                  backgroundColor: "#cfcfcf",
+                },
+              }}>
                 <TableCell align="center">קוד</TableCell>
                 <TableCell align="center">נושא</TableCell>
                 <TableCell align="center">סימנים</TableCell>

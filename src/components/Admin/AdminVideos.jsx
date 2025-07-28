@@ -193,246 +193,240 @@ const AdminVideos = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <Box sx={{ p: 4 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+        }}
+      >
+        <Box sx={{ width: 140 }} />
         <Box
           sx={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-between",
-            mb: 3,
           }}
         >
-          <Box sx={{ width: 140 }} /> {/* רווח במקום אייקון אם תרצי בעתיד */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+          <Typography variant="h4" fontWeight="bold" color="#252e49" sx={{ mb: 2 }}>
+            ניהול סרטונים
+          </Typography>
+          <TextField
+            variant="outlined"
+            size="small"
+            placeholder="חפש סרטון לפי קוד, נושא, הערות וכו'"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ width: 400, backgroundColor: "#f7f7f7" }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon color="action" />
+                </InputAdornment>
+              ),
             }}
-          >
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#252e49"
-              sx={{ mb: 2 }}
-            >
-              ניהול סרטונים
-            </Typography>
-            <TextField
-              variant="outlined"
-              size="small"
-              placeholder="חפש סרטון לפי קוד, נושא, הערות וכו'"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ width: 400, backgroundColor: "#f7f7f7" }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon color="action" />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={() => setAddDialogOpen(true)}
-          >
-            הוסף סרטון חדש
-          </Button>
+          />
         </Box>
-      </Box>
-
-      {isLoading ? (
-        <p>טוען סרטונים...</p>
-      ) : (
-        <TableContainer
-          component={Paper}
-          style={{ maxHeight: 600, overflowY: "auto" }}
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={() => setAddDialogOpen(true)}
         >
-          <Table stickyHeader>
-            <TableHead>
-              <TableRow
-                sx={{
-                  "& th": {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: "1rem",
-                    color: "#252e49",
-                    backgroundColor: "#cfcfcf",
-                  },
-                }}
-              >
-                <TableCell align="center">קוד</TableCell>
-                <TableCell align="center">כותרת</TableCell>
-                <TableCell align="center">נושא</TableCell>
-                <TableCell align="center">חלק נושא</TableCell>
-                <TableCell align="center">נושא סימנים</TableCell>
-                <TableCell align="center">מחיר</TableCell>
-                <TableCell align="center">כמות שנמכרו</TableCell>
-                <TableCell align="center">קישור לדוגמה</TableCell>
-                <TableCell align="center">הערות</TableCell>
-                <TableCell align="center">פעולות</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredVideos.map((video) => {
-                const isEdit = isEditing[video.code];
-                const editable = editableVideos[video.code] || {};
-                return (
-                  <TableRow key={video.code}>
-                    <TableCell align="center">{video.code}</TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.title || ""}
-                          onChange={(e) =>
-                            handleChange(video.code, "title", e.target.value)
-                          }
-                        />
-                      ) : (
-                        video.title
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          select
-                          variant="standard"
-                          value={editable.topicCode || ""}
-                          onChange={(e) =>
-                            handleChange(
-                              video.code,
-                              "topicCode",
-                              e.target.value
-                            )
-                          }
-                        >
-                          {topics.map((topic) => (
-                            <MenuItem key={topic.id} value={topic.id}>
-                              {topic.name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      ) : (
-                        getTopicName(video.topicCode)
-                      )}
-                    </TableCell>
+          הוסף סרטון חדש
+        </Button>
+      </Box>
+      {
+    isLoading ? (
+      <p>טוען סרטונים...</p>
+    ) : (
+      <TableContainer
+        component={Paper}
+        style={{ maxHeight: 600, overflowY: "auto" }}
+      >
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow
+              sx={{
+                "& th": {
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                  color: "#252e49",
+                  backgroundColor: "#cfcfcf",
+                },
+              }}
+            >
+              <TableCell align="center">קוד</TableCell>
+              <TableCell align="center">כותרת</TableCell>
+              <TableCell align="center">נושא</TableCell>
+              <TableCell align="center">חלק נושא</TableCell>
+              <TableCell align="center">נושא סימנים</TableCell>
+              <TableCell align="center">מחיר</TableCell>
+              <TableCell align="center">כמות שנמכרו</TableCell>
+              <TableCell align="center">קישור לדוגמה</TableCell>
+              <TableCell align="center">הערות</TableCell>
+              <TableCell align="center">פעולות</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredVideos.map((video) => {
+              const isEdit = isEditing[video.code];
+              const editable = editableVideos[video.code] || {};
+              return (
+                <TableRow key={video.code}>
+                  <TableCell align="center">{video.code}</TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.title || ""}
+                        onChange={(e) =>
+                          handleChange(video.code, "title", e.target.value)
+                        }
+                      />
+                    ) : (
+                      video.title
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        select
+                        variant="standard"
+                        value={editable.topicCode || ""}
+                        onChange={(e) =>
+                          handleChange(
+                            video.code,
+                            "topicCode",
+                            e.target.value
+                          )
+                        }
+                      >
+                        {topics.map((topic) => (
+                          <MenuItem key={topic.id} value={topic.id}>
+                            {topic.name}
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    ) : (
+                      getTopicName(video.topicCode)
+                    )}
+                  </TableCell>
 
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.topicPart}
-                          onChange={(e) =>
-                            handleChange(
-                              video.code,
-                              "topicPart",
-                              e.target.value
-                            )
-                          }
-                        />
-                      ) : (
-                        video.topicPart
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.signsTopic}
-                          onChange={(e) =>
-                            handleChange(
-                              video.code,
-                              "signsTopic",
-                              e.target.value
-                            )
-                          }
-                        />
-                      ) : (
-                        video.signsTopic
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.price}
-                          onChange={(e) =>
-                            handleChange(video.code, "price", e.target.value)
-                          }
-                        />
-                      ) : (
-                        `${video.price} ₪`
-                      )}
-                    </TableCell>
-                    <TableCell align="center">{video.soldAmount}</TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.videoExUrl}
-                          onChange={(e) =>
-                            handleChange(
-                              video.code,
-                              "videoExUrl",
-                              e.target.value
-                            )
-                          }
-                        />
-                      ) : (
-                        video.videoExUrl
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.notes || ""}
-                          onChange={(e) =>
-                            handleChange(video.code, "notes", e.target.value)
-                          }
-                        />
-                      ) : (
-                        video.notes
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <Tooltip title="שמור">
-                          <IconButton
-                            onClick={() => handleSave(video.code)}
-                            color="primary"
-                          >
-                            <SaveIcon />
-                          </IconButton>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip title="ערוך">
-                          <IconButton onClick={() => toggleEdit(video.code)}>
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                      <Tooltip title="מחק">
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.topicPart}
+                        onChange={(e) =>
+                          handleChange(
+                            video.code,
+                            "topicPart",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      video.topicPart
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.signsTopic}
+                        onChange={(e) =>
+                          handleChange(
+                            video.code,
+                            "signsTopic",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      video.signsTopic
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.price}
+                        onChange={(e) =>
+                          handleChange(video.code, "price", e.target.value)
+                        }
+                      />
+                    ) : (
+                      `${video.price} ₪`
+                    )}
+                  </TableCell>
+                  <TableCell align="center">{video.soldAmount}</TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.videoExUrl}
+                        onChange={(e) =>
+                          handleChange(
+                            video.code,
+                            "videoExUrl",
+                            e.target.value
+                          )
+                        }
+                      />
+                    ) : (
+                      video.videoExUrl
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <TextField
+                        variant="standard"
+                        value={editable.notes || ""}
+                        onChange={(e) =>
+                          handleChange(video.code, "notes", e.target.value)
+                        }
+                      />
+                    ) : (
+                      video.notes
+                    )}
+                  </TableCell>
+                  <TableCell align="center">
+                    {isEdit ? (
+                      <Tooltip title="שמור">
                         <IconButton
-                          onClick={() => confirmDelete(video.code)}
-                          color="error"
+                          onClick={() => handleSave(video.code)}
+                          color="primary"
                         >
-                          <DeleteIcon />
+                          <SaveIcon />
                         </IconButton>
                       </Tooltip>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      )}
+                    ) : (
+                      <Tooltip title="ערוך">
+                        <IconButton onClick={() => toggleEdit(video.code)}>
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="מחק">
+                      <IconButton
+                        onClick={() => confirmDelete(video.code)}
+                        color="error"
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    )
+  }
 
       <Dialog
         open={deleteDialogOpen}
@@ -552,7 +546,7 @@ const AdminVideos = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 };
 

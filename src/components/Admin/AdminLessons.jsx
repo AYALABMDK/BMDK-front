@@ -166,65 +166,61 @@ const AdminLessons = () => {
 
   return (
     <Box sx={{ p: 4 }}>
-      {/* חיפוש בזמן אמת */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+        }}
+      >
+        {/* רווח בצד ימין לשמירה על יישור (כמו בדוגמה שלך עם ספרים) */}
+        <Box sx={{ width: 140 }} />
 
-      <Box sx={{ p: 4 }}>
+        {/* כותרת וחיפוש במרכז */}
         <Box
           sx={{
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-between",
-            mb: 3,
           }}
         >
-          {/* רווח בצד ימין לשמירה על יישור (כמו בדוגמה שלך עם ספרים) */}
-          <Box sx={{ width: 140 }} />
-
-          {/* כותרת וחיפוש במרכז */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="#252e49"
+            sx={{ mb: 2 }}
           >
-            <Typography
-              variant="h4"
-              fontWeight="bold"
-              color="#252e49"
-              sx={{ mb: 2 }}
-            >
-              ניהול שיעורים
-            </Typography>
-            <TextField
-              size="small"
-              placeholder="חפש שיעור לפי קוד, נושא, הערות וכו'"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              sx={{ width: 300, backgroundColor: "#f7f7f7" }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search color="action" />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </Box>
-
-          {/* כפתור הוספת שיעור חדש בצד שמאל */}
-          <Button
-            startIcon={<AddIcon />}
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              setNewLesson(defaultLesson);
-              setDialogOpen(true);
+            ניהול שיעורים
+          </Typography>
+          <TextField
+            size="small"
+            placeholder="חפש שיעור לפי קוד, נושא, הערות וכו'"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            sx={{ width: 400, backgroundColor: "#f7f7f7" }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search color="action" />
+                </InputAdornment>
+              ),
             }}
-          >
-            הוספת שיעור חדש
-          </Button>
+          />
         </Box>
+
+        {/* כפתור הוספת שיעור חדש בצד שמאל */}
+        <Button
+          startIcon={<AddIcon />}
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            setNewLesson(defaultLesson);
+            setDialogOpen(true);
+          }}
+        >
+          הוספת שיעור חדש
+        </Button>
       </Box>
 
       {isLoading ? (

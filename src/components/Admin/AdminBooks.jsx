@@ -165,7 +165,7 @@ const AdminBooks = () => {
             placeholder="חפש ספר לפי קוד, נושא, הערות וכו'"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ width: 300, backgroundColor: "#f7f7f7" }}
+            sx={{ width: 400, backgroundColor: "#f7f7f7" }}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">

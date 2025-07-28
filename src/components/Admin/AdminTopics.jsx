@@ -88,60 +88,58 @@ const AdminTopics = () => {
     return (
         <Box sx={{ p: 4 }}>
             {/* Header and Search */}
-            <Box sx={{ p: 4 }}>
+            <Box
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    mb: 3,
+                }}
+            >
+                {/* רווח בצד ימין לשמירה על יישור (כמו בדוגמה שלך עם ספרים) */}
+                <Box sx={{ width: 140 }} />
+
+                {/* כותרת וחיפוש במרכז */}
                 <Box
                     sx={{
                         display: "flex",
+                        flexDirection: "column",
                         alignItems: "center",
-                        justifyContent: "space-between",
-                        mb: 3,
                     }}
                 >
-                    {/* רווח בצד ימין לשמירה על יישור (כמו בדוגמה שלך עם ספרים) */}
-                    <Box sx={{ width: 140 }} />
-
-                    {/* כותרת וחיפוש במרכז */}
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
+                    <Typography
+                        variant="h4"
+                        fontWeight="bold"
+                        color="#252e49"
+                        sx={{ mb: 2 }}
+                    >
+                        ניהול  נושאים
+                    </Typography>
+                    <TextField
+                        size="small"
+                        placeholder="חפש נושא לפי קוד שם או הערות"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        sx={{ width: 400, backgroundColor: "#f7f7f7" }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search color="action" />
+                                </InputAdornment>
+                            ),
                         }}
-                    >
-                        <Typography
-                            variant="h4"
-                            fontWeight="bold"
-                            color="#252e49"
-                            sx={{ mb: 2 }}
-                        >
-                            ניהול  נושאים
-                        </Typography>
-                        <TextField
-                            size="small"
-                            placeholder="חפש נושא" // Change it when changing the searchQuery
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            sx={{ width: 300, backgroundColor: "#f7f7f7" }}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <Search color="action" />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Box>
-
-                    {/* כפתור הוספת נושא חדש בצד שמאל */}
-                    <Button
-                        startIcon={<AddIcon />}
-                        variant="contained"
-                        color="primary"
-                        onClick={() => setDialogOpen(true)}
-                    >
-                        הוספת נושא חדש
-                    </Button>
+                    />
                 </Box>
+
+                {/* כפתור הוספת נושא חדש בצד שמאל */}
+                <Button
+                    startIcon={<AddIcon />}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setDialogOpen(true)}
+                >
+                    הוספת נושא חדש
+                </Button>
             </Box>
 
             {/* Table */}
@@ -151,7 +149,17 @@ const AdminTopics = () => {
                 <TableContainer component={Paper}>
                     <Table>
                         <TableHead>
-                            <TableRow sx={{ backgroundColor: "#cfcfcf" }}>
+                            <TableRow
+                                sx={{
+                                    "& th": {
+                                        textAlign: "center",
+                                        fontWeight: "bold",
+                                        fontSize: "1rem",
+                                        color: "#252e49",
+                                        backgroundColor: "#cfcfcf",
+                                    },
+                                }}
+                            >
                                 <TableCell align="center">קוד</TableCell>
                                 <TableCell align="center">שם</TableCell>
                                 <TableCell align="center">הערות</TableCell>

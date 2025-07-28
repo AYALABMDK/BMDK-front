@@ -338,7 +338,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           sx={{
-            width: "500px",
+            width: "400px",
             backgroundColor: "#f7f7f7",
             borderRadius: "8px",
           }}

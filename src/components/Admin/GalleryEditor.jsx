@@ -67,11 +67,35 @@ const GalleryEditor = () => {
 
   return (
     <Box sx={{ px: 2, py: 4 }}>
-      <Typography variant="h4" align="center" fontWeight="bold" gutterBottom>
-        עריכת גלריה
-      </Typography>
-      {/* כפתור הוספת תמונה בעיצוב כמו בווידאו */}
-      <Box display="flex" justifyContent="flex-end" mb={4}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          mb: 3,
+          paddingBottom: 3,
+        }}
+      >
+        <Box sx={{ width: 140 }} />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          {/* <Typography variant="h4" align="center" fontWeight="bold" gutterBottom> */}
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            color="#252e49"
+            sx={{ mb: 2 }}
+          >
+            עריכת גלריה
+          </Typography>
+        </Box>
+        {/* כפתור הוספת תמונה בעיצוב כמו בווידאו */}
+        {/* <Box display="flex" justifyContent="flex-end" mb={4}> */}
         <input
           type="file"
           accept="image/*"
@@ -89,6 +113,7 @@ const GalleryEditor = () => {
         >
           הוסף תמונה חדשה
         </Button>
+        {/* </Box> */}
       </Box>
       {isLoading ? (
         <Typography align="center">טוען תמונות...</Typography>
