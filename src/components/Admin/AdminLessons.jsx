@@ -90,6 +90,7 @@ const AdminLessons = () => {
   }));
 
   const selectedTopic = filteredTopics.find((t) => t.id === newLesson?.topicCode);
+  const selectedTopicEdit = filteredTopics.find((t) => t.id === lessonBeingEdited?.topicCode);
 
   const saveTopic = async (name) => {
     try {
@@ -332,26 +333,62 @@ const AdminLessons = () => {
           {Object.keys(defaultLesson).map((field) => {
             if (field === "topicCode") {
               return (
-                <TextField
-                  key={field}
-                  select
-                  label={fieldLabels[field]}
-                  value={lessonBeingEdited?.[field] || ""}
-                  fullWidth
-                  margin="dense"
-                  onChange={(e) =>
-                    setLessonBeingEdited({
-                      ...lessonBeingEdited,
-                      topicCode: +e.target.value,
-                    })
-                  }
-                >
-                  {topics.map((topic) => (
-                    <MenuItem key={topic.id} value={topic.id}>
-                      {topic.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Autocomplete
+                    fullWidth
+                    options={filteredTopics}
+                    getOptionLabel={(option) => option.label}
+                    value={selectedTopicEdit || null}
+                    noOptionsText="לא נמצא נושא"
+                    onChange={(event, newValue, reason) => {
+                      if (reason === "clear") {
+                        setLessonBeingEdited((prev) => ({ ...prev, topicCode: "" }));
+                        setInputValue("");
+                        setShowAddButton(false);
+                      } else if (newValue) {
+                        setLessonBeingEdited((prev) => ({ ...prev, topicCode: newValue.id }));
+                      }
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue(newInputValue);
+                      const topicExists = filteredTopics.some(
+                        (t) => t.label === newInputValue
+                      );
+                      setShowAddButton(
+                        !topicExists && newInputValue.trim() !== ""
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="נושא" margin="dense" />
+                    )}
+                  />
+                  {showAddButton && (
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        width: 60,
+                        height: 50,
+                        alignSelf: 'center',
+                        minWidth: 0,
+                        padding: 0,
+                      }}
+                      onMouseDown={async () => {
+                        const topic = await saveTopic(inputValue);
+                        if (topic) {
+                          setLessonBeingEdited((prev) => ({
+                            ...prev,
+                            topicCode: topic.id,
+                          }));
+                          setShowAddButton(false);
+                          setInputValue("");
+                        }
+                      }}
+                    >
+                      <AddIcon />
+                    </Button>
+                  )}
+                </Box>
               );
             }
 
