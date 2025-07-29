@@ -17,12 +17,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  MenuItem,
   InputAdornment,
   CircularProgress,
   Autocomplete,
 } from "@mui/material";
-import { Delete, Save, Edit, Search } from "@mui/icons-material";
+import { Delete, Edit, Search } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 
 import {
@@ -112,20 +111,6 @@ const AdminLessons = () => {
       year: "numeric",
     });
   };
-
-  // const handleChange = (code, field, value) => {
-  //   setEditedLessons((prev) => ({
-  //     ...prev,
-  //     [code]: { ...prev[code], [field]: value },
-  //   }));
-  // };
-
-  // const handleSave = (code) => {
-  //   updateLesson.mutate({ lessonCode: code, updateData: editedLessons[code] });
-  //   setEditMode((prev) => ({ ...prev, [code]: false }));
-  // };
-
-
 
   const handleSaveNew = () => {
     addLesson.mutate(newLesson, {
