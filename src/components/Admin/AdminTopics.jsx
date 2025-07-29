@@ -270,16 +270,32 @@ const AdminTopics = () => {
             </Dialog>
 
             {/* Delete Confirmation */}
-            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-                <DialogTitle>מחיקת נושא</DialogTitle>
-                <DialogContent>
-                    <Typography>האם את בטוחה שברצונך למחוק את הנושא?</Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>ביטול</Button>
-                    <Button variant="contained" color="error" onClick={handleDelete}>מחק</Button>
-                </DialogActions>
+            <Dialog
+                open={deleteDialogOpen}
+                onClose={() => setDeleteDialogOpen(false)}
+            >
+                <Box sx={{ padding: 3, textAlign: "center" }}>
+                    <Typography variant="h6" sx={{ mb: 2 }}>
+                        האם אתה בטוח שברצונך למחוק את הנושא?
+                    </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+                        <Button
+                            variant="contained"
+                            color="error"
+                            onClick={handleDelete}
+                        >
+                            כן, מחק
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={() => setDeleteDialogOpen(false)}
+                        >
+                            ביטול
+                        </Button>
+                    </Box>
+                </Box>
             </Dialog>
+            
         </Box>
     );
 };

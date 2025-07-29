@@ -16,6 +16,10 @@ import {
   Dialog,
   MenuItem,
   Autocomplete,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
 } from "@mui/material";
 import { Delete, Save, Edit, Search } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -37,8 +41,8 @@ const AdminBooks = () => {
   const createMutation = useCreateBook();
   const { mutateAsync: addTopic } = useAddTopic();
 
-  const [editableBooks, setEditableBooks] = useState({});
-  const [isEditing, setIsEditing] = useState({});
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [bookBeingEdited, setBookBeingEdited] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedBookToDelete, setSelectedBookToDelete] = useState(null);
@@ -59,6 +63,19 @@ const AdminBooks = () => {
     notes: "",
   };
 
+  const fieldLabels = {
+    topicCode: "נושא הספר",
+    signs: "סימנים",
+    signsTopic: "נושא הסימנים",
+    bigBooksQuantity: "גדול במלאי",
+    smallBooksQuantity: "קטן במלאי",
+    bigBooksSold: "נמכרו (גדול)",
+    smallBooksSold: "נמכרו (קטן)",
+    bigBookPrice: "מחיר גדול",
+    smallBookPrice: "מחיר קטן",
+    notes: "הערות",
+  };
+
   // Filter topics by input text
   const filteredTopics = topics.map((topic) => ({
     label: topic.name,
@@ -66,6 +83,8 @@ const AdminBooks = () => {
   }));
 
   const selectedTopic = filteredTopics.find((t) => t.id === newBook?.topicCode);
+  const selectedTopicEdit = filteredTopics.find((t) => t.id === bookBeingEdited?.topicCode);
+
 
   const saveTopic = async (name) => {
     try {
@@ -76,24 +95,10 @@ const AdminBooks = () => {
     }
   };
 
-  const handleChange = (code, field, value) => {
-    setEditableBooks((prev) => ({
-      ...prev,
-      [code]: { ...prev[code], [field]: value },
-    }));
-  };
-
   const handleSave = (code) => {
-    const updateData = editableBooks[code];
+    const updateData = bookBeingEdited;
     if (!updateData) return;
     updateMutation.mutate({ bookCode: code, updateData });
-    setIsEditing((prev) => ({ ...prev, [code]: false }));
-  };
-
-  const toggleEdit = (code) => {
-    const book = books.find((b) => b.code === code);
-    setEditableBooks((prev) => ({ ...prev, [code]: { ...book } }));
-    setIsEditing((prev) => ({ ...prev, [code]: !prev[code] }));
   };
 
   const confirmDelete = (code) => {
@@ -223,102 +228,39 @@ const AdminBooks = () => {
             </TableHead>
             <TableBody>
               {filteredBooks.map((book) => {
-                const isEdit = isEditing[book.code];
-                const editable = editableBooks[book.code] || {};
                 return (
                   <TableRow key={book.code}>
-                    <TableCell align="center">{book.code}</TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          select
-                          variant="standard"
-                          value={editable.topicCode}
-                          onChange={(e) =>
-                            handleChange(
-                              book.code,
-                              "topicCode",
-                              +e.target.value
-                            )
-                          }
-                        >
-                          {topics.map((topic) => (
-                            <MenuItem key={topic.id} value={topic.id}>
-                              {topic.name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      ) : (
-                        getTopicName(book.topicCode)
-                      )}
-                    </TableCell>
-                    {["signs", "signsTopic"].map((field) => (
-                      <TableCell align="center" key={field}>
-                        {isEdit ? (
-                          <TextField
-                            variant="standard"
-                            value={editable[field] || ""}
-                            onChange={(e) =>
-                              handleChange(book.code, field, e.target.value)
-                            }
-                          />
-                        ) : (
-                          book[field]
-                        )}
-                      </TableCell>
-                    ))}
                     {[
+                      "code",
+                      "topicCode",
+                      "signs",
+                      "signsTopic",
                       "bigBooksSold",
                       "smallBooksSold",
                       "bigBookPrice",
                       "smallBookPrice",
+                      "notes",
                     ].map((field) => (
                       <TableCell align="center" key={field}>
-                        {isEdit ? (
-                          <TextField
-                            variant="standard"
-                            type="number"
-                            value={editable[field] ?? 0}
-                            onChange={(e) =>
-                              handleChange(book.code, field, +e.target.value)
-                            }
-                            inputProps={{ min: 0, step: 1 }}
-                          />
+                        {field == "topicCode" ? (
+                          getTopicName(book.topicCode)
+                        ) : field.includes("Price") ? (
+                          `${book[field]} ₪`
                         ) : (
-                          `${book[field]}${field.includes("Price") ? " ₪" : ""}`
-                        )}
+                          book[field])}
                       </TableCell>
                     ))}
                     <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          variant="standard"
-                          value={editable.notes || ""}
-                          onChange={(e) =>
-                            handleChange(book.code, "notes", e.target.value)
-                          }
-                        />
-                      ) : (
-                        book.notes
-                      )}
-                    </TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <Tooltip title="שמור">
-                          <IconButton
-                            onClick={() => handleSave(book.code)}
-                            color="primary"
-                          >
-                            <Save />
-                          </IconButton>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip title="ערוך">
-                          <IconButton onClick={() => toggleEdit(book.code)}>
-                            <Edit />
-                          </IconButton>
-                        </Tooltip>
-                      )}
+                      <Tooltip title="ערוך">
+                        <IconButton
+                          onClick={() => {
+                            setBookBeingEdited({ ...book });
+                            setEditDialogOpen(true);
+                          }}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title="מחק">
                         <IconButton
                           onClick={() => confirmDelete(book.code)}
@@ -335,6 +277,7 @@ const AdminBooks = () => {
           </Table>
         </TableContainer>
       )}
+
       <Dialog
         open={!!newBook}
         onClose={() => setNewBook(null)}
@@ -521,6 +464,122 @@ const AdminBooks = () => {
             </Button>
           </Box>
         </Box>
+      </Dialog>
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>ערוך סרטון</DialogTitle>
+        <DialogContent>
+          {Object.keys(defaultBookData).map((field) => {
+            if (field === "topicCode") {
+              return (
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Autocomplete
+                    fullWidth
+                    options={filteredTopics}
+                    getOptionLabel={(option) => option.label}
+                    value={selectedTopicEdit || null}
+                    noOptionsText="לא נמצא נושא"
+                    onChange={(event, newValue, reason) => {
+                      if (reason === "clear") {
+                        setBookBeingEdited((prev) => ({ ...prev, topicCode: "" }));
+                        setInputValue("");
+                        setShowAddButton(false);
+                      } else if (newValue) {
+                        setBookBeingEdited((prev) => ({ ...prev, topicCode: newValue.id }));
+                      }
+                    }}
+                    inputValue={inputValue}
+                    onInputChange={(event, newInputValue) => {
+                      setInputValue(newInputValue);
+                      const topicExists = filteredTopics.some(
+                        (t) => t.label === newInputValue
+                      );
+                      setShowAddButton(
+                        !topicExists && newInputValue.trim() !== ""
+                      );
+                    }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="נושא" margin="dense" />
+                    )}
+                  />
+                  {showAddButton && (
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        width: 60,
+                        height: 50,
+                        alignSelf: 'center',
+                        minWidth: 0,
+                        padding: 0,
+                      }}
+                      onMouseDown={async () => {
+                        const topic = await saveTopic(inputValue);
+                        if (topic) {
+                          setBookBeingEdited((prev) => ({
+                            ...prev,
+                            topicCode: topic.id,
+                          }));
+                          setShowAddButton(false);
+                          setInputValue("");
+                        }
+                      }}
+                    >
+                      <AddIcon />
+                    </Button>
+                  )}
+                </Box>
+              );
+            }
+
+            if (field.includes("Quantity"))
+              return <></>
+
+            return (
+              <TextField
+                key={field}
+                type={
+                  field.includes("Book") ?
+                    "number"
+                    : "text"
+                }
+                label={fieldLabels[field] || field}
+                value={bookBeingEdited?.[field] || ""}
+                fullWidth
+                margin="dense"
+                InputLabelProps={{}}
+                onChange={(e) =>
+                  setBookBeingEdited({
+                    ...bookBeingEdited,
+                    [field]: e.target.value,
+                  })
+                }
+              />
+            );
+          })}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>ביטול</Button>
+          <Button
+            variant="contained"
+            disabled={updateMutation.isLoading}
+            onClick={() => {
+              handleSave(bookBeingEdited.code);
+              console.log("הנתונים שנשלחים:", bookBeingEdited);
+              setEditDialogOpen(false);
+            }}
+          >
+            {updateMutation.isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "שמור"
+            )}
+          </Button>
+        </DialogActions>
       </Dialog>
 
       <Dialog
