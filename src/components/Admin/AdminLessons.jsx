@@ -272,7 +272,7 @@ const AdminLessons = () => {
                       <TableCell key={field} align="center">
                         {field.includes("Date") ? (
                           formatDate(row[field])
-                        ) : field == "title" ? (
+                        ) : field === "title" ? (
                           topicName(row.topicCode)
                         ) : (
                           row[field]

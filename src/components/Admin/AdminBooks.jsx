@@ -241,7 +241,7 @@ const AdminBooks = () => {
                       "notes",
                     ].map((field) => (
                       <TableCell align="center" key={field}>
-                        {field == "topicCode" ? (
+                        {field === "topicCode" ? (
                           getTopicName(book.topicCode)
                         ) : field.includes("Price") ? (
                           `${book[field]} ₪`

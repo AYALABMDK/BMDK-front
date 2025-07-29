@@ -34,7 +34,10 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("אשראי");
   const [proofFile, setProofFile] = useState(null);
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + (item.total || 0), 0);
+  const totalPrice = cartItems.reduce(
+    (sum, item) => sum + (item.total || 0),
+    0
+  );
   const navigate = useNavigate();
 
   const {
@@ -68,7 +71,8 @@ const Checkout = () => {
   };
 
   const canSubmit = () => {
-    const requiredFieldsFilled = fullName && phone && email && address.city && address.street;
+    const requiredFieldsFilled =
+      fullName && phone && email && address.city && address.street;
 
     if (!requiredFieldsFilled) return false;
 
@@ -161,7 +165,7 @@ const Checkout = () => {
         >
           <TableHead>
             <TableRow>
-              {["מוצר", "כמות", "גודל", "סה\"כ"].map((header, idx) => (
+              {["מוצר", "כמות", "גודל", 'סה"כ'].map((header, idx) => (
                 <TableCell
                   key={idx}
                   sx={{
@@ -181,16 +185,26 @@ const Checkout = () => {
             {cartItems.map((item, idx) => (
               <TableRow key={idx}>
                 <TableCell sx={{ textAlign: "center" }}>
-                  <Typography variant="subtitle1" fontWeight="bold">
-                    {item.size !== undefined ? `ספר ${item.signsTopic}` : `סרטון ${item.title}`}{" "}
+                  <Typography
+                    variant="subtitle1"
+                    fontWeight="bold"
+                    component="div"
+                  >
+                    {item.size !== undefined
+                      ? `ספר ${item.signsTopic}`
+                      : `סרטון ${item.title}`}{" "}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
                     {item.size !== undefined ? item.signs : item.signsTopic}
                   </Typography>
                 </TableCell>
-                <TableCell sx={{ textAlign: "center" }}>{item.quantity}</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {item.quantity}
+                </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>{item.size}</TableCell>
-                <TableCell sx={{ textAlign: "center" }}>{item.total} ₪</TableCell>
+                <TableCell sx={{ textAlign: "center" }}>
+                  {item.total} ₪
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -217,11 +231,44 @@ const Checkout = () => {
             mx: "auto",
           }}
         >
-          <TextField label="שם מלא" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
-          <TextField label="מספר טלפון" value={phone} onChange={(e) => setPhone(e.target.value)} required error={!!phoneError} helperText={phoneError} />
-          <TextField label="כתובת אימייל" value={email} onChange={(e) => setEmail(e.target.value)} required error={!!emailError} helperText={emailError} />
-          <TextField label="עיר" value={address.city} onChange={(e) => setAddress((prev) => ({ ...prev, city: e.target.value }))} required />
-          <TextField label="רחוב" value={address.street} onChange={(e) => setAddress((prev) => ({ ...prev, street: e.target.value }))} required />
+          <TextField
+            label="שם מלא"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            required
+          />
+          <TextField
+            label="מספר טלפון"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            error={!!phoneError}
+            helperText={phoneError}
+          />
+          <TextField
+            label="כתובת אימייל"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            error={!!emailError}
+            helperText={emailError}
+          />
+          <TextField
+            label="עיר"
+            value={address.city}
+            onChange={(e) =>
+              setAddress((prev) => ({ ...prev, city: e.target.value }))
+            }
+            required
+          />
+          <TextField
+            label="רחוב"
+            value={address.street}
+            onChange={(e) =>
+              setAddress((prev) => ({ ...prev, street: e.target.value }))
+            }
+            required
+          />
         </Box>
 
         <Divider sx={{ my: 4 }} />
@@ -231,22 +278,60 @@ const Checkout = () => {
           אמצעי תשלום
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
-          <Button variant={paymentMethod === "אשראי" ? "contained" : "outlined"} onClick={() => setPaymentMethod("אשראי")}>
+          <Button
+            variant={paymentMethod === "אשראי" ? "contained" : "outlined"}
+            onClick={() => setPaymentMethod("אשראי")}
+          >
             כרטיס אשראי
           </Button>
-          <Button variant={paymentMethod === "העברה בנקאית" ? "contained" : "outlined"} onClick={() => setPaymentMethod("העברה בנקאית")}>
+          <Button
+            variant={
+              paymentMethod === "העברה בנקאית" ? "contained" : "outlined"
+            }
+            onClick={() => setPaymentMethod("העברה בנקאית")}
+          >
             העברה בנקאית
           </Button>
         </Box>
 
         {/* תשלום באשראי */}
         {paymentMethod === "אשראי" && (
-          <Box sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 500, mx: "auto" }}>
-            <TextField label="שם בעל הכרטיס" value={cardHolder} onChange={(e) => setCardHolder(e.target.value)} required />
-            <TextField label="מספר כרטיס אשראי" value={creditCard} onChange={(e) => setCreditCard(e.target.value)} required />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+              maxWidth: 500,
+              mx: "auto",
+            }}
+          >
+            <TextField
+              label="שם בעל הכרטיס"
+              value={cardHolder}
+              onChange={(e) => setCardHolder(e.target.value)}
+              required
+            />
+            <TextField
+              label="מספר כרטיס אשראי"
+              value={creditCard}
+              onChange={(e) => setCreditCard(e.target.value)}
+              required
+            />
             <Box sx={{ display: "flex", gap: 2 }}>
-              <TextField label="תוקף (MM/YY)" value={expiry} onChange={(e) => setExpiry(e.target.value)} required fullWidth />
-              <TextField label="CVV" value={cvv} onChange={(e) => setCvv(e.target.value)} required fullWidth />
+              <TextField
+                label="תוקף (MM/YY)"
+                value={expiry}
+                onChange={(e) => setExpiry(e.target.value)}
+                required
+                fullWidth
+              />
+              <TextField
+                label="CVV"
+                value={cvv}
+                onChange={(e) => setCvv(e.target.value)}
+                required
+                fullWidth
+              />
             </Box>
 
             <Button
@@ -264,7 +349,7 @@ const Checkout = () => {
                 borderRadius: 8,
                 fontWeight: "bold",
                 backgroundColor: "#0D1E46",
-                '&:hover': { backgroundColor: "#143160" },
+                "&:hover": { backgroundColor: "#143160" },
                 position: "relative",
               }}
             >
@@ -305,15 +390,28 @@ const Checkout = () => {
               textAlign: "center",
             }}
           >
-            <Typography variant="h6" fontWeight="bold" color="primary" textAlign="center">
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              color="primary"
+              textAlign="center"
+            >
               פרטי העברה בנקאית
             </Typography>
 
             <Box sx={{ lineHeight: 2 }}>
-              <Typography variant="body1"><strong>שם המוטב:</strong> ישיבת דרך אמונה</Typography>
-              <Typography variant="body1"><strong>מספר חשבון:</strong> 123456789</Typography>
-              <Typography variant="body1"><strong>בנק:</strong> פועלים</Typography>
-              <Typography variant="body1"><strong>סניף:</strong> 123</Typography>
+              <Typography variant="body1">
+                <strong>שם המוטב:</strong> ישיבת דרך אמונה
+              </Typography>
+              <Typography variant="body1">
+                <strong>מספר חשבון:</strong> 123456789
+              </Typography>
+              <Typography variant="body1">
+                <strong>בנק:</strong> פועלים
+              </Typography>
+              <Typography variant="body1">
+                <strong>סניף:</strong> 123
+              </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 לאחר ביצוע ההעברה, יש להעלות קובץ אישור לצורך השלמת ההזמנה.
               </Typography>
@@ -330,7 +428,7 @@ const Checkout = () => {
                 fontWeight: "bold",
                 color: "#0D1E46",
                 borderColor: "#0D1E46",
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#f0f0f0",
                   borderColor: "#143160",
                   color: "#143160",
@@ -350,7 +448,7 @@ const Checkout = () => {
                 קובץ שנבחר: {proofFile.name}
               </Typography>
             )}
-             <Typography
+            <Typography
               variant="body1"
               sx={{
                 color: "#444",
@@ -359,8 +457,8 @@ const Checkout = () => {
                 lineHeight: 1.8,
               }}
             >
-              לאחר שהמנהל יאשר את ההעברה הבנקאית, ישלחו אליך פרטי ההזמנה לכתובת האימייל שסיפקת.
-              אנא ודא שהפרטים שמילאת נכונים.
+              לאחר שהמנהל יאשר את ההעברה הבנקאית, ישלחו אליך פרטי ההזמנה לכתובת
+              האימייל שסיפקת. אנא ודא שהפרטים שמילאת נכונים.
             </Typography>
 
             <Button
@@ -377,7 +475,7 @@ const Checkout = () => {
                 fontWeight: "bold",
                 fontSize: "1rem",
                 px: 4,
-                '&:hover': {
+                "&:hover": {
                   backgroundColor: "#143160",
                 },
                 position: "relative",
@@ -402,8 +500,17 @@ const Checkout = () => {
           </Box>
         )}
 
-        {isSuccess && <Alert severity="success" sx={{ mt: 4 }}>ההזמנה נקלטה בהצלחה! תודה על ההזמנה.</Alert>}
-        {isError && <Alert severity="error" sx={{ mt: 4 }}>שגיאה בשליחת ההזמנה: {error?.response?.data?.message || "נסה שוב מאוחר יותר"}</Alert>}
+        {isSuccess && (
+          <Alert severity="success" sx={{ mt: 4 }}>
+            ההזמנה נקלטה בהצלחה! תודה על ההזמנה.
+          </Alert>
+        )}
+        {isError && (
+          <Alert severity="error" sx={{ mt: 4 }}>
+            שגיאה בשליחת ההזמנה:{" "}
+            {error?.response?.data?.message || "נסה שוב מאוחר יותר"}
+          </Alert>
+        )}
       </Paper>
     </Container>
   );
