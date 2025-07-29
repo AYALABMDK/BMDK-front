@@ -755,13 +755,25 @@ const AdminOrders = () => {
           </Button>
         </DialogActions>
       </Dialog>
-
       <Dialog open={mailDialogOpen} onClose={() => setMailDialogOpen(false)}>
         <Box sx={{ p: 3, minWidth: 300, textAlign: "center" }}>
           <Typography variant="h6" mb={2}>
             שלח מייל עבור {selectedOrderForMail?.fullName}
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {/* כפתור חדש להזמנה שהתקבלה */}
+            <Button
+              disabled={loadingStatus !== ""}
+              variant="contained"
+              sx={{
+                color: "darkred",
+                backgroundColor: "rgba(255, 0, 0, 0.1)",
+                "&:hover": { backgroundColor: "rgba(255, 0, 0, 0.1)"},
+              }}
+              onClick={() => handleSendEmail("התקבלה")}
+            >
+              {loadingStatus === "התקבלה" ? "שולח..." : "הזמנה התקבלה"}
+            </Button>
             <Button
               disabled={loadingStatus !== ""}
               variant="contained"
@@ -774,6 +786,7 @@ const AdminOrders = () => {
             >
               {loadingStatus === "נשלחה" ? "שולח..." : "הזמנה נשלחה"}
             </Button>
+
             <Button
               disabled={loadingStatus !== ""}
               variant="contained"
@@ -786,6 +799,7 @@ const AdminOrders = () => {
             >
               {loadingStatus === "הסתיימה" ? "שולח..." : "הזמנה הסתיימה"}
             </Button>
+
             <Button
               variant="contained"
               sx={{
