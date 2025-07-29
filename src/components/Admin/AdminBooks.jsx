@@ -14,14 +14,13 @@ import {
   Box,
   Button,
   Dialog,
-  MenuItem,
   Autocomplete,
   DialogTitle,
   DialogContent,
   DialogActions,
   CircularProgress,
 } from "@mui/material";
-import { Delete, Save, Edit, Search } from "@mui/icons-material";
+import { Delete, Edit, Search } from "@mui/icons-material";
 import InputAdornment from "@mui/material/InputAdornment";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -242,7 +241,7 @@ const AdminBooks = () => {
                       "notes",
                     ].map((field) => (
                       <TableCell align="center" key={field}>
-                        {field == "topicCode" ? (
+                        {field === "topicCode" ? (
                           getTopicName(book.topicCode)
                         ) : field.includes("Price") ? (
                           `${book[field]} ₪`

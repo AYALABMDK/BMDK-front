@@ -17,12 +17,11 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  MenuItem,
   InputAdornment,
   CircularProgress,
   Autocomplete,
 } from "@mui/material";
-import { Delete, Save, Edit, Search } from "@mui/icons-material";
+import { Delete, Edit, Search } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 
 import {
@@ -287,7 +286,7 @@ const AdminLessons = () => {
                       <TableCell key={field} align="center">
                         {field.includes("Date") ? (
                           formatDate(row[field])
-                        ) : field == "title" ? (
+                        ) : field === "title" ? (
                           topicName(row.topicCode)
                         ) : (
                           row[field]
