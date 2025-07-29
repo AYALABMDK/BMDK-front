@@ -150,8 +150,8 @@ const Checkout = () => {
                     fontWeight: 700,
                     fontSize: "1.05rem",
                     textAlign: "center",
-                           backgroundColor: '#efefef',
-                        color: '#558e9e'
+                    backgroundColor: '#efefef',
+                    color: '#558e9e'
                   }}
                 >
                   {header}
@@ -168,11 +168,10 @@ const Checkout = () => {
                     fontWeight="bold"
                     component="div"
                   >
-                    {item.size !== undefined ? "ספר " : "סרטון "}{" "}
-                    {item.signsTopic}
+                    {item.size !== undefined ? `ספר ${item.signsTopic}` : `סרטון ${item.title}`}{" "}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    {item.signs}
+                    {item.size !== undefined ? item.signs : item.signsTopic}
                   </Typography>
                 </TableCell>
                 <TableCell sx={{ textAlign: "center" }}>
