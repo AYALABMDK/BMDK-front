@@ -418,7 +418,7 @@ const AdminOrders = () => {
                         "paymentMethod"
                       ].map((field) => (
                         <TableCell key={field} align="center">
-                          {field == "orderDate" ? (
+                          {field === "orderDate" ? (
                             order.orderDate
                               ? new Date(order.orderDate).toLocaleString("he-IL", {
                                 day: "2-digit",
@@ -428,9 +428,9 @@ const AdminOrders = () => {
                                 minute: "2-digit",
                               })
                               : "—"
-                          ) : field == "address" ? (
+                          ) : field === "address" ? (
                             `${address.street || ""}, ${address.city || ""}`
-                          ) : field == "status" ? (
+                          ) : field === "status" ? (
                             getStatusChip(order.status)
                           ) : (
                             order[field]

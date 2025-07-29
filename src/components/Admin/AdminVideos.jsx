@@ -273,9 +273,9 @@ const AdminVideos = () => {
                         "notes",
                       ].map((field) => (
                         <TableCell key={field} align="center">
-                          {field == "topicCode" ? (
+                          {field === "topicCode" ? (
                             getTopicName(video.topicCode)
-                          ) : field == "price" ? (
+                          ) : field === "price" ? (
                             `${video.price} ₪`
                           ) : (
                             video[field]
