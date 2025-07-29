@@ -79,7 +79,7 @@ const AdminOrders = () => {
       city: "",
     },
     status: "",
-  }
+  };
 
   const fieldLabels = {
     fullName: "שם מלא",
@@ -88,7 +88,7 @@ const AdminOrders = () => {
     paymentMethod: "אופן התשלום",
     address: "כתובת",
     status: "סטטוס",
-  }
+  };
 
   const toggleExpand = (orderCode) => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
@@ -105,11 +105,11 @@ const AdminOrders = () => {
     }
   };
   const statusOrder = {
-    "התקבלה": 1,
-    "מוכנה למשלוח": 2,
-    "ממתינה לאישור": 3,
-    "נשלחה": 4,
-    "הסתיימה": 5
+    "ממתינה לאישור": 1,
+    התקבלה: 2,
+    "מוכנה למשלוח": 3,
+    נשלחה: 4,
+    הסתיימה: 5,
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -122,10 +122,10 @@ const AdminOrders = () => {
       order.orderDate,
       order.orderDate
         ? new Date(order.orderDate).toLocaleDateString("he-IL", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-        })
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+          })
         : "",
       order.address?.street,
       order.address?.city,
@@ -136,13 +136,11 @@ const AdminOrders = () => {
     );
   });
 
-
   const sortedOrders = [...filteredOrders].sort((a, b) => {
     const statusA = statusOrder[a.status] || 99;
     const statusB = statusOrder[b.status] || 99;
 
     if (statusA !== statusB) return statusA - statusB;
-
 
     // אחר כך לפי סטטוס
     const dateA = new Date(a.orderDate);
@@ -384,7 +382,7 @@ const AdminOrders = () => {
                   "טלפון",
                   "כתובת",
                   "סטטוס",
-                  "אופן התשלום"
+                  "אופן התשלום",
                 ].map((col, i) => (
                   <TableCell key={i} align="center">
                     {col}
@@ -415,23 +413,43 @@ const AdminOrders = () => {
                         "phone",
                         "address",
                         "status",
-                        "paymentMethod"
+                        "paymentMethod",
                       ].map((field) => (
                         <TableCell key={field} align="center">
                           {field === "orderDate" ? (
-                            order.orderDate
-                              ? new Date(order.orderDate).toLocaleString("he-IL", {
-                                day: "2-digit",
-                                month: "2-digit",
-                                year: "numeric",
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              })
-                              : "—"
+                            order.orderDate ? (
+                              new Date(order.orderDate).toLocaleString(
+                                "he-IL",
+                                {
+                                  day: "2-digit",
+                                  month: "2-digit",
+                                  year: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                }
+                              )
+                            ) : (
+                              "—"
+                            )
                           ) : field === "address" ? (
                             `${address.street || ""}, ${address.city || ""}`
                           ) : field === "status" ? (
                             getStatusChip(order.status)
+                          ) : field === "paymentMethod" &&
+                            order.paymentMethod === "העברה בנקאית" &&
+                            order.proofFile ? (
+                            <a
+                              href={order.proofFile}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                color: "#252e49",
+                                textDecoration: "underline",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              העברה בנקאית (אישור)
+                            </a>
                           ) : (
                             order[field]
                           )}
@@ -503,7 +521,7 @@ const AdminOrders = () => {
                                     "סימנים",
                                     "גודל",
                                     "כמות",
-                                    "מחיר"
+                                    "מחיר",
                                   ].map((header, index) => (
                                     <TableCell key={index} align="center">
                                       {header}
@@ -517,8 +535,8 @@ const AdminOrders = () => {
                                   const fullItem = isBook
                                     ? books.find((b) => b.bookCode === p.code)
                                     : videos.find(
-                                      (v) => v.videoCode === p.code
-                                    );
+                                        (v) => v.videoCode === p.code
+                                      );
 
                                   const topic = isBook
                                     ? fullItem?.signsTopic
@@ -607,7 +625,6 @@ const AdminOrders = () => {
       >
         <DialogTitle>ערוך הזמנה</DialogTitle>
         <DialogContent>
-
           {Object.keys(defaultOrder).map((field) => {
             if (field === "address") {
               return (
@@ -615,7 +632,9 @@ const AdminOrders = () => {
                   component="fieldset"
                   sx={{
                     border: focused ? "2px solid" : "1px solid",
-                    borderColor: focused ? "primary.main" : "rgba(0, 0, 0, 0.23)",
+                    borderColor: focused
+                      ? "primary.main"
+                      : "rgba(0, 0, 0, 0.23)",
                     borderRadius: 1,
                     px: 2,
                     pt: 2,
@@ -674,9 +693,7 @@ const AdminOrders = () => {
                   />
                 </Box>
               );
-            }
-
-            else if (field === "status") {
+            } else if (field === "status") {
               return (
                 <FormControl fullWidth>
                   <Select
@@ -696,7 +713,6 @@ const AdminOrders = () => {
                     ))}
                   </Select>
                 </FormControl>
-
               );
             }
 
@@ -718,7 +734,6 @@ const AdminOrders = () => {
               />
             );
           })}
-
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditDialogOpen(false)}>ביטול</Button>
