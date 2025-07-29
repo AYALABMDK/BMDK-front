@@ -105,6 +105,7 @@ const AdminTopics = () => {
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
+                        mr: 2,
                     }}
                 >
                     <Typography

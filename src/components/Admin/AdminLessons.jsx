@@ -42,8 +42,8 @@ const AdminLessons = () => {
   const { mutateAsync: addTopic } = useAddTopic();
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [editMode, setEditMode] = useState({});
-  const [editedLessons, setEditedLessons] = useState({});
+  // const [editMode, setEditMode] = useState({});
+  // const [editedLessons, setEditedLessons] = useState({});
   const [newLesson, setNewLesson] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -112,17 +112,17 @@ const AdminLessons = () => {
     });
   };
 
-  const handleChange = (code, field, value) => {
-    setEditedLessons((prev) => ({
-      ...prev,
-      [code]: { ...prev[code], [field]: value },
-    }));
-  };
+  // const handleChange = (code, field, value) => {
+  //   setEditedLessons((prev) => ({
+  //     ...prev,
+  //     [code]: { ...prev[code], [field]: value },
+  //   }));
+  // };
 
-  const handleSave = (code) => {
-    updateLesson.mutate({ lessonCode: code, updateData: editedLessons[code] });
-    setEditMode((prev) => ({ ...prev, [code]: false }));
-  };
+  // const handleSave = (code) => {
+  //   updateLesson.mutate({ lessonCode: code, updateData: editedLessons[code] });
+  //   setEditMode((prev) => ({ ...prev, [code]: false }));
+  // };
 
 
 
@@ -134,6 +134,7 @@ const AdminLessons = () => {
       },
     });
   };
+
   // פונקציה לפתיחת הדיאלוג
   const confirmDelete = (code) => {
     setSelectedLessonToDelete(code);
@@ -183,6 +184,7 @@ const AdminLessons = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            mr: 2,
           }}
         >
           <Typography
@@ -264,31 +266,11 @@ const AdminLessons = () => {
             </TableHead>
             <TableBody>
               {filteredLessons.map((row) => {
-                const isEdit = editMode[row.code];
-                const editable = editedLessons[row.code] || row;
                 return (
                   <TableRow key={row.code}>
-                    <TableCell align="center">{row.code}</TableCell>
-                    <TableCell align="center">
-                      {isEdit ? (
-                        <TextField
-                          select
-                          value={editable.topicCode}
-                          onChange={(e) =>
-                            handleChange(row.code, "topicCode", +e.target.value)
-                          }
-                        >
-                          {topics.map((t) => (
-                            <MenuItem key={t.id} value={t.id}>
-                              {t.name}
-                            </MenuItem>
-                          ))}
-                        </TextField>
-                      ) : (
-                        topicName(row.topicCode)
-                      )}
-                    </TableCell>
                     {[
+                      "code",
+                      "title",
                       "description",
                       "city",
                       "day",
@@ -302,52 +284,26 @@ const AdminLessons = () => {
                       "notes",
                     ].map((field) => (
                       <TableCell key={field} align="center">
-                        {isEdit ? (
-                          <TextField
-                            type={
-                              field.includes("Date")
-                                ? "date"
-                                : field === "studentsCount" || field === "price"
-                                  ? "number"
-                                  : "text"
-                            }
-                            value={editable[field] || ""}
-                            InputLabelProps={
-                              field.includes("Date") ? { shrink: true } : {}
-                            }
-                            onChange={(e) =>
-                              handleChange(row.code, field, e.target.value)
-                            }
-                          />
-                        ) : field.includes("Date") ? (
+                        {field.includes("Date") ? (
                           formatDate(row[field])
+                        ) : field == "title" ? (
+                          topicName(row.topicCode)
                         ) : (
                           row[field]
                         )}
                       </TableCell>
                     ))}
                     <TableCell align="center">
-                      {isEdit ? (
-                        <Tooltip title="שמור">
-                          <IconButton
-                            onClick={() => handleSave(row.code)}
-                            color="primary"
-                          >
-                            <Save />
-                          </IconButton>
-                        </Tooltip>
-                      ) : (
-                        <Tooltip title="ערוך">
-                          <IconButton
-                            onClick={() => {
-                              setLessonBeingEdited({ ...row });
-                              setEditDialogOpen(true);
-                            }}
-                          >
-                            <Edit />
-                          </IconButton>
-                        </Tooltip>
-                      )}
+                      <Tooltip title="ערוך">
+                        <IconButton
+                          onClick={() => {
+                            setLessonBeingEdited({ ...row });
+                            setEditDialogOpen(true);
+                          }}
+                        >
+                          <Edit />
+                        </IconButton>
+                      </Tooltip>
                       <Tooltip title="מחק">
                         <IconButton
                           onClick={() => confirmDelete(row.code)}
@@ -364,6 +320,7 @@ const AdminLessons = () => {
           </Table>
         </TableContainer>
       )}
+
       <Dialog
         open={editDialogOpen}
         onClose={() => setEditDialogOpen(false)}
@@ -468,6 +425,7 @@ const AdminLessons = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
