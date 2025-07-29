@@ -44,8 +44,6 @@ const AdminVideos = () => {
   const addMutation = useAddVideo();
   const { mutateAsync: addTopic } = useAddTopic();
 
-  const [editableVideos, setEditableVideos] = useState({});
-  const [isEditing, setIsEditing] = useState({});
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [videoBeingEdited, setVideoBeingEdited] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -119,25 +117,6 @@ const AdminVideos = () => {
     return topic?.name || "—";
   };
 
-  // const toggleEdit = (code) => {
-  //   const currentVideo = videos.find((v) => v.code === code);
-  //   setEditableVideos((prev) => ({
-  //     ...prev,
-  //     [code]: { ...currentVideo },
-  //   }));
-  //   setIsEditing((prev) => ({ ...prev, [code]: !prev[code] }));
-  // };
-
-  // const handleChange = (code, field, value) => {
-  //   setEditableVideos((prev) => ({
-  //     ...prev,
-  //     [code]: {
-  //       ...prev[code],
-  //       [field]: value,
-  //     },
-  //   }));
-  // };
-
   const handleSave = (code) => {
     const updateData = videoBeingEdited;
     if (!updateData) return;
@@ -147,7 +126,6 @@ const AdminVideos = () => {
   const confirmDelete = (code) => {
     setSelectedVideoToDelete(code);
     setDeleteDialogOpen(true);
-    setIsEditing((prev) => ({ ...prev, [code]: false }));
   };
 
   const handleConfirmedDelete = () => {

@@ -19,6 +19,10 @@ import {
   Button,
   Dialog,
   Checkbox,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  FormControl,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SaveIcon from "@mui/icons-material/Save";
@@ -45,9 +49,9 @@ const AdminOrders = () => {
   const deleteMutation = useDeleteOrder();
   const updateMutation = useUpdateOrder();
 
-  const [editableOrders, setEditableOrders] = useState({});
   const [expandedRows, setExpandedRows] = useState({});
-  const [isEditing, setIsEditing] = useState({});
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [orderBeingEdited, setOrderBeingEdited] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedOrderToDelete, setSelectedOrderToDelete] = useState(null);
@@ -58,12 +62,34 @@ const AdminOrders = () => {
   const [customEmailOpen, setCustomEmailOpen] = useState(false);
   const [loadingSendCustom, setLoadingSendCustom] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState("");
+  const [focused, setFocused] = useState(false);
 
   const [emailForm, setEmailForm] = useState({
     to: "",
     subject: "",
     message: "",
   });
+
+  const defaultOrder = {
+    fullName: "",
+    email: "",
+    phone: "",
+    paymentMethod: "",
+    address: {
+      street: "",
+      city: "",
+    },
+    status: "",
+  }
+
+  const fieldLabels = {
+    fullName: "שם מלא",
+    email: "מייל",
+    phone: "טלפון",
+    paymentMethod: "אופן התשלום",
+    address: "כתובת",
+    status: "סטטוס",
+  }
 
   const toggleExpand = (orderCode) => {
     setExpandedRows((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
@@ -80,84 +106,50 @@ const AdminOrders = () => {
     }
   };
   const statusOrder = {
-  "התקבלה": 1,
-  "מוכנה למשלוח": 2,
-  "ממתינה לאישור":3,
-  "נשלחה": 4,
-  "הסתיימה": 5
-};
+    "התקבלה": 1,
+    "מוכנה למשלוח": 2,
+    "ממתינה לאישור": 3,
+    "נשלחה": 4,
+    "הסתיימה": 5
+  };
 
-const filteredOrders = orders.filter((order) => {
-  const valuesToSearch = [
-    order.orderCode,
-    order.fullName,
-    order.email,
-    order.phone,
-    order.status,
-    order.orderDate,
-    order.orderDate
-      ? new Date(order.orderDate).toLocaleDateString("he-IL", {
+  const filteredOrders = orders.filter((order) => {
+    const valuesToSearch = [
+      order.orderCode,
+      order.fullName,
+      order.email,
+      order.phone,
+      order.status,
+      order.orderDate,
+      order.orderDate
+        ? new Date(order.orderDate).toLocaleDateString("he-IL", {
           day: "2-digit",
           month: "2-digit",
           year: "numeric",
         })
-      : "",
-    order.address?.street,
-    order.address?.city,
-    ...(order.products?.map((p) => p.bookCode || p.videoCode || "") || []),
-  ];
-  return valuesToSearch.some((value) =>
-    String(value).toLowerCase().includes(searchQuery.toLowerCase())
-  );
-});
+        : "",
+      order.address?.street,
+      order.address?.city,
+      ...(order.products?.map((p) => p.bookCode || p.videoCode || "") || []),
+    ];
+    return valuesToSearch.some((value) =>
+      String(value).toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
 
 
-const sortedOrders = [...filteredOrders].sort((a, b) => {
-  const statusA = statusOrder[a.status] || 99;
-  const statusB = statusOrder[b.status] || 99;
+  const sortedOrders = [...filteredOrders].sort((a, b) => {
+    const statusA = statusOrder[a.status] || 99;
+    const statusB = statusOrder[b.status] || 99;
 
-  if (statusA !== statusB) return statusA - statusB;
-
-
-  // אחר כך לפי סטטוס
-  const dateA = new Date(a.orderDate);
-  const dateB = new Date(b.orderDate);
-  return dateB - dateA;
-});
+    if (statusA !== statusB) return statusA - statusB;
 
 
-  const toggleEdit = (orderCode) => {
-    const currentOrder = orders.find((o) => o.orderCode === orderCode);
-    setEditableOrders((prev) => ({
-      ...prev,
-      [orderCode]: {
-        fullName: currentOrder.fullName,
-        email: currentOrder.email,
-        phone: currentOrder.phone,
-        status: currentOrder.status,
-        address: {
-          city: currentOrder.address?.city || "",
-          street: currentOrder.address?.street || "",
-        },
-      },
-    }));
-    setIsEditing((prev) => ({ ...prev, [orderCode]: !prev[orderCode] }));
-  };
-
-  const handleChange = (orderCode, field, value, nestedField = null) => {
-    setEditableOrders((prev) => {
-      const updated = { ...prev[orderCode] };
-      if (nestedField) {
-        updated[field][nestedField] = value;
-      } else {
-        updated[field] = value;
-      }
-      return {
-        ...prev,
-        [orderCode]: updated,
-      };
-    });
-  };
+    // אחר כך לפי סטטוס
+    const dateA = new Date(a.orderDate);
+    const dateB = new Date(b.orderDate);
+    return dateB - dateA;
+  });
 
   const getStatusChip = (status) => {
     switch (status) {
@@ -185,7 +177,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
             }}
           />
         );
-        case "ממתינה לאישור":
+      case "ממתינה לאישור":
         return (
           <Chip
             label="ממתינה לאישור"
@@ -237,10 +229,9 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
   };
 
   const handleSave = (orderCode) => {
-    const updateData = editableOrders[orderCode];
+    const updateData = orderBeingEdited;
     if (!updateData) return;
     updateMutation.mutate({ orderCode, updateData });
-    setIsEditing((prev) => ({ ...prev, [orderCode]: false }));
   };
   const sendStatusMutation = useSendStatusEmail();
 
@@ -386,36 +377,27 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                 }}
               >
                 <TableCell />
-                <TableCell align="center" style={{ width: "150px" }}>
-                  מס' הזמנה
-                </TableCell>
-                <TableCell align="center" style={{ width: "140px" }}>
-                  תאריך
-                </TableCell>
-                <TableCell align="center" style={{ width: "150px" }}>
-                  שם
-                </TableCell>
-                <TableCell align="center" style={{ width: "150px" }}>
-                  אימייל
-                </TableCell>
-                <TableCell align="center" style={{ width: "150px" }}>
-                  טלפון
-                </TableCell>
-                <TableCell align="center" style={{ width: "150px" }}>
-                  כתובת
-                </TableCell>
-                <TableCell align="center" style={{ width: "150px" }}>
-                  סטטוס
-                </TableCell>
+                {[
+                  "מס' הזמנה",
+                  "תאריך",
+                  "שם",
+                  "אימייל",
+                  "טלפון",
+                  "כתובת",
+                  "סטטוס",
+                  "אופן התשלום"
+                ].map((col, i) => (
+                  <TableCell key={i} align="center">
+                    {col}
+                  </TableCell>
+                ))}
                 <TableCell align="center">פעולות</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {sortedOrders.map((order) => {
                 const isOpen = expandedRows[order.orderCode];
-                const isEdit = isEditing[order.orderCode];
                 const address = order.address || {};
-                const editable = editableOrders[order.orderCode] || {};
                 return (
                   <React.Fragment key={order.orderCode}>
                     <TableRow>
@@ -426,148 +408,43 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                           {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         </IconButton>
                       </TableCell>
-                      <TableCell>{order.orderCode}</TableCell>
+                      {[
+                        "orderCode",
+                        "orderDate",
+                        "fullName",
+                        "email",
+                        "phone",
+                        "address",
+                        "status",
+                        "paymentMethod"
+                      ].map((field) => (
+                        <TableCell key={field} align="center">
+                          {field == "orderDate" ? (
+                            order.orderDate
+                              ? new Date(order.orderDate).toLocaleString("he-IL", {
+                                day: "2-digit",
+                                month: "2-digit",
+                                year: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })
+                              : "—"
+                          ) : field == "address" ? (
+                            `${address.street || ""}, ${address.city || ""}`
+                          ) : field == "status" ? (
+                            getStatusChip(order.status)
+                          ) : (
+                            order[field]
+                          )}
+                        </TableCell>
+                      ))}
                       <TableCell align="center">
-                        {order.orderDate
-                          ? new Date(order.orderDate).toLocaleString("he-IL", {
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            })
-                          : "—"}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit ? (
-                          <TextField
-                            variant="standard"
-                            defaultValue={order.fullName}
-                            onChange={(e) =>
-                              handleChange(
-                                order.orderCode,
-                                "fullName",
-                                e.target.value
-                              )
-                            }
-                          />
-                        ) : (
-                          order.fullName
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit ? (
-                          <TextField
-                            variant="standard"
-                            defaultValue={order.email}
-                            onChange={(e) =>
-                              handleChange(
-                                order.orderCode,
-                                "email",
-                                e.target.value
-                              )
-                            }
-                          />
-                        ) : (
-                          order.email
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit ? (
-                          <TextField
-                            variant="standard"
-                            defaultValue={order.phone}
-                            onChange={(e) =>
-                              handleChange(
-                                order.orderCode,
-                                "phone",
-                                e.target.value
-                              )
-                            }
-                          />
-                        ) : (
-                          order.phone
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit ? (
-                          <Box
-                            sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 1,
-                            }}
-                          >
-                            <TextField
-                              variant="standard"
-                              placeholder="רחוב"
-                              value={editable.address?.street || ""}
-                              onChange={(e) =>
-                                handleChange(
-                                  order.orderCode,
-                                  "address",
-                                  e.target.value,
-                                  "street"
-                                )
-                              }
-                            />
-                            <TextField
-                              variant="standard"
-                              placeholder="עיר"
-                              value={editable.address?.city || ""}
-                              onChange={(e) =>
-                                handleChange(
-                                  order.orderCode,
-                                  "address",
-                                  e.target.value,
-                                  "city"
-                                )
-                              }
-                            />
-                          </Box>
-                        ) : (
-                          `${address.street || ""}, ${address.city || ""}`
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit ? (
-                          <Select
-                            size="small"
-                            value={editable.status ?? order.status}
-                            onChange={(e) =>
-                              handleChange(
-                                order.orderCode,
-                                "status",
-                                e.target.value
-                              )
-                            }
-                          >
-                            <MenuItem value="התקבלה">התקבלה</MenuItem>
-                            <MenuItem value="מוכנה למשלוח">
-                              מוכנה למשלוח
-                            </MenuItem>
-                             <MenuItem value="ממתינה לאישור">ממתינה לאישור</MenuItem>
-                            <MenuItem value="נשלחה">נשלחה</MenuItem>
-                            <MenuItem value="הסתיימה">הסתיימה</MenuItem>
-                          </Select>
-                        ) : (
-                          getStatusChip(order.status)
-                        )}
-                      </TableCell>
-                      <TableCell align="center">
-                        {isEdit && (
-                          <Tooltip title="שמור">
-                            <IconButton
-                              onClick={() => handleSave(order.orderCode)}
-                              color="primary"
-                            >
-                              <SaveIcon />
-                            </IconButton>
-                          </Tooltip>
-                        )}
                         <Tooltip title="ערוך">
                           <IconButton
-                            onClick={() => toggleEdit(order.orderCode)}
+                            onClick={() => {
+                              setOrderBeingEdited({ ...order });
+                              setEditDialogOpen(true);
+                            }}
                           >
                             <EditIcon />
                           </IconButton>
@@ -590,7 +467,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                     </TableRow>
                     <TableRow>
                       <TableCell
-                        colSpan={9}
+                        colSpan={10}
                         style={{ paddingBottom: 0, paddingTop: 0 }}
                       >
                         <Collapse in={isOpen} timeout="auto" unmountOnExit>
@@ -611,8 +488,8 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                                   padding: "8px",
                                 },
                                 "& thead th": {
-                                  backgroundColor: "#e3f2fd",
-                                  color: "#0d47a1",
+                                  backgroundColor: "#efefef",
+                                  color: "#252e49",
                                   fontWeight: 700,
                                   fontSize: "1.05rem",
                                 },
@@ -621,12 +498,18 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                               <TableHead>
                                 <TableRow>
                                   <TableCell />
-                                  <TableCell align="center">סוג</TableCell>
-                                  <TableCell align="center">נושא</TableCell>
-                                  <TableCell align="center">סימנים</TableCell>
-                                  <TableCell align="center">גודל</TableCell>
-                                  <TableCell align="center">כמות</TableCell>
-                                  <TableCell align="center">מחיר</TableCell>
+                                  {[
+                                    "סוג",
+                                    "נושא",
+                                    "סימנים",
+                                    "גודל",
+                                    "כמות",
+                                    "מחיר"
+                                  ].map((header, index) => (
+                                    <TableCell key={index} align="center">
+                                      {header}
+                                    </TableCell>
+                                  ))}
                                 </TableRow>
                               </TableHead>
                               <TableBody>
@@ -635,8 +518,8 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
                                   const fullItem = isBook
                                     ? books.find((b) => b.bookCode === p.code)
                                     : videos.find(
-                                        (v) => v.videoCode === p.code
-                                      );
+                                      (v) => v.videoCode === p.code
+                                    );
 
                                   const topic = isBook
                                     ? fullItem?.signsTopic
@@ -690,6 +573,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
           </Table>
         </TableContainer>
       )}
+
       <Dialog
         open={deleteDialogOpen}
         onClose={() => setDeleteDialogOpen(false)}
@@ -715,6 +599,149 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
           </Box>
         </Box>
       </Dialog>
+
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>ערוך הזמנה</DialogTitle>
+        <DialogContent>
+
+          {Object.keys(defaultOrder).map((field) => {
+            if (field === "address") {
+              return (
+                <Box
+                  component="fieldset"
+                  sx={{
+                    border: focused ? "2px solid" : "1px solid",
+                    borderColor: focused ? "primary.main" : "rgba(0, 0, 0, 0.23)",
+                    borderRadius: 1,
+                    px: 2,
+                    pt: 2,
+                    pb: 1.5,
+                    mb: 2,
+                    transition: "border-color 0.2s",
+                    typography: "body1",
+                  }}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                >
+                  <legend
+                    style={{
+                      padding: "0 8px",
+                      fontSize: "0.75rem",
+                      color: focused ? "#558e9e" : "rgba(0, 0, 0, 0.6)",
+                      lineHeight: "1.4375em",
+                      direction: "rtl",
+                    }}
+                  >
+                    כתובת
+                  </legend>
+
+                  <TextField
+                    variant="standard"
+                    label="רחוב"
+                    value={orderBeingEdited?.address?.street || ""}
+                    onChange={(e) =>
+                      setOrderBeingEdited((prev) => ({
+                        ...prev,
+                        address: {
+                          ...prev.address,
+                          street: e.target.value,
+                        },
+                      }))
+                    }
+                    fullWidth
+                    margin="dense"
+                  />
+
+                  <TextField
+                    variant="standard"
+                    label="עיר"
+                    value={orderBeingEdited?.address?.city || ""}
+                    onChange={(e) =>
+                      setOrderBeingEdited((prev) => ({
+                        ...prev,
+                        address: {
+                          ...prev.address,
+                          city: e.target.value,
+                        },
+                      }))
+                    }
+                    fullWidth
+                    margin="dense"
+                  />
+                </Box>
+              );
+            }
+
+            else if (field === "status") {
+              return (
+                <FormControl fullWidth>
+                  <Select
+                    fullWidth
+                    value={orderBeingEdited?.status}
+                    onChange={(e) =>
+                      setOrderBeingEdited({
+                        ...orderBeingEdited,
+                        [field]: e.target.value,
+                      })
+                    }
+                  >
+                    {Object.keys(statusOrder).map((status, index) => (
+                      <MenuItem key={index} value={status}>
+                        {status}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+              );
+            }
+
+            return (
+              <TextField
+                key={field}
+                type={"text"}
+                label={fieldLabels[field] || field}
+                value={orderBeingEdited?.[field] || ""}
+                fullWidth
+                margin="dense"
+                InputLabelProps={{}}
+                onChange={(e) =>
+                  setOrderBeingEdited({
+                    ...orderBeingEdited,
+                    [field]: e.target.value,
+                  })
+                }
+              />
+            );
+          })}
+
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditDialogOpen(false)}>ביטול</Button>
+          <Button
+            variant="contained"
+            disabled={updateMutation.isLoading}
+            onClick={() => {
+              debugger;
+              handleSave(orderBeingEdited.orderCode);
+              console.log("הנתונים שנשלחים:", orderBeingEdited);
+              setEditDialogOpen(false);
+            }}
+          >
+            {updateMutation.isLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "שמור"
+            )}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Dialog open={mailDialogOpen} onClose={() => setMailDialogOpen(false)}>
         <Box sx={{ p: 3, minWidth: 300, textAlign: "center" }}>
           <Typography variant="h6" mb={2}>
@@ -773,6 +800,7 @@ const sortedOrders = [...filteredOrders].sort((a, b) => {
           </Box>
         </Box>
       </Dialog>
+
       <Dialog
         open={customEmailOpen}
         onClose={() => setCustomEmailOpen(false)}
