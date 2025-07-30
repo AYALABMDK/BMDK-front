@@ -47,7 +47,7 @@ const navButtonStyle = {
 
 const navItems = [
   { text: "דף הבית", path: `${BASE_PATH}/` },
-  { text: "הכשרה ומסלולים", path: `${BASE_PATH}/lessons` },
+  { text: "מסלולי הכשרה", path: `${BASE_PATH}/lessons` },
   { text: "קניית ספרים", path: `${BASE_PATH}/OrderBook` },
   { text: "למידה מקוונת", path: `${BASE_PATH}/OnlineLearning` },
   { text: "הסל שלי", path: `${BASE_PATH}/cart` },
