@@ -63,7 +63,7 @@ const AboutPage = () => {
   ];
 
   const stats = [
-    { label: "זמינות לשאלות", value: "24/7" },
+    { label: "זמינות לשאלות", value: "24/6" },
     { label: "בוגרים מוצלחים", value: "500+" },
     { label: "שנות ניסיון", value: "25" },
     { label: "אחוז הצלחה", value: "99%" },

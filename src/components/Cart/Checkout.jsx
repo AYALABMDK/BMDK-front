@@ -401,16 +401,16 @@ const Checkout = () => {
 
             <Box sx={{ lineHeight: 2 }}>
               <Typography variant="body1">
-                <strong>שם המוטב:</strong> ישיבת דרך אמונה
+                <strong>שם המוטב:</strong> אילה גיאת
               </Typography>
               <Typography variant="body1">
-                <strong>מספר חשבון:</strong> 123456789
+                <strong>מספר חשבון:</strong> 634161
               </Typography>
               <Typography variant="body1">
-                <strong>בנק:</strong> פועלים
+                <strong>בנק:</strong> פאגי
               </Typography>
               <Typography variant="body1">
-                <strong>סניף:</strong> 123
+                <strong>סניף:</strong> 179
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                 לאחר ביצוע ההעברה, יש להעלות קובץ אישור לצורך השלמת ההזמנה.
